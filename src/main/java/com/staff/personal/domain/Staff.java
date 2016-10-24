@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Entity
-@Table(name = "MainStaff")
+@Table(name = "Staff")
 public class Staff {
 
 	@Id

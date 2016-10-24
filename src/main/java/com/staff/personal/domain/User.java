@@ -43,7 +43,7 @@ public class User {
 	private Role role;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Document photo;
+	private UserPhotos photo;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Region region;
