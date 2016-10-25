@@ -44,7 +44,7 @@ public class Fired {
 	@Column(name = "militaryAccount")//Військовий облік????
 	String militaryAccount ;
 	
-	@Column(name = "groupRemuneration")//Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)?????
+	@Column(name = "grRemuneration")//Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)?????
 	String referenceLEK;
 	
 	@Column(name = "conclusion")

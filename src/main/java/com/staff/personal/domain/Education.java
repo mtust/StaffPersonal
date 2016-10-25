@@ -20,9 +20,9 @@ public class Education {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	List<MainEducationBlock> block;
 
-	List<String> otherStudying;
+	String otherStudying;
 
-	List<String> languages;
+	String language;
 
 
 

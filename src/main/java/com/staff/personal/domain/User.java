@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "stuffUser")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
