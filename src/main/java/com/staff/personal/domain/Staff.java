@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Entity
-@Table(name = "Staff")
+@Table(name = "staff")
 public class Staff {
 
 	@Id
@@ -58,6 +58,12 @@ public class Staff {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<PremiumFine> premiumFines;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Fired> fireds;
+	
+	
+	
 	
 	//need add lustration, firing
 }

@@ -80,23 +80,6 @@ public class MainStaff {
 	@Column(name = "personnelProvisionForPost")//Кадровий резерв на посаду
 	String personnelProvisionForPost;
 	
-	@Column(name = "overallExperience")//Загальний стаж роботи 
-	Date overallExperience;
-	
-	@Column(name = "serviceExperience")//Стаж служби (дата, с которой; стаж вычисляется)
-	Date serviceExperience;
-	
-	@Column(name = "age")//calculated!????
-	String age;
-	
-//	@Column(name = "?")//Вислуга (вычисляется)
-//	String ?;
-	
-	@Column(name = "inRank")// У званні (сколько, вычисляется)?
-	String inRank;
-	
-	@Column(name = "inPosition")//У посаді (сколько, вычисляется)?
-	String inPosition;
 	
 	@Column(name = "biography")
 	String biography;
