@@ -26,7 +26,7 @@ public class PremiumFine {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "order")
+	@Column(name = "premiumFineOrder")
 	private String order;
 
 	@Column(name = "deadlines")

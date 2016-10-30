@@ -4,12 +4,7 @@ package com.staff.personal.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +23,7 @@ public class MainStaff {
 	@Column(name = "fullName")//ПІБ
 	String fullName;
 	
-	@Column(name = "specialRank")
+	@Column(name = "specRank")
 	String specialRank;
 	
 	@Column(name = "dateOfBirth")
@@ -88,9 +83,11 @@ public class MainStaff {
 	String biography;
 	
 	@Column(name = "photoMainStaffs")
+	@OneToMany
 	List<MainStaffPhotos> photoMainStaffs;
 	
 	@Column(name = "documents")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	List<StuffDocuments> documents;
 	
 }

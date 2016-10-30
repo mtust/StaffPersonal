@@ -17,15 +17,15 @@ import org.springframework.context.annotation.Configuration;
 public class StaffPersonalApplication extends SpringBootServletInitializer {
 	
 	
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(StaffPersonalApplication.class);
-	}
-	
-	@Bean
-	public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf) {
-		return hemf.getSessionFactory();
-	}
+//	@Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//		return application.sources(StaffPersonalApplication.class);
+//	}
+//
+//	@Bean
+//	public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf) {
+//		return hemf.getSessionFactory();
+//	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(StaffPersonalApplication.class, args);

@@ -31,7 +31,7 @@ public class Benefits {
 	@Column(name = "toDate")
 	private Date toDate;
 
-	@Column(name = "order")
+	@Column(name = "benefitOrder")
 	private String order;
 
 	@Column(name = "oerderDate")
