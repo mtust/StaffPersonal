@@ -50,8 +50,11 @@ public class MainStaff {
 	String dateContract;
 	
 	
-	@Column(name = "exemptionDateAndNumberOrder")//Звільнення зі служби цивільного захисту, дата та номер наказу
-	String exemptionDateAndNumberOrder ;
+	@Column(name = "exemptionDate")//Звільнення зі служби цивільного захисту, дата та номер наказу
+	String exemptionDate;
+	
+	@Column(name = "exemptionNumOrder")//Звільнення зі служби цивільного захисту, дата та номер наказу
+	String exemptionNumOrder ;
 	
 //	@Column(name = "?????")//У розпорядженні відовідального керівника, дата та номер наказу
 //	String ???????;
