@@ -34,8 +34,8 @@ public class Benefits {
 	@Column(name = "benefitOrder")
 	private String order;
 
-	@Column(name = "oerderDate")
-	private Date oerderDate;
+	@Column(name = "orderDate")
+	private Date orderDate;
 
 	@Column(name = "certification")
 	private String certification;
@@ -44,7 +44,7 @@ public class Benefits {
 	@Column(name = "privilege")
 	private String privilege;
 
-	@Column(name = "actsAndComments")
+	@Column(name = "actsAndComments")//????????????????
 	private String actsAndComments;
 
 	@Column(name = "otherInfo")

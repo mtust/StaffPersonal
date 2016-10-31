@@ -21,8 +21,8 @@ public class Other {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "placeBirth")
-	private String placeBirth;
+	@Column(name = "birthplace")
+	private String birthplace;
 	
 	@Column(name = "sex")
 	private String sex;

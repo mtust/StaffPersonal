@@ -35,8 +35,14 @@ public class MainStaff {
 	/**
 	 *номер дата присвоєння спеціальних звань
 	 */
-	@Column(name = "dateNumberConferringSpecialRanks")
-	String dateNumberConferringSpecialRanks;
+	@Column(name = "numberConferringSpeclRanks")
+	String numberConferringSpeclRanks;
+	
+	/**
+	 *номер дата присвоєння спеціальних звань
+	 */
+	@Column(name = "dateConferringSpecRanks")
+	Date dateConferringSpecRanks;
 
 	/**
 	 *Дата призначення
@@ -77,7 +83,7 @@ public class MainStaff {
 	/**
 	 *Дата прийняття присяги державного службовця
 	 */
-	@Column(name = "specialRank")
+	@Column(name = "dateSwear")
 	Date dateSwear;
 	
 	@Column(name = "rankCivilServant")

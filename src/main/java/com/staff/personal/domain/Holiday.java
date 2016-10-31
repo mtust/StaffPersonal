@@ -29,6 +29,9 @@ public class Holiday {
 	@Column(name = "holidayPlace")
 	private String holidayPlace;
 
+	@Column(name = "fromDate")
+	private Date fromDate;
+	
 	@Column(name = "toDate")
 	private Date toDate;
 
