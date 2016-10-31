@@ -32,50 +32,85 @@ public class MainStaff {
 	@Column(name = "position")
 	String position;
 
-	@Column(name = "dateNumberConferringSpecialRanks")//номер дата присвоєння спеціальних звань
+	/**
+	 *номер дата присвоєння спеціальних звань
+	 */
+	@Column(name = "dateNumberConferringSpecialRanks")
 	String dateNumberConferringSpecialRanks;
 
-	@Column(name = "dateNumberPurpose")//Дата призначення
+	/**
+	 *Дата призначення
+	 */
+	@Column(name = "dateNumberPurpose")
 	Date dateNumberPurpose;
 	
 	@Column(name = "phomeNumber")
 	String phomeNumber;
 	
-	@Column(name = "dateContract")//Дати контракту: «з» та «по»???	
-	String dateContract;
+	/**
+	 *Дати контракту: «з»
+	 */
+	@Column(name = "contractFromDate")
+	String contractFromDate;
+	/**
+	 *Дати контракту: «по»
+	 */
+	@Column(name = "contractFromDate")	
+	String contractToDate;
 	
-	
-	@Column(name = "exemptionDate")//Звільнення зі служби цивільного захисту, дата та номер наказу
+	/*
+	 *Звільнення зі служби цивільного захисту, дата та номер наказу
+	 */
+	@Column(name = "exemptionDate")
 	String exemptionDate;
 	
-	@Column(name = "exemptionNumOrder")//Звільнення зі служби цивільного захисту, дата та номер наказу
+	/*
+	 *Звільнення зі служби цивільного захисту, дата та номер наказу
+	 */
+	@Column(name = "exemptionNumOrder")
 	String exemptionNumOrder ;
-	
-//	@Column(name = "?????")//У розпорядженні відовідального керівника, дата та номер наказу
-//	String ???????;
-	
-	@Column(name = "specialRank")//Дата прийняття присяги державного службовця
+	/**
+	 *У розпорядженні відовідального керівника, дата та номер наказу
+	 */
+	@Column(name = "inCommand")
+	String inCommand;
+	/**
+	 *Дата прийняття присяги державного службовця
+	 */
+	@Column(name = "specialRank")
 	Date dateSwear;
 	
 	@Column(name = "rankCivilServant")
 	String rankCivilServant;
-	
-	@Column(name = "categoriesCivilServants")//Категорія державного службовця
+	/*
+	 *Категорія державного службовця
+	 */
+	@Column(name = "categoriesCivilServants")
 	String categoriesCivilServants;
-	
-	@Column(name = "groupRemuneration")//Група оплати праці
+	/*
+	 *Група оплати праці
+	 */
+	@Column(name = "groupRemuneration")
 	String groupRemuneration;
 	
-	@Column(name = "staffOfficerCategory")//Штатно-посадова категорія
+	/*
+	 *Штатно-посадова категорія
+	 */
+	@Column(name = "staffOfficerCategory")
 	String staffOfficerCategory;
 	
 	@Column(name = "lastCertification")
 	Date lastCertification;
 	
-	@Column(name = "concludedCertification")//Висновок атестації
+	/*
+	 *Висновок атестації
+	 */
+	@Column(name = "concludedCertification")
 	String concludedCertification;
-	
-	@Column(name = "personnelProvisionForPost")//Кадровий резерв на посаду
+	/*
+	 *Кадровий резерв на посаду
+	 */
+	@Column(name = "personnelProvisionForPost")
 	String personnelProvisionForPost;
 	
 	

@@ -26,34 +26,59 @@ public class Fired {
 	
 	@Column(name = "orderNumber")
 	String orderNumber;
-
-	@Column(name = "whereFired")//(інформація, куди саме)
+   /**
+	*інформація, куди саме
+	*/
+	@Column(name = "whereFired")
 	String whereFired;
-	
-	@Column(name = "article")//Пункт (стаття) звільнення
+	/**
+	*Пункт (стаття) звільнення
+	*/
+	@Column(name = "article")
 	String article;
 	
 	
 	@Column(name = "lastPosition")
 	String lastPosition;
 	
-	
-	@Column(name = "specialRank")//Спеціальне звання
+	/**
+	*Спеціальне звання
+	*/
+	@Column(name = "specialRank")
 	String specialRank;
-	
-	@Column(name = "militaryAccount")//Військовий облік????
+	/**
+	*Військовий облік
+	*/
+	@Column(name = "militaryAccount")
 	String militaryAccount ;
-	
-	@Column(name = "grRemuneration")//Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)?????
-	String referenceLEK;
+	/**
+	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
+	*/
+	@Column(name = "referenceLEKCertificate")
+	String referenceLEKCertificate;//??????????mb Document??
+	/**
+	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
+	*/
+	@Column(name = "referenceLEKDate")
+	Date referenceLEKDate;
+	/**
+	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
+	*/
+	@Column(name = "referenceLEKNumber")
+	String referenceLEKNumber;
 	
 	@Column(name = "conclusion")
 	String conclusion;
+	/**
+	*Вислуга років на стан звільнення: календарна; навчання у ВНЗ; пільгова; трудовий стаж
+	*/
+	@Column(name = "seniority")//
+	String seniority;
 	
-//	@Column(name = "")//Вислуга років на стан звільнення: календарна; навчання у ВНЗ; пільгова; трудовий стаж
-//	String ;
-	
-	@Column(name = "groupRemuneration")//Особову справу направлено до (куди саме)
+	/**
+	*Особову справу направлено до (куди саме)
+	*/
+	@Column(name = "personalFileForwarded")
 	String personalFileForwarded;
 	
 

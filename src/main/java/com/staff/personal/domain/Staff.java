@@ -39,31 +39,26 @@ public class Staff {
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<WorkExperience> workExperiences;
 	
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Benefits> benefits;
 	
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Promotion> promotions;
 	
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Hospitals> hospitals;
 	
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Holiday> holidays;
 	
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<PremiumFine> premiumFines;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Fired> fireds;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Reports> reports;
 	
 	
-	
-	//need add lustration, firing
 }
