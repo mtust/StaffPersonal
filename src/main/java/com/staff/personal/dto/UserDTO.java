@@ -1,6 +1,5 @@
 package com.staff.personal.dto;
 
-import com.staff.personal.domain.Role;
 import lombok.Data;
 
 /**
@@ -11,10 +10,10 @@ import lombok.Data;
 public class UserDTO {
 
 
-    String login;
-    String password;
+    String email;
     String roleName;
-
+    String firstName;
+    String lastName;
 
 
 }

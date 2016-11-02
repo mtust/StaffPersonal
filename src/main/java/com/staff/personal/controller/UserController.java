@@ -19,7 +19,7 @@ import java.util.Date;
  */
 
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController  {
@@ -39,7 +39,7 @@ public class UserController  {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public LoginResponse login(@RequestBody final UserLogin login)
             throws ServletException {
-        User user = userService.getUserByUsernameAndPassword(login.name, login.password);
+        User user = userService.getUserByUsernameAndPassword(login.username, login.password);
 
         if (user == null) {
             throw new ServletException("Invalid login");
@@ -53,23 +53,21 @@ public class UserController  {
     @RequestMapping(value = "registration", method = RequestMethod.POST)
     public LoginResponse registration(@RequestBody final UserRegistrationDTO userRegistrationDTO){
         userService.createUser(userRegistrationDTO);
-        return new LoginResponse(Jwts.builder().setSubject(userRegistrationDTO.getUsername()).setSubject(userRegistrationDTO.getPassword())
+        return new LoginResponse(Jwts.builder().setSubject(userRegistrationDTO.getEmail()).setSubject(userRegistrationDTO.getPassword())
                 .claim("role", Role.ROLE_OPERATOR).setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, "secretkey").compact());
     }
 
-    @SuppressWarnings("unused")
     private static class UserLogin {
-        public String name;
+        public String username;
         public String password;
     }
 
-    @SuppressWarnings("unused")
     private static class LoginResponse {
-        public String token;
+        public String access_token;
 
         public LoginResponse(final String token) {
-            this.token = token;
+            this.access_token = token;
         }
     }
 

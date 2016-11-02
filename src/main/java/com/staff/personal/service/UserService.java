@@ -19,4 +19,5 @@ public interface UserService {
 
     void createUser(UserRegistrationDTO userRegistrationDTO);
 
+    UserDTO getUserById(Long id);
 }

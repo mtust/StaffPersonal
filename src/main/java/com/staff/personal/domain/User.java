@@ -36,7 +36,6 @@ public class User {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Region region;
 
-	private String accessToken;
 
 	public User(){}
 

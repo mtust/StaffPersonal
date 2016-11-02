@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class UserResources {
 
     @Autowired
     UserService userService;
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    String getUserById(@PathVariable Long id) {
-        return "ok";
+    UserDTO getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
 }

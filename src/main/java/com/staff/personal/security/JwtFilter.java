@@ -27,11 +27,11 @@ public class JwtFilter extends GenericFilterBean {
         final HttpServletRequest request = (HttpServletRequest) req;
 
         final String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("OAuth ")) {
             throw new ServletException("Missing or invalid Authorization header.");
         }
 
-        final String token = authHeader.substring(7); // The part after "Bearer "
+        final String token = authHeader.substring(6); // The part after "Bearer "
 
         try {
             final Claims claims = Jwts.parser().setSigningKey("secretkey")

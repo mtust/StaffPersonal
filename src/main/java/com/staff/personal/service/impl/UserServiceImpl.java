@@ -35,11 +35,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO getUserByUsername(String username) {
         UserDTO userDTO = new UserDTO();
-
         User user =  userRepository.findByEmail(username);
-        userDTO.setLogin(user.getEmail());
-        userDTO.setPassword(user.getPassword());
         userDTO.setRoleName(user.getRole().name());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
         return userDTO;
     }
 
@@ -63,14 +63,26 @@ public class UserServiceImpl implements UserService{
         if(!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())){
             throw new GeneralServiceException("Паролі не співпадають");
         }
-        if(userRepository.findByEmail(userRegistrationDTO.getUsername()) != null){
+        if(userRepository.findByEmail(userRegistrationDTO.getEmail()) != null){
             throw new GeneralServiceException("Такий користувач вже існує");
         }
-        user.setEmail(userRegistrationDTO.getUsername());
+        user.setFirstName(userRegistrationDTO.getFirstName());
+        user.setLastName(userRegistrationDTO.getLastName());
+        user.setEmail(userRegistrationDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setRole(Role.ROLE_OPERATOR);
         userRepository.save(user);
     }
 
+    @Override
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setRoleName(user.getRole().name());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        return userDTO;
+    }
 
 }
