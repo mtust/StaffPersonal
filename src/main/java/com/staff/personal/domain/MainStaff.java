@@ -61,7 +61,7 @@ public class MainStaff {
 	/**
 	 *Дати контракту: «по»
 	 */
-	@Column(name = "contractFromDate")	
+	@Column(name = "contractToDate")
 	String contractToDate;
 	
 	/*
