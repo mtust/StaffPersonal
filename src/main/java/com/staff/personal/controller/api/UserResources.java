@@ -1,4 +1,4 @@
-package com.staff.personal.resources;
+package com.staff.personal.controller.api;
 
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.service.UserService;
