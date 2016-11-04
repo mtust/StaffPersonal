@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.staff.personal</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>StuffPersonal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>StaffPersonal</name>
 	<description>StaffPersonal project for Spring Boot</description>
@@ -58,10 +58,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.assertj</groupId>

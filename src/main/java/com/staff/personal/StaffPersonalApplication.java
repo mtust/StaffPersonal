@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @Configuration
 @ComponentScan
-public class StaffPersonalApplication extends SpringBootServletInitializer {
+public class StaffPersonalApplication {
 	
 	
 //	@Override
