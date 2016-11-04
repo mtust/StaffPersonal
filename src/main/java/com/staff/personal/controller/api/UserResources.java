@@ -1,5 +1,6 @@
 package com.staff.personal.controller.api;
 
+import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,7 @@ public class UserResources {
     UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
+
+
 
 }

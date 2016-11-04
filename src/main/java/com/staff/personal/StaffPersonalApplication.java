@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class StaffPersonalApplication {
 	
-	
 //	@Override
 //	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 //		return application.sources(StaffPersonalApplication.class);

@@ -50,25 +50,25 @@ public class MainStaff {
 	@Column(name = "dateNumberPurpose")
 	Date dateNumberPurpose;
 	
-	@Column(name = "phomeNumber")
-	String phomeNumber;
+	@Column(name = "phoneNumber")
+	String phoneNumber;
 	
 	/**
 	 *Дати контракту: «з»
 	 */
 	@Column(name = "contractFromDate")
-	String contractFromDate;
+	Date contractFromDate;
 	/**
 	 *Дати контракту: «по»
 	 */
 	@Column(name = "contractToDate")
-	String contractToDate;
+	Date contractToDate;
 	
 	/*
 	 *Звільнення зі служби цивільного захисту, дата та номер наказу
 	 */
 	@Column(name = "exemptionDate")
-	String exemptionDate;
+	Date exemptionDate;
 	
 	/*
 	 *Звільнення зі служби цивільного захисту, дата та номер наказу

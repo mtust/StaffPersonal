@@ -2,7 +2,9 @@ package com.staff.personal.service;
 
 import java.util.List;
 
+import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Staff;
+import com.staff.personal.dto.CreateMainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 
 public interface StaffService {
@@ -11,5 +13,5 @@ public interface StaffService {
 	
 	RestMessageDTO deleteData(Long dataId);
 	
-	RestMessageDTO createStaff();
+	RestMessageDTO createMainStaff(CreateMainStaffDTO createMainStaffDTO);
 }
