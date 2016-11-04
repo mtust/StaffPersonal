@@ -5,10 +5,7 @@ import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by nazar on 04.11.16.
@@ -29,7 +26,7 @@ public class MainStaffController {
     }
 
     @RequestMapping(value = "createMainStaff", method = RequestMethod.POST)
-    RestMessageDTO createMainStaff(CreateMainStaffDTO createMainStaffDTO){
+    RestMessageDTO createMainStaff(@RequestBody CreateMainStaffDTO createMainStaffDTO){
         log.info("IN createMainStaff Controller");
         log.info(createMainStaffDTO.toString());
     return  staffService.createMainStaff(createMainStaffDTO);

@@ -40,6 +40,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public RestMessageDTO createMainStaff(CreateMainStaffDTO createMainStaffDTO) {
         log.info("IN createMainStaff");
+        log.info(createMainStaffDTO.toString());
         try {
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(createMainStaffDTO.getFullName());
