@@ -48,6 +48,7 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setDateOfBirth(simpleDateFormat.parse(createMainStaffDTO.getDateOfBirth()));
             mainStaff.setPosition(createMainStaffDTO.getPosition());
             mainStaff.setNumberConferringSpeclRanks(createMainStaffDTO.getNumberConferringSpeclRanks());
+            mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(createMainStaffDTO.getDateConferringSpecRanks()));
             mainStaff.setDateNumberPurpose(simpleDateFormat.parse(createMainStaffDTO.getDateNumberPurpose()));
             mainStaff.setPhoneNumber(createMainStaffDTO.getPhoneNumber());
             mainStaff.setContractFromDate(simpleDateFormat.parse(createMainStaffDTO.getContractFromDate()));
