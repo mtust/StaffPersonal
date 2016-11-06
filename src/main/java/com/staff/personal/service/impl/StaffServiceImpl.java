@@ -1,7 +1,7 @@
 package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.MainStaff;
-import com.staff.personal.dto.CreateMainStaffDTO;
+import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.repository.MainStaffRepository;
@@ -40,34 +40,34 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public RestMessageDTO createMainStaff(CreateMainStaffDTO createMainStaffDTO) {
+    public RestMessageDTO createMainStaff(MainStaffDTO mainStaffDTO) {
         log.info("IN createMainStaff");
-        log.info(createMainStaffDTO.toString());
+        log.info(mainStaffDTO.toString());
         try {
             MainStaff mainStaff = new MainStaff();
-            mainStaff.setFullName(createMainStaffDTO.getFullName());
-            mainStaff.setSpecialRank(createMainStaffDTO.getSpecialRank());
-            mainStaff.setDateOfBirth(simpleDateFormat.parse(createMainStaffDTO.getDateOfBirth()));
-            mainStaff.setPosition(createMainStaffDTO.getPosition());
-            mainStaff.setNumberConferringSpeclRanks(createMainStaffDTO.getNumberConferringSpeclRanks());
-            mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(createMainStaffDTO.getDateConferringSpecRanks()));
-            mainStaff.setDateNumberPurpose(simpleDateFormat.parse(createMainStaffDTO.getDateNumberPurpose()));
-            mainStaff.setPhoneNumber(createMainStaffDTO.getPhoneNumber());
-            mainStaff.setContractFromDate(simpleDateFormat.parse(createMainStaffDTO.getContractFromDate()));
-            mainStaff.setContractToDate(simpleDateFormat.parse(createMainStaffDTO.getContractToDate()));
-            mainStaff.setExemptionDate(simpleDateFormat.parse(createMainStaffDTO.getExemptionDate()));
-            mainStaff.setExemptionNumOrder(createMainStaffDTO.getExemptionNumOrder());
-            mainStaff.setInCommand(createMainStaffDTO.getInCommand());
-            mainStaff.setDateSwear(simpleDateFormat.parse(createMainStaffDTO.getDateSwear()));
-            mainStaff.setRankCivilServant(createMainStaffDTO.getRankCivilServant());
-            mainStaff.setCategoriesCivilServants(createMainStaffDTO.getCategoriesCivilServants());
-            mainStaff.setGroupRemuneration(createMainStaffDTO.getGroupRemuneration());
-            mainStaff.setGroupRemuneration(createMainStaffDTO.getGroupRemuneration());
-            mainStaff.setStaffOfficerCategory(createMainStaffDTO.getStaffOfficerCategory());
-            mainStaff.setLastCertification(simpleDateFormat.parse(createMainStaffDTO.getLastCertification()));
-            mainStaff.setConcludedCertification(createMainStaffDTO.getConcludedCertification());
-            mainStaff.setPersonnelProvisionForPost(createMainStaffDTO.getPersonnelProvisionForPost());
-            mainStaff.setBiography(createMainStaffDTO.getBiography());
+            mainStaff.setFullName(mainStaffDTO.getFullName());
+            mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
+            mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+            mainStaff.setPosition(mainStaffDTO.getPosition());
+            mainStaff.setNumberConferringSpeclRanks(mainStaffDTO.getNumberConferringSpeclRanks());
+            mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
+            mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
+            mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
+            mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
+            mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
+            mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+            mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
+            mainStaff.setInCommand(mainStaffDTO.getInCommand());
+            mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+            mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
+            mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
+            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
+            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
+            mainStaff.setStaffOfficerCategory(mainStaffDTO.getStaffOfficerCategory());
+            mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
+            mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
+            mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
+            mainStaff.setBiography(mainStaffDTO.getBiography());
             log.info(mainStaff.toString());
             mainStaffRepository.save(mainStaff);
         } catch (ParseException e) {

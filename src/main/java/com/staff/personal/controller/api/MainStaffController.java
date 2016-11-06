@@ -1,7 +1,7 @@
 package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.MainStaff;
-import com.staff.personal.dto.CreateMainStaffDTO;
+import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,14 +29,14 @@ public class MainStaffController {
     }
 
     @RequestMapping(value = "createMainStaff", method = RequestMethod.POST)
-    RestMessageDTO createMainStaff(@RequestBody CreateMainStaffDTO createMainStaffDTO){
+    RestMessageDTO createMainStaff(@RequestBody MainStaffDTO mainStaffDTO){
         log.info("IN createMainStaff Controller");
-        log.info(createMainStaffDTO.toString());
-    return  staffService.createMainStaff(createMainStaffDTO);
+        log.info(mainStaffDTO.toString());
+    return  staffService.createMainStaff(mainStaffDTO);
     }
-    @RequestMapping(value = "deleteMainStaff", method = RequestMethod.DELETE)
-    RestMessageDTO deleteMainStaff(@RequestParam(value = "id") Long mainStaffId) {
-        return staffService.deleteMainStaffById(mainStaffId);
+    @RequestMapping(value = "deleteMainStaff/{id}", method = RequestMethod.DELETE)
+    RestMessageDTO deleteMainStaff(@PathVariable  Long id) {
+        return staffService.deleteMainStaffById(id);
     }
 
 
