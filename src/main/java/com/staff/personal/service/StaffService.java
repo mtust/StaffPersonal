@@ -9,9 +9,9 @@ import com.staff.personal.dto.RestMessageDTO;
 
 public interface StaffService {
 
-	List<Staff> getAllStaff();
+	List<MainStaff> getAllMainStaff();
 	
-	RestMessageDTO deleteData(Long dataId);
+	RestMessageDTO deleteMainStaffById(Long dataId);
 	
 	RestMessageDTO createMainStaff(CreateMainStaffDTO createMainStaffDTO);
 }

@@ -1,7 +1,6 @@
 package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.MainStaff;
-import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.CreateMainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
@@ -27,14 +26,17 @@ public class StaffServiceImpl implements StaffService {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Override
-    public List<Staff> getAllStaff() {
-        return null;
+    public List<MainStaff> getAllMainStaff() {
+        log.info("IN getAllMainStaff Controller");
+        mainStaffRepository.findAll().forEach(x -> log.info(x.toString()));
+        return mainStaffRepository.findAll();
     }
 
 
     @Override
-    public RestMessageDTO deleteData(Long dataId) {
-        return null;
+    public RestMessageDTO deleteMainStaffById(Long dataId) {
+            mainStaffRepository.delete(dataId);
+        return new RestMessageDTO("Succes", true);
     }
 
     @Override
