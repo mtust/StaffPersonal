@@ -6,8 +6,9 @@ import lombok.Data;
  * Created by nazar on 04.11.16.
  */
 @Data
-public class CreateMainStaffDTO {
+public class MainStaffDTO {
 
+    String id;
     String fullName;
     String specialRank;
     String dateOfBirth;
