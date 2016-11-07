@@ -100,9 +100,6 @@ public class UserServiceImpl implements UserService{
         if (user.getPhoto() == null) {
             return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());
         }
-        log.info(user.toString());
-       // InputStream is = user.getPhoto().getPhoto().getBinaryStream();
-
         return user.getPhoto().getPhoto();
     }
 
@@ -112,10 +109,10 @@ public class UserServiceImpl implements UserService{
     public RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException {
         User user = userRepository.findById(id);
         log.info("IN SERVICE  changePhoto");
-        log.info("user: " + user);
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setPhoto(photo.getBytes());
         user.setPhoto(userPhoto);
+        userRepository.save(user);
         return new RestMessageDTO("Success", true);
     }
 

@@ -38,8 +38,7 @@ public class UserResources {
 
     @RequestMapping(value = "changePhoto/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
      RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo,@PathVariable  Long id) throws IOException {
-        log.info(photo.toString());
-        log.info("IN changePhoto");
+        log.info("IN CONTROLLER changePhoto");
         return userService.changePhoto(photo, id);
     }
 
