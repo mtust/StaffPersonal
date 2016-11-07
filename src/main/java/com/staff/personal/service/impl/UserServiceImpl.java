@@ -8,6 +8,7 @@ import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.dto.UserRegistrationDTO;
 import com.staff.personal.exception.GeneralServiceException;
+import com.staff.personal.repository.UserPhotosRepository;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserPhotosRepository userPhotosRepository;
 
     @Override
     public void save(User user) {
@@ -112,6 +115,7 @@ public class UserServiceImpl implements UserService{
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setPhoto(photo.getBytes());
         user.setPhoto(userPhoto);
+        userPhotosRepository.save(userPhoto);
         userRepository.save(user);
         return new RestMessageDTO("Success", true);
     }
