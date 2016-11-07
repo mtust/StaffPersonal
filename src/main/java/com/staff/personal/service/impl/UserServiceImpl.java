@@ -1,18 +1,32 @@
 package com.staff.personal.service.impl;
 
+import com.auth0.jwt.internal.org.apache.commons.io.IOUtils;
 import com.staff.personal.domain.Role;
 import com.staff.personal.domain.User;
+import com.staff.personal.domain.UserPhoto;
+import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.dto.UserRegistrationDTO;
 import com.staff.personal.exception.GeneralServiceException;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.net.URL;
 /**
  * Created by mtustanovskyy on 10/29/16.
  */
@@ -83,6 +97,41 @@ public class UserServiceImpl implements UserService{
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         return userDTO;
+    }
+
+    @Override
+    public RestMessageDTO setPhoto(Long id) {
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public byte[] getUserPhoto(Long id) throws SQLException, IOException {
+        User user = userRepository.findById(id);
+        if (user.getPhoto() == null) {
+            return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());
+        }
+        log.info(user.toString());
+        InputStream is = user.getPhoto().getPhoto().getBinaryStream();
+        return IOUtils.toByteArray(is);
+    }
+
+
+    private SessionFactory sessionFactory;
+
+    @Override
+    @Transactional
+    public RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException {
+        User user = userRepository.findById(id);
+        log.info("user: " + user);
+        Session session = sessionFactory.getCurrentSession();
+        LobCreator lobCreator = Hibernate.getLobCreator(session);
+        Blob blob = lobCreator.createBlob(photo.getBytes());
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setPhoto(blob);
+        user.setPhoto(userPhoto);
+        return new RestMessageDTO("Success", true);
     }
 
 }

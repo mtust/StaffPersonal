@@ -1,10 +1,12 @@
 package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.MainStaff;
+import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.repository.MainStaffRepository;
+import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class StaffServiceImpl implements StaffService {
+
+    @Autowired
+    StaffRepository staffRepository;
 
     @Autowired
     MainStaffRepository mainStaffRepository;
@@ -44,6 +49,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("IN createMainStaff");
         log.info(mainStaffDTO.toString());
         try {
+            Staff staff = new Staff();
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
@@ -69,7 +75,9 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
             mainStaff.setBiography(mainStaffDTO.getBiography());
             log.info(mainStaff.toString());
+            staff.setMainStaff(mainStaff);
             mainStaffRepository.save(mainStaff);
+            staffRepository.save(staff);
         } catch (ParseException e) {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");

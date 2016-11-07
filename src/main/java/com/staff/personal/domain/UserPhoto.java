@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "file")
 @lombok.Data
-public class UserPhotos {
+public class UserPhoto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
