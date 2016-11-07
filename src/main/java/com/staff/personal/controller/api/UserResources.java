@@ -32,12 +32,14 @@ public class UserResources {
     @RequestMapping(value = "getPhoto/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
      byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
+        log.info("IN CONTROLLER getPhoto");
         return userService.getUserPhoto(id);
     }
 
-    @RequestMapping(value = "photo/edit/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    @RequestMapping(value = "changePhoto/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
      RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo,@PathVariable  Long id) throws IOException {
         log.info(photo.toString());
+        log.info("IN changePhoto");
         return userService.changePhoto(photo, id);
     }
 

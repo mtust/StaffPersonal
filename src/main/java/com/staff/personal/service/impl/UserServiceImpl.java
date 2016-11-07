@@ -11,10 +11,6 @@ import com.staff.personal.exception.GeneralServiceException;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.net.URL;
 /**
@@ -100,12 +94,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public RestMessageDTO setPhoto(Long id) {
-
-        return null;
-    }
-
-    @Override
     @Transactional
     public byte[] getUserPhoto(Long id) throws SQLException, IOException {
         User user = userRepository.findById(id);
@@ -113,23 +101,20 @@ public class UserServiceImpl implements UserService{
             return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());
         }
         log.info(user.toString());
-        InputStream is = user.getPhoto().getPhoto().getBinaryStream();
-        return IOUtils.toByteArray(is);
+       // InputStream is = user.getPhoto().getPhoto().getBinaryStream();
+
+        return user.getPhoto().getPhoto();
     }
 
-
-    private SessionFactory sessionFactory;
 
     @Override
     @Transactional
     public RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException {
         User user = userRepository.findById(id);
+        log.info("IN SERVICE  changePhoto");
         log.info("user: " + user);
-        Session session = sessionFactory.getCurrentSession();
-        LobCreator lobCreator = Hibernate.getLobCreator(session);
-        Blob blob = lobCreator.createBlob(photo.getBytes());
         UserPhoto userPhoto = new UserPhoto();
-        userPhoto.setPhoto(blob);
+        userPhoto.setPhoto(photo.getBytes());
         user.setPhoto(userPhoto);
         return new RestMessageDTO("Success", true);
     }

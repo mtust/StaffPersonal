@@ -26,9 +26,7 @@ public interface UserService {
 
     UserDTO getUserById(Long id);
 
-    RestMessageDTO setPhoto(Long id);
-
     byte[] getUserPhoto(Long id) throws SQLException, IOException;
 
-    public RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException;
+    RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException;
 }

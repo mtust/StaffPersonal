@@ -1,6 +1,5 @@
 package com.staff.personal.domain;
 
-import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +22,6 @@ public class UserPhoto {
 	@Column(name = "name")
 	private String name;
 	@Lob
-	private Blob photo;
+	private byte[] photo;
 
 }
