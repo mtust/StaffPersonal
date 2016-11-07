@@ -22,19 +22,19 @@ public class MainStaffController {
     @Autowired
     StaffService staffService;
 
-    @RequestMapping(value = "getAllMainStaff", method = RequestMethod.GET)
+    @RequestMapping(value = "mainStaff", method = RequestMethod.GET)
     List<MainStaff> getAllMainStaff(){
         log.info("IN getAllMainStaff Controller");
         return staffService.getAllMainStaff();
     }
 
-    @RequestMapping(value = "createMainStaff", method = RequestMethod.POST)
+    @RequestMapping(value = "mainStaff", method = RequestMethod.POST)
     RestMessageDTO createMainStaff(@RequestBody MainStaffDTO mainStaffDTO){
         log.info("IN createMainStaff Controller");
         log.info(mainStaffDTO.toString());
     return  staffService.createMainStaff(mainStaffDTO);
     }
-    @RequestMapping(value = "deleteMainStaff/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "mainStaff/{id}", method = RequestMethod.DELETE)
     RestMessageDTO deleteMainStaff(@PathVariable  Long id) {
         return staffService.deleteMainStaffById(id);
     }

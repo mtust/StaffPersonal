@@ -29,14 +29,14 @@ public class UserResources {
         return userService.getUserById(id);
     }
 
-    @RequestMapping(value = "getPhoto/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "photo/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
      byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
         return userService.getUserPhoto(id);
     }
 
-    @RequestMapping(value = "changePhoto/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    @RequestMapping(value = "photo/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
      RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo,@PathVariable  Long id) throws IOException {
         log.info("IN CONTROLLER changePhoto");
         return userService.changePhoto(photo, id);
