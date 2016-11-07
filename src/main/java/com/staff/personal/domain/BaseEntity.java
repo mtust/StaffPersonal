@@ -22,9 +22,9 @@ public abstract class BaseEntity implements Serializable {
 
     public BaseEntity(UUID guid) {
         Assert.notNull(guid, "UUID is required");
-        id = guid.toString();
-        this.timeCreated = new Date();
-    }
+    id = guid.toString();
+    this.timeCreated = new Date();
+}
 
     public BaseEntity(String guid) {
         Assert.notNull(guid, "UUID is required");
