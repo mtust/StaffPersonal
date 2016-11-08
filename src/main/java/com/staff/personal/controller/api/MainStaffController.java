@@ -1,8 +1,10 @@
 package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.MainStaff;
+import com.staff.personal.dto.EducationDTO;
 import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.service.EducationService;
 import com.staff.personal.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class MainStaffController {
 
     @Autowired
     StaffService staffService;
+    @Autowired
+    EducationService educationService;
 
     @RequestMapping(value = "mainStaff", method = RequestMethod.GET)
     List<MainStaff> getAllMainStaff(){
@@ -40,5 +44,9 @@ public class MainStaffController {
     }
 
 
+    @RequestMapping(value = "education/{id}", method = RequestMethod.POST)
+    RestMessageDTO createEducation(@PathVariable  Long id, @RequestBody EducationDTO educationDTO){
+       return educationService.createEducation(educationDTO, id);
+    }
 
 }

@@ -37,7 +37,7 @@ public class MainStaff {
 	 */
 	@Column(name = "numberConferringSpeclRanks")
 	String numberConferringSpeclRanks;
-	
+
 	/**
 	 *номер дата присвоєння спеціальних звань
 	 */

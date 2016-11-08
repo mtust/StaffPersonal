@@ -25,7 +25,7 @@ public class MainEducationBlock {
     String educationalLevel;// Освітний рівень??
 
     @Column(name = "school")
-    String school;
+    private String school;
 
     @Column(name = "educationLevel")
     private String educationQualificationLevel;// Освітньо-кваліфікаційний рівень??
@@ -37,7 +37,7 @@ public class MainEducationBlock {
     private String specialty;
 
     @Column(name = "SeriesAndNumberOfDiploma")
-    private String SeriesAndNumberOfDiploma;
+    private String seriesAndNumberOfDiploma;
 
 
 }
