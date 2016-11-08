@@ -1,5 +1,6 @@
 package com.staff.personal.service;
 
+import com.staff.personal.domain.Education;
 import com.staff.personal.dto.EducationDTO;
 import com.staff.personal.dto.RestMessageDTO;
 
@@ -9,4 +10,6 @@ import com.staff.personal.dto.RestMessageDTO;
 public interface EducationService {
 
     RestMessageDTO createEducation(EducationDTO educationDTO, Long id);
+
+    Education getEducation(Long id);
 }

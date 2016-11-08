@@ -1,5 +1,6 @@
 package com.staff.personal.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Entity
 @Table(name = "staff")
-public class Staff {
+public class Staff implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

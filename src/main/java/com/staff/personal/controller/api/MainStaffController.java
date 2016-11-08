@@ -1,5 +1,6 @@
 package com.staff.personal.controller.api;
 
+import com.staff.personal.domain.Education;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.dto.EducationDTO;
 import com.staff.personal.dto.MainStaffDTO;
@@ -47,6 +48,12 @@ public class MainStaffController {
     @RequestMapping(value = "education/{id}", method = RequestMethod.POST)
     RestMessageDTO createEducation(@PathVariable  Long id, @RequestBody EducationDTO educationDTO){
        return educationService.createEducation(educationDTO, id);
+    }
+
+    @RequestMapping(value = "education/{id}", method = RequestMethod.GET)
+    Education getEducationByStaffId(@PathVariable  Long id){
+        log.info("getEducationByStaffId");
+        return educationService.getEducation(id);
     }
 
 }

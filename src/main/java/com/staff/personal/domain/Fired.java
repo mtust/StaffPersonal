@@ -22,64 +22,64 @@ public class Fired {
 	private Long id;
 	
 	@Column(name = "dateFired")
-	Date dateFiring;
+	private Date dateFiring;
 	
 	@Column(name = "orderNumber")
-	String orderNumber;
+	private String orderNumber;
    /**
 	*інформація, куди саме
 	*/
 	@Column(name = "whereFired")
-	String whereFired;
+   	private String whereFired;
 	/**
 	*Пункт (стаття) звільнення
 	*/
 	@Column(name = "article")
-	String article;
+	private String article;
 	
 	
 	@Column(name = "lastPosition")
-	String lastPosition;
+	private String lastPosition;
 	
 	/**
 	*Спеціальне звання
 	*/
 	@Column(name = "specialRank")
-	String specialRank;
+	private String specialRank;
 	/**
 	*Військовий облік
 	*/
 	@Column(name = "militaryAccount")
-	String militaryAccount ;
+	private String militaryAccount ;
 	/**
 	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
 	*/
 	@Column(name = "referenceLEKCertificate")
-	String referenceLEKCertificate;//??????????mb Document??
+	private String referenceLEKCertificate;//??????????mb Document??
 	/**
 	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
 	*/
 	@Column(name = "referenceLEKDate")
-	Date referenceLEKDate;
+	private Date referenceLEKDate;
 	/**
 	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
 	*/
 	@Column(name = "referenceLEKNumber")
-	String referenceLEKNumber;
+	private String referenceLEKNumber;
 	
 	@Column(name = "conclusion")
-	String conclusion;
+	private String conclusion;
 	/**
 	*Вислуга років на стан звільнення: календарна; навчання у ВНЗ; пільгова; трудовий стаж
 	*/
 	@Column(name = "seniority")//
-	String seniority;
+	private String seniority;
 	
 	/**
 	*Особову справу направлено до (куди саме)
 	*/
 	@Column(name = "personalFileForwarded")
-	String personalFileForwarded;
+	private String personalFileForwarded;
 	
 
 }

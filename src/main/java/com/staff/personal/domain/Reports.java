@@ -22,16 +22,16 @@ public class Reports {
 	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 
 	@Column(name = "name")
-	String name;
+	private String name;
 	
 	@Lob
 	private Blob file;
 	
 	@Column(name = "text")
-	String text;
+	private String text;
 	
 
 }

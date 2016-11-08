@@ -6,7 +6,6 @@ import com.staff.personal.domain.Education;
 import org.springframework.stereotype.Repository;
 
 @Repository
-
 public interface EducationRepository extends JpaRepository<Education, Long> {
 
 }

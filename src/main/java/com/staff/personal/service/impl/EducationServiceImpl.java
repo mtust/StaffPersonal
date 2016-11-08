@@ -36,7 +36,7 @@ public class EducationServiceImpl implements EducationService {
 
         Staff staff = staffRepository.findOne(id);
         if (staff == null) {
-            log.error("staff fith id " + id + " does not exist");
+            log.error("staff with id " + id + " does not exist");
             return new RestMessageDTO("staff does not exist", false);
         } else {
             Education education = new Education();
@@ -49,4 +49,21 @@ public class EducationServiceImpl implements EducationService {
             return new RestMessageDTO("Succes", true);
         }
     }
+
+    @Override
+    @Transactional
+    public Education getEducation(Long id) {
+        Staff staff = staffRepository.findOne(id);
+        log.info("getEducation \n" + staff.toString());
+        // if (staff == null) {
+        //  log.error("staff with id " + id + " does not exist");
+        // return new RestMessageDTO("staff does not exist", false);
+        // return new RestMessageDTO();
+        // } else {
+        Education education = staff.getEducation();
+        log.info(education.toString());
+        return education;
+    }
 }
+
+

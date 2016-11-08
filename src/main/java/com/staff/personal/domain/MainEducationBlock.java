@@ -9,20 +9,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Slf4j
 @Entity
 @Table(name = "mainEducationBlock")
-public class MainEducationBlock {
+public class MainEducationBlock implements Serializable{
 	
 	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+    private Long id;
 
     @Column(name = "educationalLevel")
-    String educationalLevel;// Освітний рівень??
+    private String educationalLevel;// Освітний рівень??
 
     @Column(name = "school")
     private String school;
