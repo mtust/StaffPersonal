@@ -45,12 +45,12 @@ public class MainStaffController {
     }
 
 
-    @RequestMapping(value = "education/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/education", method = RequestMethod.POST)
     RestMessageDTO createEducation(@PathVariable  Long id, @RequestBody EducationDTO educationDTO){
        return educationService.createEducation(educationDTO, id);
     }
 
-    @RequestMapping(value = "education/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/education", method = RequestMethod.GET)
     Education getEducationByStaffId(@PathVariable  Long id){
         log.info("getEducationByStaffId");
         return educationService.getEducation(id);

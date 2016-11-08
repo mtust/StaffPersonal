@@ -43,7 +43,7 @@ public class EducationServiceImpl implements EducationService {
             List<MainEducationBlock> mainEducationBlocks = educationDTO.getMainEducationBlocks();
             education.setLanguage(educationDTO.getLanguage());
             education.setOtherStudying(educationDTO.getOtherStudying());
-            education.setBlock(mainEducationBlocks);
+            education.setMainEducationBlocks(mainEducationBlocks);
             staff.setEducation(education);
             staffRepository.save(staff);
             return new RestMessageDTO("Succes", true);
@@ -60,6 +60,7 @@ public class EducationServiceImpl implements EducationService {
         // return new RestMessageDTO("staff does not exist", false);
         // return new RestMessageDTO();
         // } else {
+
         Education education = staff.getEducation();
         log.info(education.toString());
         return education;

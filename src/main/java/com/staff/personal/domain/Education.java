@@ -19,7 +19,7 @@ public class Education implements Serializable {
 	private Long id;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<MainEducationBlock> block;
+	private List<MainEducationBlock> mainEducationBlocks;
 
 	private String otherStudying;
 
