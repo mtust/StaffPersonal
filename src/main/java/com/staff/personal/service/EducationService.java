@@ -12,4 +12,6 @@ public interface EducationService {
     RestMessageDTO createEducation(EducationDTO educationDTO, Long id);
 
     Education getEducation(Long id);
+
+    RestMessageDTO delEducation(Long id);
 }

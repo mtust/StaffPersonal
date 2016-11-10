@@ -55,15 +55,20 @@ public class EducationServiceImpl implements EducationService {
     public Education getEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
         log.info("getEducation \n" + staff.toString());
-        // if (staff == null) {
-        //  log.error("staff with id " + id + " does not exist");
-        // return new RestMessageDTO("staff does not exist", false);
-        // return new RestMessageDTO();
-        // } else {
-
         Education education = staff.getEducation();
         log.info(education.toString());
         return education;
+    }
+
+    @Override
+    @Transactional
+    public RestMessageDTO delEducation(Long id) {
+        Staff staff = staffRepository.findOne(id);
+        log.info("delEducation \n" + staff.toString());
+        Education education = staff.getEducation();
+        log.info(education.toString());
+        educationRepository.delete(education);
+        return new RestMessageDTO("Succes", true);
     }
 }
 
