@@ -28,7 +28,7 @@ public class Staff implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch=FetchType.EAGER , cascade=CascadeType.ALL, orphanRemoval=true)
 	private MainStaff mainStaff;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -37,28 +37,28 @@ public class Staff implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Other other;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<WorkExperience> workExperiences;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Benefits> benefits;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Promotion> promotions;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Hospitals> hospitals;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Holiday> holidays;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<PremiumFine> premiumFines;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Fired> fireds;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reports> reports;
 	
 	

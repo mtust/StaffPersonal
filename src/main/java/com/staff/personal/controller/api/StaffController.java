@@ -2,15 +2,12 @@ package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.Education;
 import com.staff.personal.domain.MainStaff;
+import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.WorkExperience;
-import com.staff.personal.dto.EducationDTO;
-import com.staff.personal.dto.MainStaffDTO;
-import com.staff.personal.dto.RestMessageDTO;
-import com.staff.personal.dto.WorkExperienceDTO;
+import com.staff.personal.dto.*;
 import com.staff.personal.service.EducationService;
 import com.staff.personal.service.StaffService;
 import com.staff.personal.service.WorkExperienceService;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/staff")
 @CrossOrigin(origins = "*")
-public class MainStaffController {
+public class StaffController {
 
     @Autowired
     StaffService staffService;
@@ -33,21 +30,35 @@ public class MainStaffController {
     @Autowired
     WorkExperienceService workExperienceService;
 
+    @RequestMapping(method = RequestMethod.POST)
+    RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
+        return  staffService.createStaff(staffDTO);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    RestMessageDTO deleteStaff(@PathVariable Long id){
+        return staffService.deleteStaff(id);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    Staff getStaff(@PathVariable Long id){
+        return staffService.getStaff(id);
+    }
 
     //MAIN STAFF
-    @RequestMapping(value = "mainStaff", method = RequestMethod.GET)
-    List<MainStaff> getAllMainStaff(){
+    @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.GET)
+    MainStaff getMainStaffForStuff(@PathVariable Long id){
         log.info("IN getAllMainStaff Controller");
-        return staffService.getAllMainStaff();
+        return staffService.getMainStaffForStuff(id);
     }
 
-    @RequestMapping(value = "mainStaff", method = RequestMethod.POST)
-    RestMessageDTO createMainStaff(@RequestBody MainStaffDTO mainStaffDTO){
+    @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.POST)
+    RestMessageDTO createMainStaff(@PathVariable Long id, @RequestBody MainStaffDTO mainStaffDTO){
         log.info("IN createMainStaff Controller");
         log.info(mainStaffDTO.toString());
-    return  staffService.createMainStaff(mainStaffDTO);
+    return  staffService.createMainStaff(mainStaffDTO, id);
     }
-    @RequestMapping(value = "mainStaff/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.DELETE)
     RestMessageDTO deleteMainStaff(@PathVariable  Long id) {
         return staffService.deleteMainStaffById(id);
     }

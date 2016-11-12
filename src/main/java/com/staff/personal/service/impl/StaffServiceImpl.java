@@ -4,17 +4,19 @@ import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.StaffDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
+import com.staff.personal.service.EducationService;
 import com.staff.personal.service.StaffService;
+import com.staff.personal.service.WorkExperienceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Created by nazar on 04.11.16.
@@ -27,29 +29,36 @@ public class StaffServiceImpl implements StaffService {
     StaffRepository staffRepository;
 
     @Autowired
+    WorkExperienceService workExperienceService;
+
+    @Autowired
+    EducationService educationService;
+
+    @Autowired
     MainStaffRepository mainStaffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Override
-    public List<MainStaff> getAllMainStaff() {
+    public MainStaff getMainStaffForStuff(Long id) {
         log.info("IN getAllMainStaff Controller");
-        mainStaffRepository.findAll().forEach(x -> log.info(x.toString()));
-        return mainStaffRepository.findAll();
+        return staffRepository.findOne(id).getMainStaff();
     }
 
 
     @Override
     public RestMessageDTO deleteMainStaffById(Long dataId) {
-            mainStaffRepository.delete(dataId);
-        return new RestMessageDTO("Succes", true);
+            Staff staff = staffRepository.findOne(dataId);
+            staff.setMainStaff(null);
+            staffRepository.save(staff);
+        return new RestMessageDTO("Success", true);
     }
 
     @Override
-    public RestMessageDTO createMainStaff(MainStaffDTO mainStaffDTO) {
+    public RestMessageDTO createMainStaff(MainStaffDTO mainStaffDTO, Long id) {
         log.info("IN createMainStaff");
         log.info(mainStaffDTO.toString());
         try {
-            Staff staff = new Staff();
+            Staff staff = staffRepository.findOne(id);
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
@@ -76,13 +85,33 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setBiography(mainStaffDTO.getBiography());
             log.info(mainStaff.toString());
             staff.setMainStaff(mainStaff);
-            mainStaffRepository.save(mainStaff);
             staffRepository.save(staff);
         } catch (ParseException e) {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
 
-        return new RestMessageDTO("Succes", true);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO createStaff(StaffDTO staffDTO) {
+        Staff staff = new Staff();
+        staff = staffRepository.save(staff);
+        this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
+        workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
+        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO deleteStaff(Long id) {
+        staffRepository.delete(id);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public Staff getStaff(Long id){
+        return staffRepository.findOne(id);
     }
 }
