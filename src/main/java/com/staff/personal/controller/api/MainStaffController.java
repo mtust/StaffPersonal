@@ -86,7 +86,7 @@ public class MainStaffController {
 
     @RequestMapping(value = "{id}/workExperience", method = RequestMethod.DELETE)
     RestMessageDTO delWorkExperience(@PathVariable  Long id){
-        log.info("delWorkExperience");
+        log.info("delWorkExperience by id Experience!");
         return workExperienceService.delWorkExperiences(id);
     }
 }
