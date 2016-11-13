@@ -14,4 +14,6 @@ public interface EducationService {
     Education getEducation(Long id);
 
     RestMessageDTO delEducation(Long id);
+
+    RestMessageDTO delMainEducation(Long idStuff, Long idMainEducation);
 }

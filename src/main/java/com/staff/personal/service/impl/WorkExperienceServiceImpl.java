@@ -1,5 +1,6 @@
 package com.staff.personal.service.impl;
 
+import com.staff.personal.domain.Education;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.WorkExperience;
 import com.staff.personal.dto.RestMessageDTO;
@@ -67,8 +68,9 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     @Override
     @Transactional
     public RestMessageDTO delWorkExperiences(Long id) {
-        WorkExperience workExperience = workExperienceRepository.getOne(id);
-        workExperienceRepository.delete(workExperience);
+        Staff staff = staffRepository.findOne(id);
+        staff.setWorkExperiences(null);
+        staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
     }
 }

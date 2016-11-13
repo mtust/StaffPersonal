@@ -18,7 +18,7 @@ public class Education implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval=true)
 	private List<MainEducationBlock> mainEducationBlocks;
 
 	private String otherStudying;

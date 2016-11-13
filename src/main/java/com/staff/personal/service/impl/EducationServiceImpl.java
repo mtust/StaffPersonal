@@ -66,10 +66,24 @@ public class EducationServiceImpl implements EducationService {
         Staff staff = staffRepository.findOne(id);
         log.info("delEducation \n" + staff.toString());
         Education education = staff.getEducation();
-        log.info(education.toString());
         educationRepository.delete(education);
+        education.setMainEducationBlocks(null);
+        staff.setEducation(null);
+        staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
     }
+
+    @Override
+    @Transactional
+    public RestMessageDTO delMainEducation(Long idStuff, Long idMainEducation) {
+        Staff staff = staffRepository.findOne(idStuff);
+        log.info("delEducation \n" + staff.toString());
+        Education education = staff.getEducation();
+        educationRepository.delete(education);
+        staffRepository.save(staff);
+        return new RestMessageDTO("Succes", true);
+    }
+
 }
 
 

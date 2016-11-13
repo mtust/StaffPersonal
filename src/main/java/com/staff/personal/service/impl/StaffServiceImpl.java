@@ -47,9 +47,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public RestMessageDTO deleteMainStaffById(Long dataId) {
-            Staff staff = staffRepository.findOne(dataId);
-            staff.setMainStaff(null);
-            staffRepository.save(staff);
+        Staff staff = staffRepository.findOne(dataId);
+        staff.setMainStaff(null);
+        staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
 
@@ -96,6 +96,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public RestMessageDTO createStaff(StaffDTO staffDTO) {
+        log.info(staffDTO.toString());
         Staff staff = new Staff();
         staff = staffRepository.save(staff);
         this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
@@ -111,7 +112,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public Staff getStaff(Long id){
+    public Staff getStaff(Long id) {
         return staffRepository.findOne(id);
     }
 }
