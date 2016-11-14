@@ -2,14 +2,16 @@ package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
-import com.staff.personal.service.EducationService;
-import com.staff.personal.service.StaffService;
-import com.staff.personal.service.WorkExperienceService;
+import com.staff.personal.service.*;
 import com.staff.personal.service.impl.OtherServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -22,13 +24,15 @@ import java.util.List;
 public class StaffController {
 
     @Autowired
-    StaffService staffService;
+    private StaffService staffService;
     @Autowired
-    EducationService educationService;
+    private EducationService educationService;
     @Autowired
-    WorkExperienceService workExperienceService;
+    private WorkExperienceService workExperienceService;
     @Autowired
-    OtherServiceImpl otherService;
+    private OtherService otherService;
+    @Autowired
+    private MainStaffPhotoService mainStaffPhotoService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -120,4 +124,19 @@ public class StaffController {
         log.info("in getWorkExperience");
         return otherService.delOther(id);
     }
+
+    //MAINSTAFFPHOTO
+    @RequestMapping(value = "{id}/photo", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo, @PathVariable  Long id) throws IOException {
+        log.info("IN CONTROLLER changePhoto");
+        return mainStaffPhotoService.addPhoto(photo, id);
+    }
+
+    @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
+        log.info("IN CONTROLLER getPhoto");
+        return mainStaffPhotoService.getPhoto(id);
+    }
+
 }

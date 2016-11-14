@@ -1,5 +1,7 @@
 package com.staff.personal.domain;
 
+import lombok.Data;
+
 import java.sql.Blob;
 
 import javax.persistence.Column;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+@Data
 @Entity
 public class MainStaffPhotos {
 	
@@ -17,9 +20,7 @@ public class MainStaffPhotos {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "name")
-	private String name;
 	@Lob
-	private Blob file;
+	private byte[] file;
 
 }

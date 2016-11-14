@@ -60,6 +60,9 @@ public class Staff implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reports> reports;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<MainStaffPhotos> mainStaffPhotos;
 	
 	
 }
