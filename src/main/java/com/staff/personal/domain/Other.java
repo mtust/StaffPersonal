@@ -37,7 +37,7 @@ public class Other {
 	private String seriesAndNumberOfOfficialIdentification;
 	
 	@Column(name = "IdentificationCode")
-	private String IdentificationCode;    //!!!!! STRING?
+	private String identificationCode;    //!!!!! STRING?
 	
 	@Column(name = "placeOfResidence")
 	private String placeOfResidence;

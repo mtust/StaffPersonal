@@ -1,13 +1,11 @@
 package com.staff.personal.controller.api;
 
-import com.staff.personal.domain.Education;
-import com.staff.personal.domain.MainStaff;
-import com.staff.personal.domain.Staff;
-import com.staff.personal.domain.WorkExperience;
+import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.EducationService;
 import com.staff.personal.service.StaffService;
 import com.staff.personal.service.WorkExperienceService;
+import com.staff.personal.service.impl.OtherServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +27,8 @@ public class StaffController {
     EducationService educationService;
     @Autowired
     WorkExperienceService workExperienceService;
+    @Autowired
+    OtherServiceImpl otherService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -99,5 +99,25 @@ public class StaffController {
     RestMessageDTO delWorkExperience(@PathVariable  Long id){
         log.info("delWorkExperience by id Experience!");
         return workExperienceService.delWorkExperiences(id);
+    }
+
+    //OTHER
+    @RequestMapping(value = "{id}/other", method = RequestMethod.POST)
+    RestMessageDTO createOter(@PathVariable Long id, @RequestBody Other other){
+        log.info(log.getName());
+        log.info(other.toString());
+        return otherService.createOther(other,id);
+    }
+
+    @RequestMapping(value = "{id}/other", method = RequestMethod.GET)
+    Other getOther(@PathVariable  Long id){
+        log.info("in getWorkExperience");
+        return otherService.getOther(id);
+    }
+
+    @RequestMapping(value = "{id}/other", method = RequestMethod.DELETE)
+    RestMessageDTO delOther(@PathVariable  Long id){
+        log.info("in getWorkExperience");
+        return otherService.delOther(id);
     }
 }

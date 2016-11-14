@@ -65,9 +65,11 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         return new RestMessageDTO("succes", true);
     }
 
+    //need fix!
     @Override
     @Transactional
     public RestMessageDTO delWorkExperiences(Long id) {
+        log.info("delWorkExperiences");
         Staff staff = staffRepository.findOne(id);
         staff.setWorkExperiences(null);
         staffRepository.save(staff);
