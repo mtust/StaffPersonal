@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
+import javax.xml.ws.Response;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Date;
  */
 
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController  {
@@ -70,6 +71,8 @@ public class UserController  {
             this.access_token = token;
         }
     }
+
+
 
 
 
