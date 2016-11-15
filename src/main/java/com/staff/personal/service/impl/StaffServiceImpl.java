@@ -2,9 +2,7 @@ package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Staff;
-import com.staff.personal.dto.MainStaffDTO;
-import com.staff.personal.dto.RestMessageDTO;
-import com.staff.personal.dto.StaffDTO;
+import com.staff.personal.dto.*;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
@@ -112,7 +110,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public Staff getStaff(Long id) {
-        return staffRepository.findOne(id);
+    public GetStaffDTO getStaff(Long id) {
+
+        Staff staff = staffRepository.findOne(id);
+        GetStaffDTO getStaffDTO = new GetStaffDTO();
+        getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+        getStaffDTO.setEducation(staff.getEducation());
+        getStaffDTO.setMainStaff(staff.getMainStaff());
+        return getStaffDTO ;
     }
 }

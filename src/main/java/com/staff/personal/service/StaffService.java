@@ -2,6 +2,7 @@ package com.staff.personal.service;
 
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Staff;
+import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.StaffDTO;
@@ -18,5 +19,5 @@ public interface StaffService {
 
 	RestMessageDTO deleteStaff(Long id);
 
-	Staff getStaff(Long id);
+	GetStaffDTO getStaff(Long id);
 }

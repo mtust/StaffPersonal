@@ -31,7 +31,7 @@ public class Staff implements Serializable {
 	@OneToOne(fetch=FetchType.EAGER , cascade=CascadeType.ALL, orphanRemoval=true)
 	private MainStaff mainStaff;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval=true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval=true)
 	private Education education;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)

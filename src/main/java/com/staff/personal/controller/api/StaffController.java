@@ -3,7 +3,6 @@ package com.staff.personal.controller.api;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
-import com.staff.personal.service.impl.OtherServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,6 +32,8 @@ public class StaffController {
     private OtherService otherService;
     @Autowired
     private MainStaffPhotoService mainStaffPhotoService;
+    @Autowired
+    private BenefitsService benefitsService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -45,7 +46,7 @@ public class StaffController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    Staff getStaff(@PathVariable Long id){
+    GetStaffDTO getStaff(@PathVariable Long id){
         return staffService.getStaff(id);
     }
 
@@ -137,6 +138,26 @@ public class StaffController {
     byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
         return mainStaffPhotoService.getPhoto(id);
+    }
+
+
+    //BENEFITS
+    @RequestMapping(value = "{id}/benefits", method = RequestMethod.POST)
+    RestMessageDTO addBenefits(@PathVariable  Long id, @RequestBody BenefitsDTO benefitsDTO){
+        log.info("in addBenefits \n" + benefitsDTO.toString());
+        return benefitsService.addBenefit(benefitsDTO,id);
+    }
+
+    @RequestMapping(value = "{id}/benefits", method = RequestMethod.GET)
+    List<Benefits> getBenefits(@PathVariable  Long id){
+        log.info("in getBenefits");
+        return benefitsService.getBenefits(id);
+    }
+
+    @RequestMapping(value = "{id}/{idBen}/benefits", method = RequestMethod.DELETE)
+    RestMessageDTO delBenefitsByID(@PathVariable  Long id, @PathVariable Long idBen){
+        log.info("in delBenefitsByID");
+        return benefitsService.delBenefitsById(id,idBen);
     }
 
 }

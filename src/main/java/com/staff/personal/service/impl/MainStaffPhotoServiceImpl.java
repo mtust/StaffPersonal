@@ -45,7 +45,6 @@ public class MainStaffPhotoServiceImpl implements MainStaffPhotoService {
     public byte[] getPhoto(Long id) throws SQLException, IOException {
         Staff staff = staffRepository.findOne(id);
         List<MainStaffPhotos> list = staff.getMainStaffPhotos();
-
         if (list.isEmpty()) {
             return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());
         }
