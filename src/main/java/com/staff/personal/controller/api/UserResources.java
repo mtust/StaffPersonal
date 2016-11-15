@@ -18,25 +18,26 @@ import java.sql.SQLException;
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class UserResources {
 
     @Autowired
     UserService userService;
 
+    @CrossOrigin
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @RequestMapping(value = "photo/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
      byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
         return userService.getUserPhoto(id);
     }
 
-    @RequestMapping(value = "photo/{id}", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}/photo", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
      RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo,@PathVariable  Long id) throws IOException {
         log.info("IN CONTROLLER changePhoto");
         return userService.changePhoto(photo, id);

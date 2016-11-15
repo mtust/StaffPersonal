@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/staff")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class StaffController {
 
     @Autowired
@@ -108,7 +108,7 @@ public class StaffController {
 
     //OTHER
     @RequestMapping(value = "{id}/other", method = RequestMethod.POST)
-    RestMessageDTO createOter(@PathVariable Long id, @RequestBody Other other){
+    RestMessageDTO createOther(@PathVariable Long id, @RequestBody Other other){
         log.info(log.getName());
         log.info(other.toString());
         return otherService.createOther(other,id);
