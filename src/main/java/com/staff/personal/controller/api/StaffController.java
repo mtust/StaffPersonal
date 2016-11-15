@@ -50,6 +50,11 @@ public class StaffController {
         return staffService.getStaff(id);
     }
 
+    @RequestMapping(value = "all", method = RequestMethod.GET)
+    List<GetStaffDTO> getAllStaff(){
+        return staffService.getAllStaff();
+    }
+
     //MAIN STAFF
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.GET)
     MainStaff getMainStaffForStuff(@PathVariable Long id){

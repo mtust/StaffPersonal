@@ -7,6 +7,8 @@ import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.StaffDTO;
 
+import java.util.List;
+
 public interface StaffService {
 
 	MainStaff getMainStaffForStuff(Long id);
@@ -20,4 +22,6 @@ public interface StaffService {
 	RestMessageDTO deleteStaff(Long id);
 
 	GetStaffDTO getStaff(Long id);
+
+	List<GetStaffDTO> getAllStaff();
 }
