@@ -1,5 +1,6 @@
 package com.staff.personal.service;
 
+import com.staff.personal.domain.Region;
 import com.staff.personal.domain.User;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
@@ -29,4 +30,6 @@ public interface UserService {
     byte[] getUserPhoto(Long id) throws SQLException, IOException;
 
     RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException;
+
+
 }

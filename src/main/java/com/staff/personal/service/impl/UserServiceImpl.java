@@ -1,6 +1,7 @@
 package com.staff.personal.service.impl;
 
 import com.auth0.jwt.internal.org.apache.commons.io.IOUtils;
+import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Role;
 import com.staff.personal.domain.User;
 import com.staff.personal.domain.UserPhoto;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public UserDTO getUserByUsername(String username) {
         UserDTO userDTO = new UserDTO();
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService{
         userDTO.setLastName(user.getLastName());
         return userDTO;
     }
-
+    @Transactional
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
 
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService{
 
         return user;
     }
-
+    @Transactional
     @Override
     public void createUser(UserRegistrationDTO userRegistrationDTO) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -86,6 +87,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id);
         UserDTO userDTO = new UserDTO();
@@ -119,5 +121,4 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
         return new RestMessageDTO("Success", true);
     }
-
 }

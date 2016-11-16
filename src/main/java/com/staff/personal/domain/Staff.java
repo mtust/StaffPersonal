@@ -55,8 +55,8 @@ public class Staff implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<PremiumFine> premiumFines;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Fired> fireds;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Fired fired;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reports> reports;

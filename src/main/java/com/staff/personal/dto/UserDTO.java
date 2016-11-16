@@ -15,5 +15,4 @@ public class UserDTO {
     String firstName;
     String lastName;
 
-
 }

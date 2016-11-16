@@ -34,6 +34,8 @@ public class StaffController {
     private MainStaffPhotoService mainStaffPhotoService;
     @Autowired
     private BenefitsService benefitsService;
+    @Autowired
+    private FiredService firedService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -163,6 +165,19 @@ public class StaffController {
     RestMessageDTO delBenefitsByID(@PathVariable  Long id, @PathVariable Long idBen){
         log.info("in delBenefitsByID");
         return benefitsService.delBenefitsById(id,idBen);
+    }
+
+    //FIRED
+    @RequestMapping(value = "{id}/fired", method = RequestMethod.POST)
+    RestMessageDTO addFired(@PathVariable  Long id, @RequestBody FiredDTO firedDTO){
+        log.info("in addFired \n" + firedDTO.toString());
+        return firedService.addFired(id,firedDTO);
+    }
+
+    @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
+    Fired getFired(@PathVariable  Long id){
+        log.info("in getFired \n" + firedService.getFired(id).toString());
+        return firedService.getFired(id);
     }
 
 }
