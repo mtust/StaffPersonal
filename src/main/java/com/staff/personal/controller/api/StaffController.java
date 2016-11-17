@@ -38,6 +38,8 @@ public class StaffController {
     private FiredService firedService;
     @Autowired
     private HolidayService holidayService;
+    @Autowired
+    private HospitalsService hospitalsService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -195,5 +197,16 @@ public class StaffController {
         return holidayService.getHolidays(id);
     }
 
+    //HOSPITALS
+    @RequestMapping(value = "{id}/hospitals", method = RequestMethod.POST)
+    RestMessageDTO addHospitals(@PathVariable  Long id, @RequestBody HospitalsDTo hospitalsDTo){
+        log.info("hHolidayospitalDTO \n" + hospitalsDTo.toString());
+        return hospitalsService.addHospitals(id,hospitalsDTo);
+    }
+    @RequestMapping(value = "{id}/hospitals", method = RequestMethod.GET)
+    List<Hospitals> getHospitals(@PathVariable  Long id){
+        log.info("in hospitals");
+        return hospitalsService.getHospitals(id);
+    }
 
 }
