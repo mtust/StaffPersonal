@@ -54,7 +54,7 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public Education getEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
-        log.info("getEducation \n" + staff.toString());
+        log.info("getEducation");
         Education education = staff.getEducation();
         log.info(education.toString());
         return education;
@@ -64,7 +64,7 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public RestMessageDTO delEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
-        log.info("delEducation \n" + staff.toString());
+        log.info("delEducation");
         Education education = staff.getEducation();
         educationRepository.delete(education);
         education.setMainEducationBlocks(null);
@@ -77,7 +77,7 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public RestMessageDTO delMainEducation(Long idStuff, Long idMainEducation) {
         Staff staff = staffRepository.findOne(idStuff);
-        log.info("delEducation \n" + staff.toString());
+        log.info("delEducation");
         Education education = staff.getEducation();
         educationRepository.delete(education);
         staffRepository.save(staff);

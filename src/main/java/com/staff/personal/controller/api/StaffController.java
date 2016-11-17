@@ -36,6 +36,8 @@ public class StaffController {
     private BenefitsService benefitsService;
     @Autowired
     private FiredService firedService;
+    @Autowired
+    private HolidayService holidayService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -174,10 +176,24 @@ public class StaffController {
         return firedService.addFired(id,firedDTO);
     }
 
+    //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
     Fired getFired(@PathVariable  Long id){
         log.info("in getFired \n" + firedService.getFired(id).toString());
         return firedService.getFired(id);
     }
+
+    //HOLIDAYS
+    @RequestMapping(value = "{id}/holiday", method = RequestMethod.POST)
+    RestMessageDTO addHoliday(@PathVariable  Long id, @RequestBody HolidayDTO holidayDTO){
+        log.info("in addFired \n" + holidayDTO.toString());
+        return holidayService.addHoliday(id,holidayDTO);
+    }
+    @RequestMapping(value = "{id}/holiday", method = RequestMethod.GET)
+    List<Holiday> getholiday(@PathVariable  Long id){
+        log.info("in getholidays");
+        return holidayService.getHolidays(id);
+    }
+
 
 }

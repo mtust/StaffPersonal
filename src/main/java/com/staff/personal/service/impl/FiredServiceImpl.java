@@ -44,6 +44,7 @@ public class FiredServiceImpl implements FiredService {
             fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
             fired.setReferenceLEKNumber(firedDTO.getReferenceLEKNumber());
             fired.setConclusion(firedDTO.getConclusion());
+            fired.setSeniority(firedDTO.getSeniority());
             fired.setPersonalFileForwarded(firedDTO.getPersonalFileForwarded());
             staff.setFired(fired);
             staffRepository.save(staff);
@@ -59,7 +60,9 @@ public class FiredServiceImpl implements FiredService {
     @Transactional
     public Fired getFired(Long id) {
         log.info("getFired \n" + staffRepository.findOne(id).getFired());
-        return staffRepository.findOne(id).getFired();
+        Staff staff = staffRepository.findOne(id);
+        Fired fired = staff.getFired();
+        return fired;
     }
 
     @Transactional
