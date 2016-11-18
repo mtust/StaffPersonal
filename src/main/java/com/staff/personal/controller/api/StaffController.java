@@ -42,113 +42,118 @@ public class StaffController {
     private HospitalsService hospitalsService;
     @Autowired
     private PremiumFineService premiumFineService;
+    @Autowired
+    private PromotionService promotionService;
+    @Autowired
+    private ReportsService reportsService;
 
     @RequestMapping(method = RequestMethod.POST)
-    RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
-        return  staffService.createStaff(staffDTO);
+    RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO) {
+        return staffService.createStaff(staffDTO);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    RestMessageDTO deleteStaff(@PathVariable Long id){
+    RestMessageDTO deleteStaff(@PathVariable Long id) {
         return staffService.deleteStaff(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    GetStaffDTO getStaff(@PathVariable Long id){
+    GetStaffDTO getStaff(@PathVariable Long id) {
         return staffService.getStaff(id);
     }
 
     @RequestMapping(value = "all", method = RequestMethod.GET)
-    List<GetStaffDTO> getAllStaff(){
+    List<GetStaffDTO> getAllStaff() {
         return staffService.getAllStaff();
     }
 
     //MAIN STAFF
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.GET)
-    MainStaff getMainStaffForStuff(@PathVariable Long id){
+    MainStaff getMainStaffForStuff(@PathVariable Long id) {
         log.info("IN getAllMainStaff Controller");
         return staffService.getMainStaffForStuff(id);
     }
 
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.POST)
-    RestMessageDTO createMainStaff(@PathVariable Long id, @RequestBody MainStaffDTO mainStaffDTO){
+    RestMessageDTO createMainStaff(@PathVariable Long id, @RequestBody MainStaffDTO mainStaffDTO) {
         log.info("IN createMainStaff Controller");
         log.info(mainStaffDTO.toString());
-    return  staffService.createMainStaff(mainStaffDTO, id);
+        return staffService.createMainStaff(mainStaffDTO, id);
     }
+
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.DELETE)
-    RestMessageDTO deleteMainStaff(@PathVariable  Long id) {
+    RestMessageDTO deleteMainStaff(@PathVariable Long id) {
         return staffService.deleteMainStaffById(id);
     }
 
 
     //EDUCATION
     @RequestMapping(value = "{id}/education", method = RequestMethod.POST)
-    RestMessageDTO createEducation(@PathVariable  Long id, @RequestBody EducationDTO educationDTO){
-       return educationService.createEducation(educationDTO, id);
+    RestMessageDTO createEducation(@PathVariable Long id, @RequestBody EducationDTO educationDTO) {
+        return educationService.createEducation(educationDTO, id);
     }
 
     @RequestMapping(value = "{id}/education", method = RequestMethod.GET)
-    Education getEducationByStaffId(@PathVariable  Long id){
+    Education getEducationByStaffId(@PathVariable Long id) {
         log.info("getEducationByStaffId");
         return educationService.getEducation(id);
     }
 
     @RequestMapping(value = "{id}/education", method = RequestMethod.DELETE)
-    RestMessageDTO delEducationByStaffId(@PathVariable  Long id){
+    RestMessageDTO delEducationByStaffId(@PathVariable Long id) {
         log.info("delEducationByStaffId");
         return educationService.delEducation(id);
     }
 
     //WORK EXPERIENCE
     @RequestMapping(value = "{id}/workExperience", method = RequestMethod.POST)
-    RestMessageDTO createEducation(@PathVariable  Long id, @RequestBody List<WorkExperienceDTO> workExperienceDTOs){
+    RestMessageDTO createEducation(@PathVariable Long id, @RequestBody List<WorkExperienceDTO> workExperienceDTOs) {
         log.info("in createEducation");
         return workExperienceService.crateWorkExperience(workExperienceDTOs, id);
     }
 
     @RequestMapping(value = "{id}/workExperience", method = RequestMethod.GET)
-    List<WorkExperience> getWorkExperience(@PathVariable  Long id){
+    List<WorkExperience> getWorkExperience(@PathVariable Long id) {
         log.info("in getWorkExperience");
         return workExperienceService.getWorkExperiences(id);
     }
 
     @RequestMapping(value = "{id}/workExperience", method = RequestMethod.DELETE)
-    RestMessageDTO delWorkExperience(@PathVariable  Long id){
+    RestMessageDTO delWorkExperience(@PathVariable Long id) {
         log.info("delWorkExperience by id Experience!");
         return workExperienceService.delWorkExperiences(id);
     }
 
     //OTHER
     @RequestMapping(value = "{id}/other", method = RequestMethod.POST)
-    RestMessageDTO createOther(@PathVariable Long id, @RequestBody Other other){
+    RestMessageDTO createOther(@PathVariable Long id, @RequestBody Other other) {
         log.info(log.getName());
         log.info(other.toString());
-        return otherService.createOther(other,id);
+        return otherService.createOther(other, id);
     }
 
     @RequestMapping(value = "{id}/other", method = RequestMethod.GET)
-    Other getOther(@PathVariable  Long id){
+    Other getOther(@PathVariable Long id) {
         log.info("in getWorkExperience");
         return otherService.getOther(id);
     }
 
     @RequestMapping(value = "{id}/other", method = RequestMethod.DELETE)
-    RestMessageDTO delOther(@PathVariable  Long id){
+    RestMessageDTO delOther(@PathVariable Long id) {
         log.info("in getWorkExperience");
         return otherService.delOther(id);
     }
 
     //MAINSTAFFPHOTO
     @RequestMapping(value = "{id}/photo", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
-    RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo, @PathVariable  Long id) throws IOException {
+    RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo, @PathVariable Long id) throws IOException {
         log.info("IN CONTROLLER changePhoto");
         return mainStaffPhotoService.addPhoto(photo, id);
     }
 
     @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    byte[] getPhoto(@PathVariable  Long id) throws IOException, SQLException {
+    byte[] getPhoto(@PathVariable Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
         return mainStaffPhotoService.getPhoto(id);
     }
@@ -156,71 +161,96 @@ public class StaffController {
 
     //BENEFITS
     @RequestMapping(value = "{id}/benefits", method = RequestMethod.POST)
-    RestMessageDTO addBenefits(@PathVariable  Long id, @RequestBody BenefitsDTO benefitsDTO){
+    RestMessageDTO addBenefits(@PathVariable Long id, @RequestBody BenefitsDTO benefitsDTO) {
         log.info("in addBenefits \n" + benefitsDTO.toString());
-        return benefitsService.addBenefit(benefitsDTO,id);
+        return benefitsService.addBenefit(benefitsDTO, id);
     }
 
     @RequestMapping(value = "{id}/benefits", method = RequestMethod.GET)
-    List<Benefits> getBenefits(@PathVariable  Long id){
+    List<Benefits> getBenefits(@PathVariable Long id) {
         log.info("in getBenefits");
         return benefitsService.getBenefits(id);
     }
 
     @RequestMapping(value = "{id}/{idBen}/benefits", method = RequestMethod.DELETE)
-    RestMessageDTO delBenefitsByID(@PathVariable  Long id, @PathVariable Long idBen){
+    RestMessageDTO delBenefitsByID(@PathVariable Long id, @PathVariable Long idBen) {
         log.info("in delBenefitsByID");
-        return benefitsService.delBenefitsById(id,idBen);
+        return benefitsService.delBenefitsById(id, idBen);
     }
 
     //FIRED
     @RequestMapping(value = "{id}/fired", method = RequestMethod.POST)
-    RestMessageDTO addFired(@PathVariable  Long id, @RequestBody FiredDTO firedDTO){
+    RestMessageDTO addFired(@PathVariable Long id, @RequestBody FiredDTO firedDTO) {
         log.info("in addFired \n" + firedDTO.toString());
-        return firedService.addFired(id,firedDTO);
+        return firedService.addFired(id, firedDTO);
     }
 
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
-    Fired getFired(@PathVariable  Long id){
+    Fired getFired(@PathVariable Long id) {
         log.info("in getFired \n" + firedService.getFired(id).toString());
         return firedService.getFired(id);
     }
 
     //HOLIDAYS
     @RequestMapping(value = "{id}/holiday", method = RequestMethod.POST)
-    RestMessageDTO addHoliday(@PathVariable  Long id, @RequestBody HolidayDTO holidayDTO){
+    RestMessageDTO addHoliday(@PathVariable Long id, @RequestBody HolidayDTO holidayDTO) {
         log.info("in addFired \n" + holidayDTO.toString());
-        return holidayService.addHoliday(id,holidayDTO);
+        return holidayService.addHoliday(id, holidayDTO);
     }
+
     @RequestMapping(value = "{id}/holiday", method = RequestMethod.GET)
-    List<Holiday> getholiday(@PathVariable  Long id){
+    List<Holiday> getholiday(@PathVariable Long id) {
         log.info("in getholidays");
         return holidayService.getHolidays(id);
     }
 
     //HOSPITALS
     @RequestMapping(value = "{id}/hospitals", method = RequestMethod.POST)
-    RestMessageDTO addHospitals(@PathVariable  Long id, @RequestBody HospitalsDTo hospitalsDTo){
+    RestMessageDTO addHospitals(@PathVariable Long id, @RequestBody HospitalsDTo hospitalsDTo) {
         log.info("hHolidayospitalDTO \n" + hospitalsDTo.toString());
-        return hospitalsService.addHospitals(id,hospitalsDTo);
+        return hospitalsService.addHospitals(id, hospitalsDTo);
     }
+
     @RequestMapping(value = "{id}/hospitals", method = RequestMethod.GET)
-    List<Hospitals> getHospitals(@PathVariable  Long id){
+    List<Hospitals> getHospitals(@PathVariable Long id) {
         log.info("in hospitals");
         return hospitalsService.getHospitals(id);
     }
 
     //PremiumFine
     @RequestMapping(value = "{id}/premiumFine", method = RequestMethod.POST)
-    RestMessageDTO addpremiumFine(@PathVariable  Long id, @RequestBody PremiumFineDTO premiumFineDTO){
+    RestMessageDTO addpremiumFine(@PathVariable Long id, @RequestBody PremiumFineDTO premiumFineDTO) {
         log.info("premiumFine \n" + premiumFineDTO.toString());
-        return premiumFineService.addPremiumFine(id,premiumFineDTO);
+        return premiumFineService.addPremiumFine(id, premiumFineDTO);
     }
+
     @RequestMapping(value = "{id}/premiumFine", method = RequestMethod.GET)
-    List<PremiumFine> getpremiumFine(@PathVariable  Long id){
-        log.info("in hospitals");
+    List<PremiumFine> getpremiumFine(@PathVariable Long id) {
+        log.info("in premiumFine");
         return premiumFineService.getPremiumFine(id);
+    }
+
+    //PROMOTION
+    @RequestMapping(value = "{id}/promotion", method = RequestMethod.POST)
+    RestMessageDTO addpromotion(@PathVariable Long id, @RequestBody PromotionDTO promotionDTO) {
+        log.info("premiumFine \n" + promotionDTO.toString());
+        return promotionService.addPromotion(id, promotionDTO);
+    }
+
+    @RequestMapping(value = "{id}/promotion", method = RequestMethod.GET)
+    List<Promotion> getpromotion(@PathVariable Long id) {
+        log.info("in promotion");
+        return promotionService.getPromotions(id);
+    }
+
+
+    @RequestMapping(value = "{id}/reports", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    RestMessageDTO setReports(@RequestParam("file") MultipartFile file, @PathVariable Long id,
+                              @RequestParam("name") String name,
+                              @RequestParam("text") String text) throws IOException {
+        log.info("IN CONTROLLER setReports");
+        return reportsService.addReport(id, file, name, text);
     }
 
 }

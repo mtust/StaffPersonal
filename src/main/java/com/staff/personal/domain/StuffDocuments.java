@@ -19,6 +19,6 @@ public class StuffDocuments {
 	@Column(name = "name")
 	private String name;
 	@Lob
-	private Blob file;
+	private byte[] file;
 
 }

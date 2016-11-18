@@ -28,7 +28,7 @@ public class Reports {
 	private String name;
 	
 	@Lob
-	private Blob file;
+	private byte[] file;
 	
 	@Column(name = "text")
 	private String text;
