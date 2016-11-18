@@ -3,19 +3,11 @@ package com.staff.personal.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.ColumnDefault;
 
 @Slf4j
 @Data
@@ -63,6 +55,13 @@ public class Staff implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<MainStaffPhotos> mainStaffPhotos;
+
+	@ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	private Region region;
+
+//	@ColumnDefault(value = "false")
+	@Column
+	private Boolean isDeleted = false;
 	
 	
 }

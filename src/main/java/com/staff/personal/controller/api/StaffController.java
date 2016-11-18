@@ -3,12 +3,14 @@ package com.staff.personal.controller.api;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -47,6 +49,9 @@ public class StaffController {
     @Autowired
     private ReportsService reportsService;
 
+    @Autowired
+    private HttpServletRequest requestContext;
+
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO) {
         return staffService.createStaff(staffDTO);
@@ -59,6 +64,7 @@ public class StaffController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     GetStaffDTO getStaff(@PathVariable Long id) {
+        log.info("user claims: " + ((Claims) requestContext.getAttribute("claims")).get("role"));
         return staffService.getStaff(id);
     }
 
@@ -148,6 +154,7 @@ public class StaffController {
     @RequestMapping(value = "{id}/photo", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
     RestMessageDTO changePhoto(@RequestParam("photo") MultipartFile photo, @PathVariable Long id) throws IOException {
         log.info("IN CONTROLLER changePhoto");
+
         return mainStaffPhotoService.addPhoto(photo, id);
     }
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Slf4j
 @Data
@@ -33,8 +34,8 @@ public class User {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private UserPhoto photo;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Region region;
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Region> regions;
 
 
 	public User(){}
