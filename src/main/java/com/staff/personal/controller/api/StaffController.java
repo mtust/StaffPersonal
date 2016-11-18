@@ -40,6 +40,8 @@ public class StaffController {
     private HolidayService holidayService;
     @Autowired
     private HospitalsService hospitalsService;
+    @Autowired
+    private PremiumFineService premiumFineService;
 
     @RequestMapping(method = RequestMethod.POST)
     RestMessageDTO createStaff(@RequestBody StaffDTO staffDTO){
@@ -207,6 +209,18 @@ public class StaffController {
     List<Hospitals> getHospitals(@PathVariable  Long id){
         log.info("in hospitals");
         return hospitalsService.getHospitals(id);
+    }
+
+    //PremiumFine
+    @RequestMapping(value = "{id}/premiumFine", method = RequestMethod.POST)
+    RestMessageDTO addpremiumFine(@PathVariable  Long id, @RequestBody PremiumFineDTO premiumFineDTO){
+        log.info("premiumFine \n" + premiumFineDTO.toString());
+        return premiumFineService.addPremiumFine(id,premiumFineDTO);
+    }
+    @RequestMapping(value = "{id}/premiumFine", method = RequestMethod.GET)
+    List<PremiumFine> getpremiumFine(@PathVariable  Long id){
+        log.info("in hospitals");
+        return premiumFineService.getPremiumFine(id);
     }
 
 }
