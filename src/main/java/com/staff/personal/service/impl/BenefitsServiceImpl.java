@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.BenefitsDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.BenefitsRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.BenefitsService;
@@ -34,6 +35,9 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Transactional
     public RestMessageDTO addBenefit(BenefitsDTO benefitsDTO, Long id) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + "dosen't exist");
+        }
         Benefits benefits = new Benefits();
         List<Benefits> list = staff.getBenefits();
         try {

@@ -9,6 +9,7 @@ import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.dto.UserRegistrationDTO;
 import com.staff.personal.exception.GeneralServiceException;
+import com.staff.personal.exception.ObjectAlreadyExistException;
 import com.staff.personal.repository.UserPhotosRepository;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService{
             throw new GeneralServiceException("Паролі не співпадають");
         }
         if(userRepository.findByEmail(userRegistrationDTO.getEmail()) != null){
-            throw new GeneralServiceException("Такий користувач вже існує");
+            throw new ObjectAlreadyExistException("Такий користувач вже існує");
         }
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());
