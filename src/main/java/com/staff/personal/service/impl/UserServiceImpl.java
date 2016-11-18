@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService{
     }
     @Transactional
     @Override
-    public void createUser(UserRegistrationDTO userRegistrationDTO) {
+    public User createUser(UserRegistrationDTO userRegistrationDTO) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = new User();
         if(!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())){
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
         user.setEmail(userRegistrationDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setRole(Role.ROLE_OPERATOR);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
