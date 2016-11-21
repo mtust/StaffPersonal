@@ -3,19 +3,18 @@ package com.staff.personal.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "fired")
 public class Fired {
 	
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -59,6 +58,7 @@ public class Fired {
 	/**
 	*Довідка ЦЛЕК (ЛЕК) (свідоцтво) (дата, номер)
 	*/
+	@JsonIgnore
 	@Column(name = "referenceLEKDate")
 	private Date referenceLEKDate;
 	/**

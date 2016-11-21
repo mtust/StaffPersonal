@@ -1,5 +1,7 @@
 package com.staff.personal.controller.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
@@ -194,9 +196,11 @@ public class StaffController {
 
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
-    Fired getFired(@PathVariable Long id) {
+    String getFired(@PathVariable Long id) {
         log.info("in getFired \n" + firedService.getFired(id).toString());
-        return firedService.getFired(id);
+        Gson gson = new Gson();
+        Fired fired = firedService.getFired(id);
+        return gson.toJson(fired);
     }
 
     //HOLIDAYS
