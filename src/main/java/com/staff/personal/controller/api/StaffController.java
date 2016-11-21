@@ -66,7 +66,7 @@ public class StaffController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     GetStaffDTO getStaff(@PathVariable Long id) {
-        log.info("user claims: " + ((Claims) requestContext.getAttribute("claims")).get("role"));
+        log.info("user claims: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         return staffService.getStaff(id);
     }
 

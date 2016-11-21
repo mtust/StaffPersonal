@@ -23,7 +23,7 @@ public interface UserService {
 
     User getUserByUsernameAndPassword(String username, String password);
 
-    void createUser(UserRegistrationDTO userRegistrationDTO);
+    User createUser(UserRegistrationDTO userRegistrationDTO);
 
     UserDTO getUserById(Long id);
 
