@@ -1,6 +1,6 @@
 package com.staff.personal.service;
 
-import com.staff.personal.domain.Reports;
+import com.staff.personal.dto.GetReportsInfoDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,5 +14,7 @@ public interface ReportsService {
 
     RestMessageDTO addReport(Long id, MultipartFile multipartFile, String name, String text) throws IOException;
 
-    List<Reports> getReports(Long id);
+    List<GetReportsInfoDTO> getReportsInfo(Long id);
+
+     /*byte[] getReportsFile(Long id);*/
 }

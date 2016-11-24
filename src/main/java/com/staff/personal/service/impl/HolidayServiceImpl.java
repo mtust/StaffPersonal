@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.HolidayDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.HolidayService;
 import lombok.Data;
@@ -33,7 +34,9 @@ public class HolidayServiceImpl implements HolidayService{
     @Transactional
     public RestMessageDTO addHoliday(Long id, HolidayDTO holidayDTO) {
         Staff staff = staffRepository.findOne(id);
-        Holiday holiday = new Holiday();
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }        Holiday holiday = new Holiday();
         List<Holiday> list = staff.getHolidays();
         try {
             holiday.setTypeHoliday(holidayDTO.getTypeHoliday());
@@ -56,6 +59,10 @@ public class HolidayServiceImpl implements HolidayService{
     @Override
     @Transactional
     public List<Holiday> getHolidays(Long id) {
-        return staffRepository.findOne(id).getHolidays();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getHolidays();
     }
 }

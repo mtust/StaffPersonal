@@ -36,7 +36,6 @@ import java.util.List;
 public class JwtFilter extends GenericFilterBean {
 
 
-    org.springframework.batch.admin.web.util.ResourceInfo resourceInfo1;
 
 
     RequestContextHolder requestContextHolder;

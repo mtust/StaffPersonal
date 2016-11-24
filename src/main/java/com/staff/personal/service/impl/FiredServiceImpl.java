@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.FiredDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.FiredService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,9 @@ public class FiredServiceImpl implements FiredService {
     @Override
     public RestMessageDTO addFired(Long id, FiredDTO firedDTO) {
         Staff staff = staffRepository.findOne(id);
-        Fired fired = new Fired();
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }        Fired fired = new Fired();
         try {
             fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
             fired.setOrderNumber(firedDTO.getOrderNumber());
@@ -61,7 +64,9 @@ public class FiredServiceImpl implements FiredService {
     public Fired getFired(Long id) {
         log.info("getFired \n" + staffRepository.findOne(id).getFired());
         Staff staff = staffRepository.findOne(id);
-        Fired fired = staff.getFired();
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }        Fired fired = staff.getFired();
         return fired;
     }
 

@@ -5,6 +5,7 @@ import com.staff.personal.domain.MainEducationBlock;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.EducationDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.EducationRepository;
 import com.staff.personal.repository.MainEducationBlockRepository;
 import com.staff.personal.repository.StaffRepository;
@@ -33,11 +34,9 @@ public class EducationServiceImpl implements EducationService {
     @Override
     @Transactional
     public RestMessageDTO createEducation(EducationDTO educationDTO, Long id) {
-
         Staff staff = staffRepository.findOne(id);
         if (staff == null) {
-            log.error("staff with id " + id + " does not exist");
-            return new RestMessageDTO("staff does not exist", false);
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         } else {
             Education education = new Education();
             List<MainEducationBlock> mainEducationBlocks = educationDTO.getMainEducationBlocks();
@@ -54,6 +53,9 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public Education getEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         log.info("getEducation");
         Education education = staff.getEducation();
         log.info(education.toString());
@@ -64,6 +66,9 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public RestMessageDTO delEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         log.info("delEducation");
         Education education = staff.getEducation();
         educationRepository.delete(education);

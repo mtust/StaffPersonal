@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.HospitalsDTo;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.HospitalsService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,9 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Transactional
     public RestMessageDTO addHospitals(Long id, HospitalsDTo hospitalsDTo) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         Hospitals hospitals = new Hospitals();
         List<Hospitals> list = staff.getHospitals();
         try {
@@ -54,6 +58,10 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Override
     @Transactional
     public List<Hospitals> getHospitals(Long id) {
-        return staffRepository.findOne(id).getHospitals();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getHospitals();
     }
 }
