@@ -6,6 +6,7 @@ import com.staff.personal.domain.WorkExperience;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.WorkExperienceDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.repository.WorkExperienceRepository;
 import com.staff.personal.service.WorkExperienceService;
@@ -37,13 +38,21 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     @Override
     @Transactional
     public List<WorkExperience> getWorkExperiences(Long id) {
-        return staffRepository.findOne(id).getWorkExperiences();
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getWorkExperiences();
     }
 
     @Override
     @Transactional
     public RestMessageDTO crateWorkExperience(List<WorkExperienceDTO> workExperienceDTOList, Long id) {
         log.info("in crateWorkExperience");
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         try {
             List<WorkExperience> list = new ArrayList<WorkExperience>();
             for (WorkExperienceDTO workExperienceDTO : workExperienceDTOList) {
@@ -54,7 +63,6 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
                 list.add(workExperience);
             }
             log.info("list after foreach \n" + list.toString());
-            Staff staff = staffRepository.findOne(id);
             staff.setWorkExperiences(list);
             workExperienceRepository.save(list);
             staffRepository.saveAndFlush(staff);

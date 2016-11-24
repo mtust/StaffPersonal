@@ -63,7 +63,8 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = staffRepository.findOne(id);
         if(staff == null){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        }        try {
+        }
+        try {
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());

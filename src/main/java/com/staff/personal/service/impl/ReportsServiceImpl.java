@@ -32,6 +32,9 @@ public class ReportsServiceImpl implements ReportsService {
     @Transactional
     public RestMessageDTO addReport(Long id, MultipartFile multipartFile, String name, String text) throws IOException{
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         Reports reports = new Reports();
         List<Reports> list = staff.getReports();
         reports.setFile(multipartFile.getBytes());

@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.PromotionDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.PromotionService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public RestMessageDTO addPromotion(Long id, PromotionDTO promotionDTO) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         Promotion promotion = new Promotion();
         List<Promotion> list = staff.getPromotions();
         try {
@@ -52,6 +56,10 @@ public class PromotionServiceImpl implements PromotionService{
     @Override
     @Transactional
     public List<Promotion> getPromotions(Long id) {
-        return staffRepository.findOne(id).getPromotions();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getPromotions();
     }
 }

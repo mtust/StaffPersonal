@@ -4,6 +4,7 @@ import com.auth0.jwt.internal.org.apache.commons.io.IOUtils;
 import com.staff.personal.domain.MainStaffPhotos;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.MainStaffPhotoService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,9 @@ public class MainStaffPhotoServiceImpl implements MainStaffPhotoService {
     @Transactional
     public RestMessageDTO addPhoto(MultipartFile multipartFile, Long id) throws IOException {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         List<MainStaffPhotos> list = staff.getMainStaffPhotos();
         MainStaffPhotos photo = new MainStaffPhotos();
         photo.setFile(multipartFile.getBytes());
@@ -44,6 +48,9 @@ public class MainStaffPhotoServiceImpl implements MainStaffPhotoService {
     @Transactional
     public byte[] getPhoto(Long id) throws SQLException, IOException {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         List<MainStaffPhotos> list = staff.getMainStaffPhotos();
         if (list.isEmpty()) {
             return IOUtils.toByteArray(new URL("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQoiJVlwkYJvPNp7vjnrPPGEe3MDBvcDbaFjkBBjo5_OLlMGLrG_sMtMcCR").openStream());

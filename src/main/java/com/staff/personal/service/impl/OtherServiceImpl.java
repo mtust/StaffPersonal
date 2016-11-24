@@ -3,6 +3,7 @@ package com.staff.personal.service.impl;
 import com.staff.personal.domain.Other;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.OtherRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.OtherService;
@@ -27,6 +28,9 @@ public class OtherServiceImpl implements OtherService {
     @Transactional
     public RestMessageDTO createOther(Other other, Long id) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         staff.setOther(other);
         staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
@@ -34,13 +38,21 @@ public class OtherServiceImpl implements OtherService {
 
     @Override
     @Transactional
-    public Other getOther(Long id) {return staffRepository.getOne(id).getOther();
+    public Other getOther(Long id) {
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getOther();
     }
 
     @Override
     @Transactional
     public RestMessageDTO delOther(Long id) {
-        Staff staff = staffRepository.getOne(id);
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         staff.setOther(null);
         staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);

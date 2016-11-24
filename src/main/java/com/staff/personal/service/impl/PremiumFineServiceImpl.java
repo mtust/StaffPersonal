@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.PremiumFineDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.PremiumFineService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,9 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Transactional
     public RestMessageDTO addPremiumFine(Long id, PremiumFineDTO premiumFineDTO) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         PremiumFine premiumFine = new PremiumFine();
         List<PremiumFine> list = staff.getPremiumFines();
         try {
@@ -52,6 +56,10 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Override
     @Transactional
     public List<PremiumFine> getPremiumFine(Long id) {
-        return staffRepository.findOne(id).getPremiumFines();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getPremiumFines();
     }
 }
