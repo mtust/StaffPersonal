@@ -36,7 +36,7 @@ public class BenefitsServiceImpl implements BenefitsService {
     public RestMessageDTO addBenefit(BenefitsDTO benefitsDTO, Long id) {
         Staff staff = staffRepository.findOne(id);
         if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + "dosen't exist");
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Benefits benefits = new Benefits();
         List<Benefits> list = staff.getBenefits();
@@ -64,7 +64,11 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Override
     @Transactional
     public List<Benefits> getBenefits(Long id) {
-        return staffRepository.findOne(id).getBenefits();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getBenefits();
     }
 
     @Override
@@ -72,7 +76,9 @@ public class BenefitsServiceImpl implements BenefitsService {
     public RestMessageDTO delBenefitsById(Long idStaff, Long idBen) {
         log.info("in delBenefitsById");
         Staff staff = staffRepository.findOne(idStaff);
-        List<Benefits> list = staff.getBenefits();
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist");
+        }        List<Benefits> list = staff.getBenefits();
         for (Benefits benefits : list) {
             if (benefits.getId()==(idBen)) {
                 log.info("in foreach");

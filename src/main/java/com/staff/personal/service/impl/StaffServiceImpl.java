@@ -4,6 +4,7 @@ import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.*;
 import com.staff.personal.exception.BadRequestParametersException;
+import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.EducationService;
@@ -59,8 +60,10 @@ public class StaffServiceImpl implements StaffService {
     public RestMessageDTO createMainStaff(MainStaffDTO mainStaffDTO, Long id) {
         log.info("IN createMainStaff");
         log.info(mainStaffDTO.toString());
-        try {
-            Staff staff = staffRepository.findOne(id);
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }        try {
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
@@ -118,9 +121,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional
     public GetStaffDTO getStaff(Long id) {
-
         Staff staff = staffRepository.findOne(id);
-        GetStaffDTO getStaffDTO = new GetStaffDTO();
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }        GetStaffDTO getStaffDTO = new GetStaffDTO();
         getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
         getStaffDTO.setEducation(staff.getEducation());
         getStaffDTO.setMainStaff(staff.getMainStaff());
@@ -130,7 +134,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<GetStaffDTO> getAllStaff(){
         List<Staff> list = staffRepository.findAll();
-        List<GetStaffDTO> listDTO = new ArrayList<GetStaffDTO>();
+        List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
         GetStaffDTO getStaffDTO = new GetStaffDTO();
             getStaffDTO.setMainStaff(staff.getMainStaff());

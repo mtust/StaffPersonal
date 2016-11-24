@@ -50,6 +50,8 @@ public class StaffController {
     private PromotionService promotionService;
     @Autowired
     private ReportsService reportsService;
+    @Autowired
+    private StaffDocumentsService staffDocumentsService;
 
     @Autowired
     private HttpServletRequest requestContext;
@@ -256,6 +258,7 @@ public class StaffController {
     }
 
 
+    //Reports
     @RequestMapping(value = "{id}/reports", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
     RestMessageDTO setReports(@RequestParam("file") MultipartFile file, @PathVariable Long id,
                               @RequestParam("name") String name,
@@ -263,5 +266,34 @@ public class StaffController {
         log.info("IN CONTROLLER setReports");
         return reportsService.addReport(id, file, name, text);
     }
+
+    @RequestMapping(value = "{id}/reports", method = RequestMethod.GET)
+    @ResponseBody
+    List<GetReportsInfoDTO> getReportsInfo(@PathVariable Long id) throws IOException, SQLException {
+        log.info("IN CONTROLLER getReports");
+        return reportsService.getReportsInfo(id);
+    }
+
+   /* @RequestMapping(value = "{id}/reportsF", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
+    @ResponseBody
+    byte[] getReportsFile(@PathVariable Long id) throws IOException, SQLException {
+        log.info("IN CONTROLLER getReports");
+        return reportsService.getReportsFile(id);
+    }*/
+
+   //STAFFDOCUMENTS
+   @RequestMapping(value = "{id}/staffDoc", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+   RestMessageDTO setStaffDoc(@RequestParam("file") MultipartFile file,
+                              @PathVariable Long id) throws IOException {
+       log.info("IN CONTROLLER setStaffDoc");
+       return staffDocumentsService.addDocument(file,id);
+   }
+    @RequestMapping(value = "{id}/staffDoc", method = RequestMethod.GET)
+    @ResponseBody
+    List<StaffDocumentDTO> getStaffDoc(@PathVariable Long id){
+        log.info("IN CONTROLLER getStaffDoc");
+        return staffDocumentsService.getDocumentsNames(id);
+    }
+
 
 }
