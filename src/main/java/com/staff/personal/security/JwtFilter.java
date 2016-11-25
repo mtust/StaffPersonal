@@ -22,8 +22,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,14 +37,6 @@ import java.util.List;
 @Component
 public class JwtFilter extends GenericFilterBean {
 
-
-
-
-    RequestContextHolder requestContextHolder;
-    @Autowired
-    private ApplicationContext appContext;
-
-    private WebApplicationContext webApplicationContext;
 
     @Override
     public void doFilter(final ServletRequest req,
@@ -75,34 +69,16 @@ public class JwtFilter extends GenericFilterBean {
 
 
 
-            // Get the resource class which matches with the requested URL
-            // Extract the roles declared by it
-//        Class<?> resourceClass = resourceInfo.getResourceClass();
-//        List<Role> classRoles = extractRoles(resourceClass);
-//
-//        // Get the resource method which matches with the requested URL
-//        // Extract the roles declared by it
-//        Method resourceMethod = resourceInfo.getResourceMethod();
-//        List<Role> methodRoles = extractRoles(resourceMethod);
-//
-//        try {
-//
-//            Role role = (Role) claims.get("role");
-//
-//            // Check if the user is allowed to execute the method
-//            // The method annotations override the class annotations
-//            if (methodRoles.isEmpty()) {
-//                checkPermissions(classRoles, role);
-//            } else {
-//                checkPermissions(methodRoles, role);
-//            }
-//
-//        } catch (Exception e) {
-//            throw  new PermissionDeniedException(Response.Status.FORBIDDEN.getReasonPhrase());
-//        }
 
 
 
+
+
+
+
+
+            Role role = Role.valueOf((String) claims.get("role"));
+            request.setAttribute("role", role);
 
             log.info("filter:");
 
@@ -110,29 +86,8 @@ public class JwtFilter extends GenericFilterBean {
         chain.doFilter(req, res);
     }
 
-    // Extract the roles from the annotated element
-    private List<Role> extractRoles(AnnotatedElement annotatedElement) {
-        if (annotatedElement == null) {
-            return new ArrayList<Role>();
-        } else {
-            Secured secured = annotatedElement.getAnnotation(Secured.class);
-            if (secured == null) {
-                return new ArrayList<Role>();
-            } else {
-                Role[] allowedRoles = secured.value();
-                return Arrays.asList(allowedRoles);
-            }
-        }
-    }
 
-    private void checkPermissions(List<Role> allowedRoles, Role userRole) throws Exception {
-        if (allowedRoles.isEmpty()) {
-            return;
-        } else {
-            if (userRole == null || !allowedRoles.contains(userRole)) {
-                throw new AuthenticationException();
-            }
-        }
-    }
+
+
 
 }

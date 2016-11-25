@@ -1,7 +1,9 @@
 package com.staff.personal.controller.api;
 
+import com.staff.personal.domain.Role;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
+import com.staff.personal.security.Secured;
 import com.staff.personal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class UserResources {
     UserService userService;
 
     @CrossOrigin
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
