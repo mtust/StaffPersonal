@@ -67,16 +67,6 @@ public class JwtFilter extends GenericFilterBean {
                 throw new GeneralServiceException("Invalid token.");
             }
 
-
-
-
-
-
-
-
-
-
-
             Role role = Role.valueOf((String) claims.get("role"));
             request.setAttribute("role", role);
 

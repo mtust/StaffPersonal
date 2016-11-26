@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * Created by mtustanovskyy on 10/29/16.
@@ -31,5 +32,7 @@ public interface UserService {
 
     RestMessageDTO changePhoto(MultipartFile photo, Long id) throws IOException;
 
+    Set<Region> getUserRegions(Long userId);
 
+    UserDTO getMe();
 }

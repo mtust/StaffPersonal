@@ -1,24 +1,31 @@
 package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.MainStaff;
+import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.*;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
+import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.EducationService;
 import com.staff.personal.service.StaffService;
+import com.staff.personal.service.UserService;
 import com.staff.personal.service.WorkExperienceService;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by nazar on 04.11.16.
@@ -28,13 +35,19 @@ import java.util.List;
 public class StaffServiceImpl implements StaffService {
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
 
     @Autowired
-    WorkExperienceService workExperienceService;
+    private WorkExperienceService workExperienceService;
 
     @Autowired
-    EducationService educationService;
+    private EducationService educationService;
+
+    @Autowired
+    private HttpServletRequest requestContext;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     MainStaffRepository mainStaffRepository;
@@ -122,8 +135,13 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional
     public GetStaffDTO getStaff(Long id) {
+        log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        log.info("stuff regions " + staff.getRegion());
+        if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }        GetStaffDTO getStaffDTO = new GetStaffDTO();
         getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
@@ -134,7 +152,10 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     @Override
     public List<GetStaffDTO> getAllStaff(){
-        List<Staff> list = staffRepository.findAll();
+        List<Staff> listAll = staffRepository.findAll();
+        Long userId = (Long) ((Claims) requestContext.getAttribute("claims")).get("id");
+        Set<Region> regions = userService.getUserRegions(userId);
+        List<Staff> list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
         GetStaffDTO getStaffDTO = new GetStaffDTO();

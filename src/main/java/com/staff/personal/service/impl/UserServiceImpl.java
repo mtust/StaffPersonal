@@ -13,6 +13,7 @@ import com.staff.personal.exception.ObjectAlreadyExistException;
 import com.staff.personal.repository.UserPhotosRepository;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -20,16 +21,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.RequestContext;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.net.URL;
+import java.util.Set;
+
 /**
  * Created by mtustanovskyy on 10/29/16.
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 
     @Autowired
@@ -38,45 +43,51 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserPhotosRepository userPhotosRepository;
 
+    @Autowired
+    private HttpServletRequest requestContext;
+
     @Override
     public void save(User user) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+
     @Transactional
     @Override
     public UserDTO getUserByUsername(String username) {
         UserDTO userDTO = new UserDTO();
-        User user =  userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(username);
         userDTO.setRoleName(user.getRole().name());
         userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         return userDTO;
     }
+
     @Transactional
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
 
         User user = userRepository.findByEmail(username);
 
-        if(user!= null && !BCrypt.checkpw(password, user.getPassword())){
+        if (user != null && !BCrypt.checkpw(password, user.getPassword())) {
             log.warn("iмя користувача або пароль неправильні: ");
             throw new GeneralServiceException("iмя користувача або пароль неправильні");
         }
 
         return user;
     }
+
     @Transactional
     @Override
     public User createUser(UserRegistrationDTO userRegistrationDTO) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = new User();
-        if(!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())){
+        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPassword())) {
             throw new GeneralServiceException("Паролі не співпадають");
         }
-        if(userRepository.findByEmail(userRegistrationDTO.getEmail()) != null){
+        if (userRepository.findByEmail(userRegistrationDTO.getEmail()) != null) {
             throw new ObjectAlreadyExistException("Такий користувач вже існує");
         }
         user.setFirstName(userRegistrationDTO.getFirstName());
@@ -122,4 +133,18 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public Set<Region> getUserRegions(Long userId) {
+        log.info("userId: " + userId);
+        return userRepository.findById(userId).getRegions();
+    }
+
+    @Override
+    public UserDTO getMe() {
+        Long userId = (Long) ((Claims) requestContext.getAttribute("claims")).get("id");
+        return this.getUserById(userId);
+    }
+
+
 }

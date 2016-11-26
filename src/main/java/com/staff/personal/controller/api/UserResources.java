@@ -47,4 +47,9 @@ public class UserResources {
         return userService.changePhoto(photo, id);
     }
 
+    @RequestMapping(value = "/me")
+    UserDTO getMe(){
+        return userService.getMe();
+    }
+
 }
