@@ -2,14 +2,8 @@ package com.staff.personal.security;
 
 import com.staff.personal.domain.Role;
 import com.staff.personal.exception.PermissionDeniedException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,10 +34,6 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
             actionName = handlerMethod.getMethod().getName();
             log.info("controller: " + controllerName);
             log.info("action:" + actionName);
-            request.setAttribute("requestAction", handlerMethod.getMethod());
-
-
-
 
             // Get the resource method which matches with the requested URL
             // Extract the roles declared by it
@@ -52,7 +42,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 
             try {
 
-                Role role = (Role) request.getAttribute("roel");
+                Role role = (Role) request.getAttribute("role");
 
                 // Check if the user is allowed to execute the method
                 // The method annotations override the class annotations
