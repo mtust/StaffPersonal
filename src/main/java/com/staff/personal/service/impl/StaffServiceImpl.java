@@ -3,16 +3,15 @@ package com.staff.personal.service.impl;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
-import com.staff.personal.dto.*;
+import com.staff.personal.dto.GetStaffDTO;
+import com.staff.personal.dto.MainStaffDTO;
+import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.StaffDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
-import com.staff.personal.repository.UserRepository;
-import com.staff.personal.service.EducationService;
-import com.staff.personal.service.StaffService;
-import com.staff.personal.service.UserService;
-import com.staff.personal.service.WorkExperienceService;
+import com.staff.personal.service.*;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +48,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegionService regionService;
 
     @Autowired
     MainStaffRepository mainStaffRepository;
@@ -118,10 +121,7 @@ public class StaffServiceImpl implements StaffService {
     public RestMessageDTO createStaff(StaffDTO staffDTO) {
         log.info(staffDTO.toString());
         Staff staff = new Staff();
-        staff = staffRepository.save(staff);
-        this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
-        workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
-        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        this.createUpdateStuff(staff, staffDTO);
         return new RestMessageDTO("Success", true);
     }
 
@@ -138,17 +138,18 @@ public class StaffServiceImpl implements StaffService {
         log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
+        if (regions == null) {
+            regions = new HashSet<Region>();
+        }
         log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
         log.info("stuff regions " + staff.getRegion());
         if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        }        GetStaffDTO getStaffDTO = new GetStaffDTO();
-        getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
-        getStaffDTO.setEducation(staff.getEducation());
-        getStaffDTO.setMainStaff(staff.getMainStaff());
-        return getStaffDTO ;
+        }
+        return this.createGetStuffDTO(staff);
     }
+
     @Transactional
     @Override
     public List<GetStaffDTO> getAllStaff(){
@@ -163,12 +164,44 @@ public class StaffServiceImpl implements StaffService {
         }
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
-        GetStaffDTO getStaffDTO = new GetStaffDTO();
-            getStaffDTO.setMainStaff(staff.getMainStaff());
+            GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
             listDTO.add(getStaffDTO);
         }
             log.info("list after foreach \n" + listDTO.toString());
 
         return listDTO;
     }
+
+    @Override
+    @Transactional
+    public RestMessageDTO updateStaffById(Long id, StaffDTO staffDTO) {
+        Staff staff = staffRepository.findOne(id);
+        this.createUpdateStuff(staff, staffDTO);
+        return new RestMessageDTO("Success", true);
+    }
+
+    private void createUpdateStuff(Staff staff, StaffDTO staffDTO){
+        Region region = null;
+        if(staffDTO.getRegionId()!= null) {
+            region = regionService.getRegionById(staffDTO.getRegionId());
+            if(region != null){
+                staff.setRegion(region);
+            }
+        }
+        staff = staffRepository.save(staff);
+        this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
+        workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
+        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+    }
+
+    private  GetStaffDTO createGetStuffDTO(Staff staff){
+        GetStaffDTO getStaffDTO = new GetStaffDTO();
+        getStaffDTO.setId(staff.getId());
+        getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+        getStaffDTO.setEducation(staff.getEducation());
+        getStaffDTO.setMainStaff(staff.getMainStaff());
+        getStaffDTO.setRegion(staff.getRegion());
+        return getStaffDTO;
+    }
+
 }

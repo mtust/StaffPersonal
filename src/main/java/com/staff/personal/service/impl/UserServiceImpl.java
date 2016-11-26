@@ -21,12 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Set;
 
 /**
@@ -146,5 +145,11 @@ public class UserServiceImpl implements UserService {
         return this.getUserById(userId);
     }
 
-
+    @Override
+    public RestMessageDTO changeUserRole(Long id, String role) {
+        User user = userRepository.findById(id);
+        user.setRole(Role.valueOf(role));
+        userRepository.save(user);
+        return new RestMessageDTO("Success", true);
+    }
 }

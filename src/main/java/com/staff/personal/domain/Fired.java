@@ -14,7 +14,6 @@ import lombok.Data;
 public class Fired {
 	
 
-	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

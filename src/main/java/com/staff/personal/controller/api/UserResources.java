@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.Path;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -50,6 +49,12 @@ public class UserResources {
     @RequestMapping(value = "/me")
     UserDTO getMe(){
         return userService.getMe();
+    }
+
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "{id}/role", method = RequestMethod.PATCH)
+    RestMessageDTO changeUserRole(@PathVariable Long id, String role){
+        return userService.changeUserRole(id, role);
     }
 
 }

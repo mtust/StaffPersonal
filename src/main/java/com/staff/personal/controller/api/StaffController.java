@@ -1,7 +1,6 @@
 package com.staff.personal.controller.api;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
@@ -75,6 +74,16 @@ public class StaffController {
     @RequestMapping(value = "all", method = RequestMethod.GET)
     List<GetStaffDTO> getAllStaff() {
         return staffService.getAllStaff();
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    List<GetStaffDTO> getStaff() {
+        return staffService.getAllStaff();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    RestMessageDTO updateStaffById(@PathVariable Long id, @RequestBody StaffDTO staffDTO){
+        return staffService.updateStaffById(id, staffDTO);
     }
 
     //MAIN STAFF

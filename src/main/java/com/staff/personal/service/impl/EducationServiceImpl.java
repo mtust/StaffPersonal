@@ -45,7 +45,7 @@ public class EducationServiceImpl implements EducationService {
             education.setMainEducationBlocks(mainEducationBlocks);
             staff.setEducation(education);
             staffRepository.save(staff);
-            return new RestMessageDTO("Succes", true);
+            return new RestMessageDTO("Success", true);
         }
     }
 

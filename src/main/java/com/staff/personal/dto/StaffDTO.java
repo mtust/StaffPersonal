@@ -13,6 +13,7 @@ public class StaffDTO {
     private MainStaffDTO mainStaffDTO;
     private EducationDTO educationDTO;
     private List<WorkExperienceDTO> workExperienceDTOs;
+    private Long regionId;
 
 
 }

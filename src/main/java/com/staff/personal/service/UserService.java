@@ -35,4 +35,6 @@ public interface UserService {
     Set<Region> getUserRegions(Long userId);
 
     UserDTO getMe();
+
+    RestMessageDTO changeUserRole(Long id, String role);
 }

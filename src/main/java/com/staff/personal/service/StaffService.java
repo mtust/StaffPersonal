@@ -24,4 +24,6 @@ public interface StaffService {
 	GetStaffDTO getStaff(Long id);
 
 	List<GetStaffDTO> getAllStaff();
+
+	RestMessageDTO updateStaffById(Long id, StaffDTO staffDTO);
 }
