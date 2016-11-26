@@ -153,7 +153,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<GetStaffDTO> getAllStaff(){
         List<Staff> listAll = staffRepository.findAll();
-        Long userId = (Long) ((Claims) requestContext.getAttribute("claims")).get("id");
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
         List<GetStaffDTO> listDTO = new ArrayList<>();
