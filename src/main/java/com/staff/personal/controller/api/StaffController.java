@@ -71,6 +71,11 @@ public class StaffController {
         return staffService.getStaff(id);
     }
 
+    @RequestMapping(value = "whole/{id}", method = RequestMethod.GET)
+    GetAllStaffDTO getAllStaff(@PathVariable Long id){
+        return  staffService.getAllStaff(id);
+    }
+
     @RequestMapping(value = "all", method = RequestMethod.GET)
     List<GetStaffDTO> getAllStaff() {
         return staffService.getAllStaff();

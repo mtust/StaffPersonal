@@ -167,6 +167,38 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    @Override
+    public GetAllStaffDTO getAllStaff(Long id) {
+        log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        if (regions == null) {
+            regions = new HashSet<Region>();
+        }
+        log.info("user regions: " + regions);
+        Staff staff = staffRepository.findOne(id);
+        log.info("stuff regions " + staff.getRegion());
+        if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+
+
+        GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
+        getAllStaffDTO.setId(staff.getId());
+        getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+        getAllStaffDTO.setEducation(staff.getEducation());
+        getAllStaffDTO.setMainStaff(staff.getMainStaff());
+        getAllStaffDTO.setRegion(staff.getRegion());
+        getAllStaffDTO.setBenefits(staff.getBenefits());
+        getAllStaffDTO.setFired(staff.getFired());
+        getAllStaffDTO.setHolidays(staff.getHolidays());
+        getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
+        getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
+        getAllStaffDTO.setPromotions(staff.getPromotions());
+
+        return getAllStaffDTO;
+    }
+
     public List<GetAllStaffDTO> getStaff() {
         List<Staff> listAll = staffRepository.findAll();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
