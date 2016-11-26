@@ -3,10 +3,7 @@ package com.staff.personal.service.impl;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
-import com.staff.personal.dto.GetStaffDTO;
-import com.staff.personal.dto.MainStaffDTO;
-import com.staff.personal.dto.RestMessageDTO;
-import com.staff.personal.dto.StaffDTO;
+import com.staff.personal.dto.*;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.MainStaffRepository;
@@ -52,6 +49,24 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private RegionService regionService;
 
+    @Autowired
+    private OtherService otherService;
+
+    @Autowired
+    private BenefitsService benefitsService;
+
+    @Autowired
+    private HospitalsService hospitalsService;
+
+    @Autowired
+    private FiredService firedService;
+
+    @Autowired
+    private PromotionService promotionService;
+    @Autowired
+    private PremiumFineService premiumFineService;
+    @Autowired
+    private HolidayService holidayService;
     @Autowired
     MainStaffRepository mainStaffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -147,7 +162,42 @@ public class StaffServiceImpl implements StaffService {
         if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
+
         return this.createGetStuffDTO(staff);
+
+    }
+
+    public List<GetAllStaffDTO> getStaff() {
+        List<Staff> listAll = staffRepository.findAll();
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        List<Staff> list = null;
+        if(regions.isEmpty()){
+            list = listAll;
+        } else {
+            list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
+        }
+        List<GetAllStaffDTO> listDTO = new ArrayList<>();
+        for (Staff staff : list) {
+            GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
+            getAllStaffDTO.setId(staff.getId());
+            getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+            getAllStaffDTO.setEducation(staff.getEducation());
+            getAllStaffDTO.setMainStaff(staff.getMainStaff());
+            getAllStaffDTO.setRegion(staff.getRegion());
+            getAllStaffDTO.setBenefits(staff.getBenefits());
+            getAllStaffDTO.setFired(staff.getFired());
+            getAllStaffDTO.setHolidays(staff.getHolidays());
+            getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
+            getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
+            getAllStaffDTO.setPromotions(staff.getPromotions());
+            listDTO.add(getAllStaffDTO);
+        }
+        log.info("list after foreach \n" + listDTO.toString());
+
+        return listDTO;
+
+
     }
 
     @Transactional
@@ -177,6 +227,49 @@ public class StaffServiceImpl implements StaffService {
     public RestMessageDTO updateStaffById(Long id, StaffDTO staffDTO) {
         Staff staff = staffRepository.findOne(id);
         this.createUpdateStuff(staff, staffDTO);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public RestMessageDTO updateAllStaffById(Long id, AllStaffDTO staffDTO) {
+        Staff staff = staffRepository.findOne(id);
+        Region region = null;
+        if(staffDTO.getRegion()!= null) {
+            region = regionService.getRegionById(staffDTO.getRegion().getId());
+            if(region != null){
+                staff.setRegion(region);
+            }
+        }
+        staff = staffRepository.save(staff);
+
+        this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
+        workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
+        otherService.createOther(staffDTO.getOther(), staff.getId());
+        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        for (PremiumFineDTO premium:
+             staffDTO.getPremiumFines()) {
+            premiumFineService.addPremiumFine(staff.getId(), premium);
+        }
+        for (PromotionDTO promotion:
+             staffDTO.getPromotions()) {
+            promotionService.addPromotion(staff.getId(), promotion);
+        }
+        for (HolidayDTO holiday: staffDTO.getHolidays()
+             ) {
+            holidayService.addHoliday(staff.getId(), holiday);
+        }
+        for (HospitalsDTo hospital: staffDTO.getHospitals()
+                ) {
+            hospitalsService.addHospitals(staff.getId(), hospital);
+        }
+
+        firedService.addFired(staff.getId(), staffDTO.getFired());
+
+        for (BenefitsDTO benefit: staffDTO.getBenefits()
+                ) {
+            benefitsService.addBenefit(benefit, staff.getId());
+        }
+
         return new RestMessageDTO("Success", true);
     }
 

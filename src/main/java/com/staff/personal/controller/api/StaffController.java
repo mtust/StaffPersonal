@@ -77,13 +77,18 @@ public class StaffController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    List<GetStaffDTO> getStaff() {
-        return staffService.getAllStaff();
+    List<GetAllStaffDTO> getStaff() {
+        return staffService.getStaff();
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     RestMessageDTO updateStaffById(@PathVariable Long id, @RequestBody StaffDTO staffDTO){
         return staffService.updateStaffById(id, staffDTO);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
+    RestMessageDTO updateStaffById(@PathVariable Long id, @RequestBody AllStaffDTO allStaffDTO){
+        return staffService.updateAllStaffById(id, allStaffDTO);
     }
 
     //MAIN STAFF
