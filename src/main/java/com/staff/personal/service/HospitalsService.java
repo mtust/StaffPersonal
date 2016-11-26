@@ -1,7 +1,7 @@
 package com.staff.personal.service;
 
 import com.staff.personal.domain.Hospitals;
-import com.staff.personal.dto.HospitalsDTo;
+import com.staff.personal.dto.HospitalsDTO;
 import com.staff.personal.dto.RestMessageDTO;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface HospitalsService {
 
-    RestMessageDTO addHospitals(Long id,HospitalsDTo hospitalsDTo);
+    RestMessageDTO addHospitals(Long id,HospitalsDTO hospitalsDTo);
 
     List<Hospitals> getHospitals(Long id);
 }

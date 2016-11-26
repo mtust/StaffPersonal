@@ -234,7 +234,7 @@ public class StaffController {
 
     //HOSPITALS
     @RequestMapping(value = "{id}/hospitals", method = RequestMethod.POST)
-    RestMessageDTO addHospitals(@PathVariable Long id, @RequestBody HospitalsDTo hospitalsDTo) {
+    RestMessageDTO addHospitals(@PathVariable Long id, @RequestBody HospitalsDTO hospitalsDTo) {
         log.info("hHolidayospitalDTO \n" + hospitalsDTo.toString());
         return hospitalsService.addHospitals(id, hospitalsDTo);
     }

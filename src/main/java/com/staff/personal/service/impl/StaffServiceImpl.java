@@ -242,10 +242,10 @@ public class StaffServiceImpl implements StaffService {
         }
         staff = staffRepository.save(staff);
 
-        this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
-        workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
+        this.createMainStaff(staffDTO.getMainStaff(), staff.getId());
+        workExperienceService.crateWorkExperience(staffDTO.getWorkExperiences(), staff.getId());
         otherService.createOther(staffDTO.getOther(), staff.getId());
-        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        educationService.createEducation(staffDTO.getEducation(), staff.getId());
         for (PremiumFineDTO premium:
              staffDTO.getPremiumFines()) {
             premiumFineService.addPremiumFine(staff.getId(), premium);
@@ -258,7 +258,7 @@ public class StaffServiceImpl implements StaffService {
              ) {
             holidayService.addHoliday(staff.getId(), holiday);
         }
-        for (HospitalsDTo hospital: staffDTO.getHospitals()
+        for (HospitalsDTO hospital: staffDTO.getHospitals()
                 ) {
             hospitalsService.addHospitals(staff.getId(), hospital);
         }

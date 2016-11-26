@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 public class AllStaffDTO {
 
-    private MainStaffDTO mainStaffDTO;
-    private EducationDTO educationDTO;
-    private List<WorkExperienceDTO> workExperienceDTOs;
+    private MainStaffDTO mainStaff;
+    private EducationDTO education;
+    private List<WorkExperienceDTO> workExperiences;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Region region;
     private List<BenefitsDTO> benefits;
@@ -24,6 +24,6 @@ public class AllStaffDTO {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private FiredDTO fired;
     private Other other;
-    private List<HospitalsDTo> hospitals;
+    private List<HospitalsDTO> hospitals;
 
 }

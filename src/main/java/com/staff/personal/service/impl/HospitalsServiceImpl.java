@@ -2,7 +2,7 @@ package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.Hospitals;
 import com.staff.personal.domain.Staff;
-import com.staff.personal.dto.HospitalsDTo;
+import com.staff.personal.dto.HospitalsDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class HospitalsServiceImpl implements HospitalsService{
 
     @Override
     @Transactional
-    public RestMessageDTO addHospitals(Long id, HospitalsDTo hospitalsDTo) {
+    public RestMessageDTO addHospitals(Long id, HospitalsDTO hospitalsDTo) {
         Staff staff = staffRepository.findOne(id);
         if(staff == null){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
