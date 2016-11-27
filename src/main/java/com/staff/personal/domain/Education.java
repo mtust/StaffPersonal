@@ -25,5 +25,4 @@ public class Education implements Serializable {
 
 	private String language;
 
-
 }
