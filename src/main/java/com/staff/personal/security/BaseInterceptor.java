@@ -26,30 +26,33 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
         String controllerName = "";
         String actionName = "";
 
-        if( handler instanceof HandlerMethod) {
-            // there are cases where this handler isn't an instance of HandlerMethod, so the cast fails.
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            //controllerName = handlerMethod.getBean().getClass().getSimpleName().replace("Controller", "");
-            controllerName = handlerMethod.getBeanType().getSimpleName().replace("Controller", "");
-            actionName = handlerMethod.getMethod().getName();
-            log.info("controller: " + controllerName);
-            log.info("action:" + actionName);
+        if(!"OPTIONS".equals(request.getMethod())) {
 
-            // Get the resource method which matches with the requested URL
-            // Extract the roles declared by it
-            Method resourceMethod = handlerMethod.getMethod();
-            List<Role> methodRoles = extractRoles(resourceMethod);
+            if (handler instanceof HandlerMethod) {
+                // there are cases where this handler isn't an instance of HandlerMethod, so the cast fails.
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                //controllerName = handlerMethod.getBean().getClass().getSimpleName().replace("Controller", "");
+                controllerName = handlerMethod.getBeanType().getSimpleName().replace("Controller", "");
+                actionName = handlerMethod.getMethod().getName();
+                log.info("controller: " + controllerName);
+                log.info("action:" + actionName);
 
-            try {
+                // Get the resource method which matches with the requested URL
+                // Extract the roles declared by it
+                Method resourceMethod = handlerMethod.getMethod();
+                List<Role> methodRoles = extractRoles(resourceMethod);
 
-                Role role = (Role) request.getAttribute("role");
+                try {
 
-                // Check if the user is allowed to execute the method
-                // The method annotations override the class annotations
-                checkPermissions(methodRoles, role);
+                    Role role = (Role) request.getAttribute("role");
 
-            } catch (Exception e) {
-                throw new PermissionDeniedException(Response.Status.FORBIDDEN.getReasonPhrase());
+                    // Check if the user is allowed to execute the method
+                    // The method annotations override the class annotations
+                    checkPermissions(methodRoles, role);
+
+                } catch (Exception e) {
+                    throw new PermissionDeniedException(Response.Status.FORBIDDEN.getReasonPhrase());
+                }
             }
         }
 
