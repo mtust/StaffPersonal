@@ -111,7 +111,6 @@ public class StaffServiceImpl implements StaffService {
             mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
             mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
             mainStaffDTO.setBiography(mainStaff.getBiography());
-            log.info(mainStaff.toString());
         return mainStaffDTO;
     }
 

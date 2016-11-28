@@ -5,6 +5,7 @@ import com.staff.personal.dto.MainStaffDTO;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class StaffServiceTest {
     private StaffService staffService;
 
     @Test
+    @Ignore
     public void updateWholeStuffFieldByIdTest(){
         AllStaffDTO allStaffDTO = new AllStaffDTO();
         MainStaffDTO mainStaffDTO = new MainStaffDTO();
