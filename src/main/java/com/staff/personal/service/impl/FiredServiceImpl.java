@@ -6,6 +6,7 @@ import com.staff.personal.dto.FiredDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
+import com.staff.personal.repository.FiredRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.FiredService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Created by nazar on 16.11.16.
@@ -25,6 +27,8 @@ public class FiredServiceImpl implements FiredService {
 
     @Autowired
     StaffRepository staffRepository;
+    @Autowired
+    FiredRepository firedRepository;
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -62,17 +66,25 @@ public class FiredServiceImpl implements FiredService {
     @Override
     @Transactional
     public Fired getFired(Long id) {
-        log.info("getFired \n" + staffRepository.findOne(id).getFired());
         Staff staff = staffRepository.findOne(id);
         if(staff == null){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        }        Fired fired = staff.getFired();
-        return fired;
+        }
+        return staff.getFired();
     }
 
     @Transactional
     @Override
     public RestMessageDTO delFired(Long id) {
-        return null;
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        Fired fired = staff.getFired();
+        firedRepository.delete(fired);
+        staffRepository.save(staff);
+
+
+        return new RestMessageDTO("Succes", true);
     }
 }

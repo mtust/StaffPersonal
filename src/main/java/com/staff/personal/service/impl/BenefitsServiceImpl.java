@@ -78,7 +78,8 @@ public class BenefitsServiceImpl implements BenefitsService {
         Staff staff = staffRepository.findOne(idStaff);
         if(staff == null){
             throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist");
-        }        List<Benefits> list = staff.getBenefits();
+        }
+        List<Benefits> list = staff.getBenefits();
         for (Benefits benefits : list) {
             if (benefits.getId()==(idBen)) {
                 log.info("in foreach");
