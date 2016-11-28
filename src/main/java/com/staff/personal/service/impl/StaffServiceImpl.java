@@ -164,8 +164,8 @@ public class StaffServiceImpl implements StaffService {
         log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
         log.info("stuff regions " + staff.getRegion());
-        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion()))) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
 
         return this.createGetStuffDTO(staff);
@@ -183,7 +183,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
         log.info("stuff regions " + staff.getRegion());
-        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion()))) {
+        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
@@ -203,7 +203,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     public List<GetAllStaffDTO> getWholeStaff() {
-        List<Staff> listAll = staffRepository.findAll();
+        List<Staff> listAll = staffRepository.findByIsDeletedIsFalse();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
@@ -236,7 +236,7 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     @Override
     public List<GetStaffDTO> getAllStaff() {
-        List<Staff> listAll = staffRepository.findAll();
+        List<Staff> listAll = staffRepository.findByIsDeletedIsFalse();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
@@ -329,5 +329,13 @@ public class StaffServiceImpl implements StaffService {
         getStaffDTO.setRegion(staff.getRegion());
         return getStaffDTO;
     }
+
+    private RestMessageDTO updateStaff(GetAllStaffDTO getAllStaffDTO){
+            log.info("Update Staff " + getAllStaffDTO.toString());
+
+        return new RestMessageDTO("Succes", true);
+    }
+
+
 
 }
