@@ -35,7 +35,7 @@ public class StaffServiceTest {
         mainStaffDTO.setFullName("pezda");
         allStaffDTO.setMainStaff(mainStaffDTO);
         log.info("allStaffDTO" + allStaffDTO);
-        staffService.updateWholeStuffFieldById(new Long(1),allStaffDTO);
+//        staffService.updateWholeStuffFieldById(new Long(1),allStaffDTO);
     }
 
 }

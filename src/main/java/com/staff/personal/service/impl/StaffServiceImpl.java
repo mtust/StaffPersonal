@@ -214,24 +214,8 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-<<<<<<< HEAD
-        GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
-        getAllStaffDTO.setId(staff.getId());
-        getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
-        getAllStaffDTO.setEducation(staff.getEducation());
-        getAllStaffDTO.setMainStaff(staff.getMainStaff());
-        getAllStaffDTO.setRegion(staff.getRegion());
-        getAllStaffDTO.setBenefits(staff.getBenefits());
-        getAllStaffDTO.setFired(staff.getFired());
-        getAllStaffDTO.setHolidays(staff.getHolidays());
-        getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
-        getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
-        getAllStaffDTO.setPromotions(staff.getPromotions());
-=======
-
 
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
->>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
 
         return getAllStaffDTO;
     }
@@ -330,35 +314,10 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
-<<<<<<< HEAD
-    private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
-=======
-    @Transactional
-    @Override
-    public RestMessageDTO updateWholeStuffFieldById(Long id, AllStaffDTO allStaffDTO){
-        Staff staff = staffRepository.findOne(id);
-        Gson gson = new Gson();
-        JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
-        com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
-        JsonElement jsonElementStaff = gson.toJsonTree(staff);
-        com.google.gson.JsonObject jsonObjectStaff = jsonElementStaff.getAsJsonObject();
-        log.info("json:" + jsonObject.toString());
-        log.info("staffJSON:" + jsonObjectStaff);
-        for (Map.Entry<String, JsonElement> el: jsonObject.entrySet()
-             ) {
-            jsonObjectStaff.remove(el.getKey());
-            jsonObjectStaff.add(el.getKey(), el.getValue());
-        }
-        log.info("newJSON:" + jsonObjectStaff);
-        staff = gson.fromJson(jsonObjectStaff.get(""), Staff.class);
-        return new RestMessageDTO("Success", true);
-    }
-
 
 
 
     private void createUpdateStuff(Staff staff, StaffDTO staffDTO){
->>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
         Region region = null;
         if (staffDTO.getRegionId() != null) {
             region = regionService.getRegionById(staffDTO.getRegionId());
@@ -382,12 +341,6 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
-<<<<<<< HEAD
-    private RestMessageDTO updateStaff(GetAllStaffDTO getAllStaffDTO){
-            log.info("Update Staff " + getAllStaffDTO.toString());
-
-        return new RestMessageDTO("Succes", true);
-=======
     private GetAllStaffDTO createGetAllStuffDTO(Staff staff){
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
         getAllStaffDTO.setId(staff.getId());
@@ -408,7 +361,6 @@ public class StaffServiceImpl implements StaffService {
     private Staff createStaffFromAllStaffDTO(AllStaffDTO allStaffDTO){
         Staff staff = new Staff();
         return staff;
->>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
     }
 
 

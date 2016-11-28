@@ -28,12 +28,6 @@ public interface StaffService {
 
 	RestMessageDTO updateAllStaffById(Long id, AllStaffDTO allStaffDTO);
 
-<<<<<<< HEAD
 	GetAllStaffDTO getWholeStaff(Long id);
-=======
-	GetAllStaffDTO getAllStaff(Long id);
 
-	@Transactional
-	RestMessageDTO updateWholeStuffFieldById(Long id, AllStaffDTO staffDTO);
->>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
 }
