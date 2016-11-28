@@ -27,7 +27,7 @@ public class HolidayServiceImpl implements HolidayService{
 
     @Autowired
     StaffRepository staffRepository;
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 
     @Override

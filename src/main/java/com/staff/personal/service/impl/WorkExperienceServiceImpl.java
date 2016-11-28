@@ -29,7 +29,7 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
 
     @Autowired
     WorkExperienceRepository workExperienceRepository;
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     StaffRepository staffRepository;

@@ -69,7 +69,8 @@ public class StaffServiceImpl implements StaffService {
     private HolidayService holidayService;
     @Autowired
     MainStaffRepository mainStaffRepository;
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //new SimpleDateFormat("dd.MM.yyyy");
 
     @Override
     public MainStaff getMainStaffForStuff(Long id) {
@@ -314,6 +315,22 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
+    private AllStaffDTO createFullAllStaffDTOForUpdate(Staff staff, AllStaffDTO allStaffDTO){
+
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
+        Set<Map.Entry<String, JsonElement>> set = jsonElement.getAsJsonObject().entrySet();
+        JsonElement jsonElement1 = gson.toJsonTree(staff);
+        Set<Map.Entry<String, JsonElement>> set1 = jsonElement1.getAsJsonObject().entrySet();
+        for (Map.Entry<String, JsonElement> entry: set
+             ) {
+            set1.add(entry);
+        }
+
+        return allStaffDTO;
+
+    }
+
 
 
 
@@ -358,10 +375,6 @@ public class StaffServiceImpl implements StaffService {
     }
 
 
-    private Staff createStaffFromAllStaffDTO(AllStaffDTO allStaffDTO){
-        Staff staff = new Staff();
-        return staff;
-    }
 
 
 
