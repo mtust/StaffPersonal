@@ -223,9 +223,9 @@ public class StaffController {
 
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
-    JsonObject getFired(@PathVariable Long id) {
+    String getFired(@PathVariable Long id) {
         log.info("in getFired \n" + firedService.getFired(id).toString());
-        return firedService.getFired(id);
+        return firedService.getFired(id).toString();
     }
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.DELETE)
