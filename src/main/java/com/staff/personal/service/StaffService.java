@@ -30,4 +30,6 @@ public interface StaffService {
 
 	GetAllStaffDTO getWholeStaff(Long id);
 
+	@Transactional
+	RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO);
 }

@@ -1,5 +1,9 @@
 package com.staff.personal.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.staff.personal.config.HibernateProxyTypeAdapter;
 import com.staff.personal.domain.Fired;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.FiredDTO;
@@ -16,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Created by nazar on 16.11.16.
@@ -65,12 +68,15 @@ public class FiredServiceImpl implements FiredService {
 
     @Override
     @Transactional
-    public Fired getFired(Long id) {
+    public JsonObject getFired(Long id) {
+        GsonBuilder b = new GsonBuilder();
+        b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+        Gson gson = b.create();
         Staff staff = staffRepository.findOne(id);
         if(staff == null){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        return staff.getFired();
+        return gson.toJsonTree(staff.getFired()).getAsJsonObject();
     }
 
     @Transactional

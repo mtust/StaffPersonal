@@ -1,7 +1,10 @@
 package com.staff.personal.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.staff.personal.config.HibernateProxyTypeAdapter;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
@@ -315,20 +318,25 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
-    private AllStaffDTO createFullAllStaffDTOForUpdate(Staff staff, AllStaffDTO allStaffDTO){
-
-        Gson gson = new Gson();
+    @Override
+    @Transactional
+    public RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO){
+        GsonBuilder b = new GsonBuilder();
+        b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+        Gson gson = b.create();
+        Staff staff = staffRepository.getOne(id);
+        log.info("allStaffDTO:" + allStaffDTO);
         JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
         Set<Map.Entry<String, JsonElement>> set = jsonElement.getAsJsonObject().entrySet();
         JsonElement jsonElement1 = gson.toJsonTree(staff);
+        JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> set1 = jsonElement1.getAsJsonObject().entrySet();
-        for (Map.Entry<String, JsonElement> entry: set
-             ) {
-            set1.add(entry);
-        }
+        log.info("set:" + set);
+        log.info("jsonObject1:" + jsonObject1);
+        this.change(set, jsonObject1);
 
-        return allStaffDTO;
-
+        log.info("jsonObject2:" + jsonObject1);
+        return new RestMessageDTO("Success", true);
     }
 
 
@@ -372,6 +380,26 @@ public class StaffServiceImpl implements StaffService {
         getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
         getAllStaffDTO.setPromotions(staff.getPromotions());
         return getAllStaffDTO;
+    }
+
+    private void change(Set<Map.Entry<String, JsonElement>> set, JsonObject jsonObject1){
+        for (Map.Entry<String, JsonElement> entry: set
+                ) {
+            JsonElement element = entry.getValue();
+            if(element.isJsonPrimitive()){
+                log.info("entry:" + entry);
+                jsonObject1.add(entry.getKey(), entry.getValue());
+            } else if(element.isJsonArray()){
+                for (JsonElement jsonArrayElement:
+                        element.getAsJsonArray()) {
+                    this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
+                }
+            } else if(element.isJsonObject()){
+                this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
+            }
+
+
+        }
     }
 
 
