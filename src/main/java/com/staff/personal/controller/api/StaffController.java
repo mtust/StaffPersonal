@@ -223,7 +223,7 @@ public class StaffController {
     }
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.DELETE)
-    RestMessageDTO delBenefitsByID(@PathVariable Long id) {
+    RestMessageDTO delFired(@PathVariable Long id) {
             return firedService.delFired(id);
     }
 
@@ -238,6 +238,12 @@ public class StaffController {
     List<Holiday> getholiday(@PathVariable Long id) {
         log.info("in getholidays");
         return holidayService.getHolidays(id);
+    }
+
+    @RequestMapping(value = "{id}/holiday/{idHol}", method = RequestMethod.DELETE)
+    RestMessageDTO delHoliday(@PathVariable Long id, @PathVariable Long idHol) {
+        log.info("in delHoliday");
+        return holidayService.delHoliday(id, idHol);
     }
 
     //HOSPITALS

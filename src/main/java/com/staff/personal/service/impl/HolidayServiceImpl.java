@@ -6,9 +6,9 @@ import com.staff.personal.dto.HolidayDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
+import com.staff.personal.repository.HolidayRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.HolidayService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,8 @@ public class HolidayServiceImpl implements HolidayService{
     @Autowired
     StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     @Override
     @Transactional
@@ -64,5 +65,26 @@ public class HolidayServiceImpl implements HolidayService{
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getHolidays();
+    }
+
+    @Override
+    @Transactional
+    public RestMessageDTO delHoliday(Long idStaff, Long idHoliday) {
+        Staff staff = staffRepository.findOne(idStaff);
+        if(staff == null){
+            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist");
+        }
+        List<Holiday> list = staff.getHolidays();
+        for (Holiday holiday: list) {
+            if (holiday.getId()==(idHoliday)) {
+                list.remove(holiday);
+                holidayRepository.delete(holiday);
+                break;
+            }
+        }
+        log.info("list after foreach \n" + list.toString());
+        staff.setHolidays(list);
+        staffRepository.save(staff);
+        return new RestMessageDTO("Succes", true);
     }
 }

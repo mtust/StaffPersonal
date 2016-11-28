@@ -16,6 +16,8 @@ public interface HolidayService {
 
     List<Holiday> getHolidays(Long id);
 
+    RestMessageDTO delHoliday(Long idStaff, Long idHoliday);
+
 
 
 
