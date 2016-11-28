@@ -1,6 +1,7 @@
 package com.staff.personal.controller.api;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
@@ -93,6 +94,11 @@ public class StaffController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
     RestMessageDTO updateStaffById(@PathVariable Long id, @RequestBody AllStaffDTO allStaffDTO){
+        return staffService.updateWholeStaffByIdPatch(id, allStaffDTO);
+    }
+
+    @RequestMapping(value = "whole/{id}", method = RequestMethod.PATCH)
+    RestMessageDTO updateStaffWholeById(@PathVariable Long id, @RequestBody AllStaffDTO allStaffDTO){
         return staffService.updateAllStaffById(id, allStaffDTO);
     }
 
@@ -217,7 +223,7 @@ public class StaffController {
 
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
-    Fired getFired(@PathVariable Long id) {
+    JsonObject getFired(@PathVariable Long id) {
         log.info("in getFired \n" + firedService.getFired(id).toString());
         return firedService.getFired(id);
     }

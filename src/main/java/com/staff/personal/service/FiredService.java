@@ -1,6 +1,6 @@
 package com.staff.personal.service;
 
-import com.staff.personal.domain.Fired;
+import com.google.gson.JsonObject;
 import com.staff.personal.dto.FiredDTO;
 import com.staff.personal.dto.RestMessageDTO;
 
@@ -11,7 +11,7 @@ public interface FiredService {
 
     RestMessageDTO addFired(Long id, FiredDTO firedDTO);
 
-    Fired getFired(Long id);
+    JsonObject getFired(Long id);
 
     RestMessageDTO delFired(Long id);
 }
