@@ -217,11 +217,14 @@ public class StaffController {
 
     //!!!does not work
     @RequestMapping(value = "{id}/fired", method = RequestMethod.GET)
-    String getFired(@PathVariable Long id) {
+    Fired getFired(@PathVariable Long id) {
         log.info("in getFired \n" + firedService.getFired(id).toString());
-        Gson gson = new Gson();
-        Fired fired = firedService.getFired(id);
-        return gson.toJson(fired);
+        return firedService.getFired(id);
+    }
+    //!!!does not work
+    @RequestMapping(value = "{id}/fired", method = RequestMethod.DELETE)
+    RestMessageDTO delBenefitsByID(@PathVariable Long id) {
+            return firedService.delFired(id);
     }
 
     //HOLIDAYS
