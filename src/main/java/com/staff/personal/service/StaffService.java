@@ -1,7 +1,6 @@
 package com.staff.personal.service;
 
 import com.staff.personal.domain.MainStaff;
-import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.*;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public interface StaffService {
 
 	GetStaffDTO getStaff(Long id);
 
-	List<GetAllStaffDTO> getStaff();
+	List<GetAllStaffDTO> getWholeStaff();
 
 	List<GetStaffDTO> getAllStaff();
 
@@ -28,5 +27,5 @@ public interface StaffService {
 
 	RestMessageDTO updateAllStaffById(Long id, AllStaffDTO allStaffDTO);
 
-	GetAllStaffDTO getAllStaff(Long id);
+	GetAllStaffDTO getWholeStaff(Long id);
 }

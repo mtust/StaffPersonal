@@ -73,7 +73,7 @@ public class StaffController {
 
     @RequestMapping(value = "whole/{id}", method = RequestMethod.GET)
     GetAllStaffDTO getAllStaff(@PathVariable Long id){
-        return  staffService.getAllStaff(id);
+        return  staffService.getWholeStaff(id);
     }
 
     @RequestMapping(value = "all", method = RequestMethod.GET)
@@ -83,7 +83,7 @@ public class StaffController {
 
     @RequestMapping(method = RequestMethod.GET)
     List<GetAllStaffDTO> getStaff() {
-        return staffService.getStaff();
+        return staffService.getWholeStaff();
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

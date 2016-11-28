@@ -92,7 +92,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("IN createMainStaff");
         log.info(mainStaffDTO.toString());
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         try {
@@ -143,7 +143,12 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional
     public RestMessageDTO deleteStaff(Long id) {
-        staffRepository.delete(id);
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        staff.setIsDeleted(true);
+        staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
 
@@ -159,7 +164,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
         log.info("stuff regions " + staff.getRegion());
-        if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
+        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion()))) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
 
@@ -168,7 +173,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public GetAllStaffDTO getAllStaff(Long id) {
+    public GetAllStaffDTO getWholeStaff(Long id) {
         log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
@@ -178,11 +183,9 @@ public class StaffServiceImpl implements StaffService {
         log.info("user regions: " + regions);
         Staff staff = staffRepository.findOne(id);
         log.info("stuff regions " + staff.getRegion());
-        if(staff == null || (staff.getRegion()!= null && !regions.contains(staff.getRegion()))){
+        if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion()))) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-
-
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
         getAllStaffDTO.setId(staff.getId());
         getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
@@ -199,12 +202,12 @@ public class StaffServiceImpl implements StaffService {
         return getAllStaffDTO;
     }
 
-    public List<GetAllStaffDTO> getStaff() {
+    public List<GetAllStaffDTO> getWholeStaff() {
         List<Staff> listAll = staffRepository.findAll();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
-        if(regions.isEmpty()){
+        if (regions.isEmpty()) {
             list = listAll;
         } else {
             list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
@@ -228,18 +231,16 @@ public class StaffServiceImpl implements StaffService {
         log.info("list after foreach \n" + listDTO.toString());
 
         return listDTO;
-
-
     }
 
     @Transactional
     @Override
-    public List<GetStaffDTO> getAllStaff(){
+    public List<GetStaffDTO> getAllStaff() {
         List<Staff> listAll = staffRepository.findAll();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
-        if(regions.isEmpty()){
+        if (regions.isEmpty()) {
             list = listAll;
         } else {
             list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
@@ -249,7 +250,7 @@ public class StaffServiceImpl implements StaffService {
             GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
             listDTO.add(getStaffDTO);
         }
-            log.info("list after foreach \n" + listDTO.toString());
+        log.info("list after foreach \n" + listDTO.toString());
 
         return listDTO;
     }
@@ -266,9 +267,9 @@ public class StaffServiceImpl implements StaffService {
     public RestMessageDTO updateAllStaffById(Long id, AllStaffDTO staffDTO) {
         Staff staff = staffRepository.findOne(id);
         Region region = null;
-        if(staffDTO.getRegion()!= null) {
+        if (staffDTO.getRegion() != null) {
             region = regionService.getRegionById(staffDTO.getRegion().getId());
-            if(region != null){
+            if (region != null) {
                 staff.setRegion(region);
             }
         }
@@ -278,26 +279,26 @@ public class StaffServiceImpl implements StaffService {
         workExperienceService.crateWorkExperience(staffDTO.getWorkExperiences(), staff.getId());
         otherService.createOther(staffDTO.getOther(), staff.getId());
         educationService.createEducation(staffDTO.getEducation(), staff.getId());
-        for (PremiumFineDTO premium:
-             staffDTO.getPremiumFines()) {
+        for (PremiumFineDTO premium :
+                staffDTO.getPremiumFines()) {
             premiumFineService.addPremiumFine(staff.getId(), premium);
         }
-        for (PromotionDTO promotion:
-             staffDTO.getPromotions()) {
+        for (PromotionDTO promotion :
+                staffDTO.getPromotions()) {
             promotionService.addPromotion(staff.getId(), promotion);
         }
-        for (HolidayDTO holiday: staffDTO.getHolidays()
-             ) {
+        for (HolidayDTO holiday : staffDTO.getHolidays()
+                ) {
             holidayService.addHoliday(staff.getId(), holiday);
         }
-        for (HospitalsDTO hospital: staffDTO.getHospitals()
+        for (HospitalsDTO hospital : staffDTO.getHospitals()
                 ) {
             hospitalsService.addHospitals(staff.getId(), hospital);
         }
 
         firedService.addFired(staff.getId(), staffDTO.getFired());
 
-        for (BenefitsDTO benefit: staffDTO.getBenefits()
+        for (BenefitsDTO benefit : staffDTO.getBenefits()
                 ) {
             benefitsService.addBenefit(benefit, staff.getId());
         }
@@ -305,11 +306,11 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
-    private void createUpdateStuff(Staff staff, StaffDTO staffDTO){
+    private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
         Region region = null;
-        if(staffDTO.getRegionId()!= null) {
+        if (staffDTO.getRegionId() != null) {
             region = regionService.getRegionById(staffDTO.getRegionId());
-            if(region != null){
+            if (region != null) {
                 staff.setRegion(region);
             }
         }
@@ -319,7 +320,7 @@ public class StaffServiceImpl implements StaffService {
         educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
     }
 
-    private  GetStaffDTO createGetStuffDTO(Staff staff){
+    private GetStaffDTO createGetStuffDTO(Staff staff) {
         GetStaffDTO getStaffDTO = new GetStaffDTO();
         getStaffDTO.setId(staff.getId());
         getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
