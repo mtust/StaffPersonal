@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.staff.personal.domain.*;
 import lombok.Data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -17,7 +13,7 @@ import java.util.List;
 public class GetAllStaffDTO {
 
     Long id;
-    private MainStaff mainStaff;
+    private MainStaffDTO mainStaff;
     private Education education;
     private List<WorkExperience> workExperiences;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

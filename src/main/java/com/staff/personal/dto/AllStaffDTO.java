@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class AllStaffDTO {
 
+    private Long id;
     private MainStaffDTO mainStaff;
     private EducationDTO education;
     private List<WorkExperienceDTO> workExperiences;

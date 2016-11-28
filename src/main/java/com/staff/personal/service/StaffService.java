@@ -1,8 +1,8 @@
 package com.staff.personal.service;
 
 import com.staff.personal.domain.MainStaff;
-import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,4 +29,7 @@ public interface StaffService {
 	RestMessageDTO updateAllStaffById(Long id, AllStaffDTO allStaffDTO);
 
 	GetAllStaffDTO getAllStaff(Long id);
+
+	@Transactional
+	RestMessageDTO updateWholeStuffFieldById(Long id, AllStaffDTO staffDTO);
 }
