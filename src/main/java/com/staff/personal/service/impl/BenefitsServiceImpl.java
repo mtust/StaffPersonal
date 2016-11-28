@@ -58,7 +58,7 @@ public class BenefitsServiceImpl implements BenefitsService {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
-        return new RestMessageDTO("Succes", true);
+        return new RestMessageDTO("Success", true);
     }
 
     @Override
@@ -91,6 +91,6 @@ public class BenefitsServiceImpl implements BenefitsService {
         log.info("list after foreach \n" + list.toString());
         staff.setBenefits(list);
         staffRepository.save(staff);
-        return new RestMessageDTO("Succes", true);
+        return new RestMessageDTO("Success", true);
     }
 }

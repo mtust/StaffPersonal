@@ -1,5 +1,7 @@
 package com.staff.personal.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
@@ -18,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -61,6 +60,7 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private FiredService firedService;
 
+
     @Autowired
     private PromotionService promotionService;
     @Autowired
@@ -84,6 +84,35 @@ public class StaffServiceImpl implements StaffService {
         staff.setMainStaff(null);
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
+    }
+
+    private MainStaffDTO createMainStaffDTO(Staff staff){
+        MainStaffDTO mainStaffDTO = new MainStaffDTO();
+        MainStaff mainStaff = staff.getMainStaff();
+            mainStaffDTO.setFullName(mainStaff.getFullName());
+            mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
+            mainStaffDTO.setSpecialRank(simpleDateFormat.format(mainStaff.getDateOfBirth()));
+            mainStaffDTO.setPosition(mainStaff.getPosition());
+            mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
+            mainStaffDTO.setDateConferringSpecRanks(simpleDateFormat.format(mainStaff.getDateConferringSpecRanks()));
+            mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
+            mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
+            mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
+            mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
+            mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
+            mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
+            mainStaffDTO.setInCommand(mainStaff.getInCommand());
+            mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+            mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
+            mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
+            mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
+            mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
+            mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
+            mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
+            mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
+            mainStaffDTO.setBiography(mainStaff.getBiography());
+            log.info(mainStaff.toString());
+        return mainStaffDTO;
     }
 
     @Override
@@ -186,6 +215,7 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
+<<<<<<< HEAD
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
         getAllStaffDTO.setId(staff.getId());
         getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
@@ -198,6 +228,11 @@ public class StaffServiceImpl implements StaffService {
         getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
         getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
         getAllStaffDTO.setPromotions(staff.getPromotions());
+=======
+
+
+        GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
+>>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
 
         return getAllStaffDTO;
     }
@@ -214,18 +249,7 @@ public class StaffServiceImpl implements StaffService {
         }
         List<GetAllStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
-            GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
-            getAllStaffDTO.setId(staff.getId());
-            getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
-            getAllStaffDTO.setEducation(staff.getEducation());
-            getAllStaffDTO.setMainStaff(staff.getMainStaff());
-            getAllStaffDTO.setRegion(staff.getRegion());
-            getAllStaffDTO.setBenefits(staff.getBenefits());
-            getAllStaffDTO.setFired(staff.getFired());
-            getAllStaffDTO.setHolidays(staff.getHolidays());
-            getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
-            getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
-            getAllStaffDTO.setPromotions(staff.getPromotions());
+            GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
             listDTO.add(getAllStaffDTO);
         }
         log.info("list after foreach \n" + listDTO.toString());
@@ -264,6 +288,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    @Transactional
     public RestMessageDTO updateAllStaffById(Long id, AllStaffDTO staffDTO) {
         Staff staff = staffRepository.findOne(id);
         Region region = null;
@@ -306,7 +331,35 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
+<<<<<<< HEAD
     private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
+=======
+    @Transactional
+    @Override
+    public RestMessageDTO updateWholeStuffFieldById(Long id, AllStaffDTO allStaffDTO){
+        Staff staff = staffRepository.findOne(id);
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
+        com.google.gson.JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonElement jsonElementStaff = gson.toJsonTree(staff);
+        com.google.gson.JsonObject jsonObjectStaff = jsonElementStaff.getAsJsonObject();
+        log.info("json:" + jsonObject.toString());
+        log.info("staffJSON:" + jsonObjectStaff);
+        for (Map.Entry<String, JsonElement> el: jsonObject.entrySet()
+             ) {
+            jsonObjectStaff.remove(el.getKey());
+            jsonObjectStaff.add(el.getKey(), el.getValue());
+        }
+        log.info("newJSON:" + jsonObjectStaff);
+        staff = gson.fromJson(jsonObjectStaff.get(""), Staff.class);
+        return new RestMessageDTO("Success", true);
+    }
+
+
+
+
+    private void createUpdateStuff(Staff staff, StaffDTO staffDTO){
+>>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
         Region region = null;
         if (staffDTO.getRegionId() != null) {
             region = regionService.getRegionById(staffDTO.getRegionId());
@@ -330,10 +383,33 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
+<<<<<<< HEAD
     private RestMessageDTO updateStaff(GetAllStaffDTO getAllStaffDTO){
             log.info("Update Staff " + getAllStaffDTO.toString());
 
         return new RestMessageDTO("Succes", true);
+=======
+    private GetAllStaffDTO createGetAllStuffDTO(Staff staff){
+        GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
+        getAllStaffDTO.setId(staff.getId());
+        getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+        getAllStaffDTO.setEducation(staff.getEducation());
+        getAllStaffDTO.setMainStaff(this.createMainStaffDTO(staff));
+        getAllStaffDTO.setRegion(staff.getRegion());
+        getAllStaffDTO.setBenefits(staff.getBenefits());
+        getAllStaffDTO.setFired(staff.getFired());
+        getAllStaffDTO.setHolidays(staff.getHolidays());
+        getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
+        getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
+        getAllStaffDTO.setPromotions(staff.getPromotions());
+        return getAllStaffDTO;
+    }
+
+
+    private Staff createStaffFromAllStaffDTO(AllStaffDTO allStaffDTO){
+        Staff staff = new Staff();
+        return staff;
+>>>>>>> c2aa9b404b3a4dfa0c8e16f12065b87d93115836
     }
 
 
