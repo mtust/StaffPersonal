@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getMe() {
-        Long userId = (Long) ((Claims) requestContext.getAttribute("claims")).get("id");
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         return this.getUserById(userId);
     }
 
