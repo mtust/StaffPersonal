@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class PromotionServiceImpl implements PromotionService{
+public class PromotionServiceImpl implements PromotionService {
 
     @Autowired
     private StaffRepository staffRepository;
@@ -38,17 +38,17 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public RestMessageDTO addPromotion(Long id, PromotionDTO promotionDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         Promotion promotion = new Promotion();
         List<Promotion> list = staff.getPromotions();
         try {
             promotion.setCompanyName(promotionDTO.getCompanyName());
-            try{
-             promotion.setFromDate(simpleDateFormat.parse(promotionDTO.getFromDate()));
+            try {
+                promotion.setFromDate(simpleDateFormat.parse(promotionDTO.getFromDate()));
                 promotion.setToDate(simpleDateFormat.parse(promotionDTO.getToDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 promotion.setFromDate(simpleDateFormatNew.parse(promotionDTO.getFromDate()));
                 promotion.setToDate(simpleDateFormatNew.parse(promotionDTO.getToDate()));
             }
@@ -56,7 +56,7 @@ public class PromotionServiceImpl implements PromotionService{
             list.add(promotion);
             staff.setPromotions(list);
             staffRepository.save(staff);
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
@@ -67,7 +67,7 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public List<Promotion> getPromotions(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         return staff.getPromotions();
@@ -77,12 +77,12 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public RestMessageDTO delPromotions(Long idS, Long idPr) {
         Staff staff = staffRepository.findOne(idS);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + idS + " dosen't exist or is deleted");
         }
         List<Promotion> list = staff.getPromotions();
         for (Promotion promotion : list) {
-            if (promotion.getId() == idPr){
+            if (promotion.getId() == idPr) {
                 list.remove(promotion);
                 promotionRepository.delete(promotion);
                 break;
@@ -90,16 +90,21 @@ public class PromotionServiceImpl implements PromotionService{
         }
         return new RestMessageDTO("Succes", true);
     }
+
     @Override
     @Transactional
-    public List<PromotionDTO> createPromotionDTO(List<Promotion> list){
+    public List<PromotionDTO> createPromotionDTO(List<Promotion> list) {
         List<PromotionDTO> promotionDTOList = new ArrayList<>();
         for (Promotion promotion : list) {
             PromotionDTO promotionDTO = new PromotionDTO();
             promotionDTO.setId(promotion.getId().toString());
             promotionDTO.setCompanyName(promotion.getCompanyName());
-            promotionDTO.setFromDate(simpleDateFormat.format(promotion.getFromDate()));
-            promotionDTO.setToDate(simpleDateFormat.format(promotion.getToDate()));
+            if (promotion.getFromDate() != null) {
+                promotionDTO.setFromDate(simpleDateFormat.format(promotion.getFromDate()));
+            }
+            if (promotion.getToDate() != null) {
+                promotionDTO.setToDate(simpleDateFormat.format(promotion.getToDate()));
+            }
             promotionDTOList.add(promotionDTO);
         }
         return promotionDTOList;

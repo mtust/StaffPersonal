@@ -102,7 +102,9 @@ public class PremiumFineServiceImpl implements PremiumFineService {
             premiumFineDTO.setName(premiumFine.getName());
             premiumFineDTO.setOrder(premiumFine.getOrder());
             premiumFineDTO.setSerialNumber(premiumFine.getSerialNumber());
-            premiumFineDTO.setOrderDate(simpleDateFormat.format(premiumFine.getOrderDate()));
+            if (premiumFine.getOrderDate() != null) {
+                premiumFineDTO.setOrderDate(simpleDateFormat.format(premiumFine.getOrderDate()));
+            }
             premiumFineDTOList.add(premiumFineDTO);
         }
         return premiumFineDTOList;
