@@ -96,6 +96,7 @@ public class FiredServiceImpl implements FiredService {
         }
         Fired fired = staff.getFired();
         log.info("delete fired is service + " + fired.toString());
+        staff.setFired(null);
         firedRepository.delete(fired);
         staffRepository.save(staff);
 
