@@ -265,6 +265,12 @@ public class StaffController {
         return hospitalsService.getHospitals(id);
     }
 
+    @RequestMapping(value = "{id}/hospitals/{idHosp}", method = RequestMethod.DELETE)
+    RestMessageDTO delHospitals(@PathVariable Long id, @PathVariable Long idHosp) {
+        log.info("in delHospitals");
+        return hospitalsService.delHospitals(id,idHosp);
+    }
+
     //PremiumFine
     @RequestMapping(value = "{id}/premiumFine", method = RequestMethod.POST)
     RestMessageDTO addpremiumFine(@PathVariable Long id, @RequestBody PremiumFineDTO premiumFineDTO) {

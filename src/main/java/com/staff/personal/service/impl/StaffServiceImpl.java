@@ -74,8 +74,8 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     MainStaffRepository mainStaffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            //new SimpleDateFormat("dd.MM.yyyy");
-            private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+    //new SimpleDateFormat("dd.MM.yyyy");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Override
     public MainStaff getMainStaffForStuff(Long id) {
@@ -92,32 +92,32 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
-    private MainStaffDTO createMainStaffDTO(Staff staff){
+    private MainStaffDTO createMainStaffDTO(Staff staff) {
         MainStaffDTO mainStaffDTO = new MainStaffDTO();
         MainStaff mainStaff = staff.getMainStaff();
-            mainStaffDTO.setFullName(mainStaff.getFullName());
-            mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
-            mainStaffDTO.setPosition(mainStaff.getPosition());
-            mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
-            mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
-            mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
-            mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
-            mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
-            mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
-            mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
+        mainStaffDTO.setFullName(mainStaff.getFullName());
+        mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
+        mainStaffDTO.setPosition(mainStaff.getPosition());
+        mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
+        mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
+        mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
+        mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
+        mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
+        mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+        mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
 
-            mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
-            mainStaffDTO.setInCommand(mainStaff.getInCommand());
+        mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
+        mainStaffDTO.setInCommand(mainStaff.getInCommand());
 
-            mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
-            mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
-            mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
-            mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
+        mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
+        mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
+        mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
+        mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
 
-            mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
-            mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
+        mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
+        mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
         mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
-            mainStaffDTO.setBiography(mainStaff.getBiography());
+        mainStaffDTO.setBiography(mainStaff.getBiography());
         return mainStaffDTO;
     }
 
@@ -163,7 +163,7 @@ public class StaffServiceImpl implements StaffService {
                 if (mainStaffDTO.getDateSwear() != null) {
                     mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
                 }
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 if (mainStaffDTO.getDateOfBirth() != null) {
                     mainStaff.setDateOfBirth(simpleDateFormatNew.parse(mainStaffDTO.getDateOfBirth()));
                 }
@@ -372,7 +372,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     @Transactional
-    public RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO){
+    public RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO) {
 
         GsonBuilder b = new GsonBuilder();
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
@@ -393,22 +393,22 @@ public class StaffServiceImpl implements StaffService {
         Gson gsonNew = new GsonBuilder().registerTypeAdapterFactory(NullStringToEmptyAdapterFactory.FACTORY).create();
         allStaffDTO = gsonNew.fromJson(jsonObject1, AllStaffDTO.class);
         log.info("allStaffDTO" + allStaffDTO);
-        if(allStaffDTO.getBenefits() == null){
+        if (allStaffDTO.getBenefits() == null) {
             allStaffDTO.setBenefits(new ArrayList<>());
         }
-        if(allStaffDTO.getHolidays() == null){
+        if (allStaffDTO.getHolidays() == null) {
             allStaffDTO.setHolidays(new ArrayList<>());
         }
-        if(allStaffDTO.getHospitals() == null){
+        if (allStaffDTO.getHospitals() == null) {
             allStaffDTO.setHospitals(new ArrayList<>());
         }
-        if(allStaffDTO.getPremiumFines() == null){
+        if (allStaffDTO.getPremiumFines() == null) {
             allStaffDTO.setPremiumFines(new ArrayList<>());
         }
-        if(allStaffDTO.getPromotions() == null){
+        if (allStaffDTO.getPromotions() == null) {
             allStaffDTO.setPromotions(new ArrayList<>());
         }
-        if(allStaffDTO.getWorkExperiences() == null){
+        if (allStaffDTO.getWorkExperiences() == null) {
             allStaffDTO.setWorkExperiences(new ArrayList<>());
         }
         this.updateAllStaffById(id, allStaffDTO);
@@ -416,9 +416,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
 
-
-
-    private void createUpdateStuff(Staff staff, StaffDTO staffDTO){
+    private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
         Region region = null;
         if (staffDTO.getRegionId() != null) {
             region = regionService.getRegionById(staffDTO.getRegionId());
@@ -442,7 +440,7 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
-    private GetAllStaffDTO createGetAllStuffDTO(Staff staff){
+    private GetAllStaffDTO createGetAllStuffDTO(Staff staff) {
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
         getAllStaffDTO.setId(staff.getId());
         getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
@@ -458,28 +456,25 @@ public class StaffServiceImpl implements StaffService {
         return getAllStaffDTO;
     }
 
-    private void change(Set<Map.Entry<String, JsonElement>> set, JsonObject jsonObject1){
-        for (Map.Entry<String, JsonElement> entry: set
+    private void change(Set<Map.Entry<String, JsonElement>> set, JsonObject jsonObject1) {
+        for (Map.Entry<String, JsonElement> entry : set
                 ) {
             JsonElement element = entry.getValue();
-            if(element.isJsonPrimitive()){
+            if (element.isJsonPrimitive()) {
                 log.info("entry:" + entry);
                 jsonObject1.add(entry.getKey(), entry.getValue());
-            } else if(element.isJsonArray()){
-                for (JsonElement jsonArrayElement:
+            } else if (element.isJsonArray()) {
+                for (JsonElement jsonArrayElement :
                         element.getAsJsonArray()) {
                     this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
                 }
-            } else if(element.isJsonObject()){
+            } else if (element.isJsonObject()) {
                 this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
             }
 
 
         }
     }
-
-
-
 
 
 }

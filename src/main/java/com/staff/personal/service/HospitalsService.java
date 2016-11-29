@@ -14,4 +14,6 @@ public interface HospitalsService {
     RestMessageDTO addHospitals(Long id,HospitalsDTO hospitalsDTo);
 
     List<Hospitals> getHospitals(Long id);
+
+    RestMessageDTO delHospitals(Long idStaff, Long idHosp);
 }

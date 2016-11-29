@@ -34,8 +34,8 @@ public class FiredServiceImpl implements FiredService {
     FiredRepository firedRepository;
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+
     @Transactional
     @Override
     public RestMessageDTO addFired(Long id, FiredDTO firedDTO) {
@@ -94,6 +94,7 @@ public class FiredServiceImpl implements FiredService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Fired fired = staff.getFired();
+        log.info("delete fired is service + " + fired.toString());
         firedRepository.delete(fired);
         staffRepository.save(staff);
 

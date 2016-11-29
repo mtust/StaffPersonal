@@ -6,6 +6,7 @@ import com.staff.personal.dto.HospitalsDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
+import com.staff.personal.repository.HospitalsRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.HospitalsService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ public class HospitalsServiceImpl implements HospitalsService{
 
     @Autowired
     StaffRepository staffRepository;
+    @Autowired
+    HospitalsRepository hospitalsRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
@@ -69,5 +72,25 @@ public class HospitalsServiceImpl implements HospitalsService{
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getHospitals();
+    }
+
+    @Override
+    public RestMessageDTO delHospitals(Long idStaff, Long idHosp) {
+        Staff staff = staffRepository.findOne(idStaff);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist or is deleted");
+        }
+        List<Hospitals> list = staff.getHospitals();
+        for (Hospitals hospitals : list) {
+            if (hospitals.getId() == idHosp){
+                list.remove(hospitals);
+                hospitalsRepository.delete(hospitals);
+                break;
+            }
+        }
+        staff.setHospitals(list);
+        staffRepository.save(staff);
+
+        return new RestMessageDTO("Succes", true);
     }
 }
