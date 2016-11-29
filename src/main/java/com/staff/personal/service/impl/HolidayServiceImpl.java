@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class HolidayServiceImpl implements HolidayService{
+public class HolidayServiceImpl implements HolidayService {
 
     @Autowired
     private StaffRepository staffRepository;
@@ -38,7 +38,7 @@ public class HolidayServiceImpl implements HolidayService{
     @Transactional
     public RestMessageDTO addHoliday(Long id, HolidayDTO holidayDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Holiday holiday = new Holiday();
@@ -49,7 +49,7 @@ public class HolidayServiceImpl implements HolidayService{
             try {
                 holiday.setFromDate(simpleDateFormat.parse(holidayDTO.getFromDate()));
                 holiday.setToDate(simpleDateFormat.parse(holidayDTO.getToDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 holiday.setFromDate(simpleDateFormatNew.parse(holidayDTO.getFromDate()));
                 holiday.setToDate(simpleDateFormatNew.parse(holidayDTO.getToDate()));
             }
@@ -59,7 +59,7 @@ public class HolidayServiceImpl implements HolidayService{
             staff.setHolidays(list);
             staffRepository.save(staff);
 
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
@@ -70,7 +70,7 @@ public class HolidayServiceImpl implements HolidayService{
     @Transactional
     public List<Holiday> getHolidays(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getHolidays();
@@ -80,12 +80,12 @@ public class HolidayServiceImpl implements HolidayService{
     @Transactional
     public RestMessageDTO delHoliday(Long idStaff, Long idHoliday) {
         Staff staff = staffRepository.findOne(idStaff);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist");
         }
         List<Holiday> list = staff.getHolidays();
-        for (Holiday holiday: list) {
-            if (holiday.getId()==(idHoliday)) {
+        for (Holiday holiday : list) {
+            if (holiday.getId() == (idHoliday)) {
                 list.remove(holiday);
                 holidayRepository.delete(holiday);
                 break;
@@ -107,8 +107,12 @@ public class HolidayServiceImpl implements HolidayService{
             holidayDTO.setDescription(holiday.getDescription());
             holidayDTO.setHolidayPlace(holiday.getHolidayPlace());
             holidayDTO.setTypeHoliday(holiday.getTypeHoliday());
-            holidayDTO.setFromDate(simpleDateFormat.format(holiday.getFromDate()));
-            holidayDTO.setToDate(simpleDateFormat.format(holiday.getToDate()));
+            if (holiday.getFromDate() != null) {
+                holidayDTO.setFromDate(simpleDateFormat.format(holiday.getFromDate()));
+            }
+            if (holiday.getToDate() != null) {
+                holidayDTO.setToDate(simpleDateFormat.format(holiday.getToDate()));
+            }
             holidayDTOList.add(holidayDTO);
         }
         return holidayDTOList;

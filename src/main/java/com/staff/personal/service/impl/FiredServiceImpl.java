@@ -40,7 +40,7 @@ public class FiredServiceImpl implements FiredService {
     @Override
     public RestMessageDTO addFired(Long id, FiredDTO firedDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Fired fired = new Fired();
@@ -48,7 +48,7 @@ public class FiredServiceImpl implements FiredService {
             try {
                 fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
                 fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 fired.setDateFiring(simpleDateFormatNew.parse(firedDTO.getDateFiring()));
                 fired.setReferenceLEKDate(simpleDateFormatNew.parse(firedDTO.getReferenceLEKDate()));
             }
@@ -81,7 +81,7 @@ public class FiredServiceImpl implements FiredService {
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = b.create();
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return gson.toJsonTree(staff.getFired()).getAsJsonObject();
@@ -91,7 +91,7 @@ public class FiredServiceImpl implements FiredService {
     @Override
     public RestMessageDTO delFired(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Fired fired = staff.getFired();
@@ -111,21 +111,25 @@ public class FiredServiceImpl implements FiredService {
             return new FiredDTO();
         } else {
             FiredDTO firedDTO = new FiredDTO();
-        firedDTO.setId(fired.getId().toString());
-        firedDTO.setDateFiring(simpleDateFormat.format(fired.getDateFiring()));
-        firedDTO.setOrderNumber(fired.getOrderNumber());
-        firedDTO.setWhereFired(fired.getWhereFired());
-        firedDTO.setArticle(fired.getArticle());
-        firedDTO.setLastPosition(fired.getLastPosition());
-        firedDTO.setSpecialRank(fired.getSpecialRank());
-        firedDTO.setMilitaryAccount(fired.getMilitaryAccount());
-        firedDTO.setReferenceLEKCertificate(fired.getReferenceLEKCertificate());
-        firedDTO.setReferenceLEKDate(simpleDateFormat.format(fired.getReferenceLEKDate()));
-        firedDTO.setReferenceLEKNumber(fired.getReferenceLEKNumber());
-        firedDTO.setConclusion(fired.getConclusion());
-        firedDTO.setSeniority(fired.getSeniority());
-        firedDTO.setPersonalFileForwarded(fired.getPersonalFileForwarded());
-        return firedDTO;
-    }
+            firedDTO.setId(fired.getId().toString());
+            if (fired.getDateFiring() != null) {
+                firedDTO.setDateFiring(simpleDateFormat.format(fired.getDateFiring()));
+            }
+            firedDTO.setOrderNumber(fired.getOrderNumber());
+            firedDTO.setWhereFired(fired.getWhereFired());
+            firedDTO.setArticle(fired.getArticle());
+            firedDTO.setLastPosition(fired.getLastPosition());
+            firedDTO.setSpecialRank(fired.getSpecialRank());
+            firedDTO.setMilitaryAccount(fired.getMilitaryAccount());
+            firedDTO.setReferenceLEKCertificate(fired.getReferenceLEKCertificate());
+            if (fired.getReferenceLEKDate() != null) {
+                firedDTO.setReferenceLEKDate(simpleDateFormat.format(fired.getReferenceLEKDate()));
+            }
+            firedDTO.setReferenceLEKNumber(fired.getReferenceLEKNumber());
+            firedDTO.setConclusion(fired.getConclusion());
+            firedDTO.setSeniority(fired.getSeniority());
+            firedDTO.setPersonalFileForwarded(fired.getPersonalFileForwarded());
+            return firedDTO;
+        }
     }
 }

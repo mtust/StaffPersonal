@@ -129,10 +129,16 @@ public class BenefitsServiceImpl implements BenefitsService {
             BenefitsDTO benefitsDTO = new BenefitsDTO();
             benefitsDTO.setId(benefits.getId().toString());
             benefitsDTO.setName(benefits.getName());
+            if (benefits.getFromDate() != null) {
             benefitsDTO.setFromDate(simpleDateFormat.format(benefits.getFromDate()));
-            benefitsDTO.setToDate(simpleDateFormat.format(benefits.getToDate()));
+            }
+            if (benefits.getToDate() != null) {
+                benefitsDTO.setToDate(simpleDateFormat.format(benefits.getToDate()));
+            }
             benefitsDTO.setOrder(benefits.getOrder());
-            benefitsDTO.setOrderDate(simpleDateFormat.format(benefits.getOrderDate()));
+            if (benefits.getOrderDate() != null) {
+                benefitsDTO.setOrderDate(simpleDateFormat.format(benefits.getOrderDate()));
+            }
             benefitsDTO.setCertification(benefits.getCertification());
             benefitsDTO.setPrivilege(benefits.getPrivilege());
             benefitsDTO.setActsAndComments(benefits.getActsAndComments());

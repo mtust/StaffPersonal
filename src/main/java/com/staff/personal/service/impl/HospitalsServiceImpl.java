@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class HospitalsServiceImpl implements HospitalsService{
+public class HospitalsServiceImpl implements HospitalsService {
 
     @Autowired
     private StaffRepository staffRepository;
@@ -37,7 +38,7 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Transactional
     public RestMessageDTO addHospitals(Long id, HospitalsDTO hospitalsDTo) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         Hospitals hospitals = new Hospitals();
@@ -47,7 +48,7 @@ public class HospitalsServiceImpl implements HospitalsService{
             try {
                 hospitals.setFromDate(simpleDateFormat.parse(hospitalsDTo.getFromDate()));
                 hospitals.setToDate(simpleDateFormat.parse(hospitalsDTo.getToDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
 
                 hospitals.setFromDate(simpleDateFormatNew.parse(hospitalsDTo.getFromDate()));
                 hospitals.setToDate(simpleDateFormatNew.parse(hospitalsDTo.getToDate()));
@@ -57,7 +58,7 @@ public class HospitalsServiceImpl implements HospitalsService{
             list.add(hospitals);
             staff.setHospitals(list);
             staffRepository.save(staff);
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             log.warn(e.getMessage());
             throw new BadRequestParametersException("Дата у не вірному форматі");
         }
@@ -68,26 +69,47 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Transactional
     public List<Hospitals> getHospitals(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getHospitals();
     }
 
     @Override
+    @Transactional
     public RestMessageDTO delHospitals(Long idStaff, Long idHosp) {
         Staff staff = staffRepository.findOne(idStaff);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist or is deleted");
         }
         List<Hospitals> list = staff.getHospitals();
         for (Hospitals hospitals : list) {
-            if (hospitals.getId() == idHosp){
+            if (hospitals.getId() == idHosp) {
                 list.remove(hospitals);
                 hospitalsRepository.delete(hospitals);
                 break;
             }
         }
         return new RestMessageDTO("Succes", true);
+    }
+
+    @Override
+    @Transactional
+    public List<HospitalsDTO> createHospitalsDTO(List<Hospitals> list) {
+        List<HospitalsDTO> hospitalsDTOList = new ArrayList<>();
+        for (Hospitals hospitals : list) {
+            HospitalsDTO hospitalsDTO = new HospitalsDTO();
+            hospitalsDTO.setId(hospitals.getId().toString());
+            hospitalsDTO.setTypeHospital(hospitals.getTypeHospital());
+            hospitalsDTO.setDescription(hospitals.getDescription());
+            if (hospitals.getFromDate() != null) {
+                hospitalsDTO.setFromDate(simpleDateFormat.format(hospitals.getFromDate()));
+            }
+            if (hospitals.getToDate() != null) {
+                hospitalsDTO.setToDate(simpleDateFormat.format(hospitals.getToDate()));
+            }
+        }
+
+        return hospitalsDTOList;
     }
 }

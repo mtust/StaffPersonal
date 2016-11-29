@@ -21,6 +21,7 @@ public class GetAllStaffDTO {
     private List<BenefitsDTO> benefits;
     private List<PromotionDTO> promotions;
     private List<HolidayDTO> holidays;
+    private List<HospitalsDTO> hospitals;
     private List<PremiumFineDTO> premiumFines;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private FiredDTO fired;
