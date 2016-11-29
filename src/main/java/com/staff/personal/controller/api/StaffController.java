@@ -203,7 +203,7 @@ public class StaffController {
     }
 
     @RequestMapping(value = "{id}/benefits", method = RequestMethod.GET)
-    List<Benefits> getBenefits(@PathVariable Long id) {
+    List<BenefitsDTO> getBenefits(@PathVariable Long id) {
         log.info("in getBenefits");
         return benefitsService.getBenefits(id);
     }

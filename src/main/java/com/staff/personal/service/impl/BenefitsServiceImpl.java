@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Autowired
     private StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM, dd, yyyy, hh:mm:ss aaa");
     @Autowired
     private BenefitsRepository benefitsRepository;
 
@@ -72,12 +73,28 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     @Transactional
-    public List<Benefits> getBenefits(Long id) {
+    public List<BenefitsDTO> getBenefits(Long id) {
         Staff staff = staffRepository.findOne(id);
         if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        return staff.getBenefits();
+        List<Benefits> benefitsList = staff.getBenefits();
+        List<BenefitsDTO> list = new ArrayList<>();
+        for (Benefits benefits : benefitsList) {
+            BenefitsDTO benefitsDTO = new BenefitsDTO();
+            benefitsDTO.setId(benefits.getId().toString());
+            benefitsDTO.setName(benefits.getName());
+            benefitsDTO.setFromDate(simpleDateFormat.format(benefits.getFromDate()));
+            benefitsDTO.setToDate(simpleDateFormat.format(benefits.getToDate()));
+            benefitsDTO.setOrder(benefits.getOrder());
+            benefitsDTO.setOrderDate(simpleDateFormat.format(benefits.getOrderDate()));
+            benefitsDTO.setCertification(benefits.getCertification());
+            benefitsDTO.setPrivilege(benefits.getPrivilege());
+            benefitsDTO.setActsAndComments(benefits.getActsAndComments());
+            benefitsDTO.setOtherInfo(benefits.getOtherInfo());
+            list.add(benefitsDTO);
+        }
+        return list;
     }
 
     @Override

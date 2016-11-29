@@ -14,7 +14,7 @@ public interface BenefitsService {
 
     RestMessageDTO addBenefit(BenefitsDTO benefitsDTO, Long id);
 
-    List<Benefits> getBenefits(Long id);
+    List<BenefitsDTO> getBenefits(Long id);
 
     RestMessageDTO delBenefitsById(Long idStaff, Long idBen);
 }
