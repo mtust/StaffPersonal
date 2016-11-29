@@ -208,7 +208,7 @@ public class StaffController {
         return benefitsService.getBenefits(id);
     }
 
-    @RequestMapping(value = "{id}/{idBen}/benefits", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}/benefits/{idBen}", method = RequestMethod.DELETE)
     RestMessageDTO delBenefitsByID(@PathVariable Long id, @PathVariable Long idBen) {
         log.info("in delBenefitsByID");
         return benefitsService.delBenefitsById(id, idBen);
