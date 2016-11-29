@@ -1,7 +1,5 @@
 package com.staff.personal.controller.api;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.service.*;
@@ -362,13 +360,18 @@ public class StaffController {
     @ResponseBody
     List<StaffDocumentDTO> getStaffDoc(@PathVariable Long id){
         log.info("IN CONTROLLER getStaffDoc");
-        return staffDocumentsService.getDocumentsNames(id);
+        return staffDocumentsService.getDocumentsInfo(id);
     }
 
     @RequestMapping(value = "{id}/staffDoc/{idDoc}", method = RequestMethod.DELETE)
     RestMessageDTO delStaffDoc(@PathVariable Long id, @PathVariable Long idDoc) {
         log.info("in delStaffDoc");
         return staffDocumentsService.delDocument(id,idDoc);
+    }
+    @RequestMapping(value = "{id}/staffDoc/{idDoc}", method = RequestMethod.GET)
+    byte[] getStaffDocFile(@PathVariable Long id, @PathVariable int idDoc)throws IOException, SQLException  {
+        log.info("in getStaffDocFile");
+        return staffDocumentsService.getFile(id,idDoc);
     }
 
 

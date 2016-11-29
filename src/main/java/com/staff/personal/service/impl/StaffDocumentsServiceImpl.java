@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
 
     @Override
     @Transactional
-    public List<StaffDocumentDTO> getDocumentsNames(Long id) {
+    public List<StaffDocumentDTO> getDocumentsInfo(Long id) {
         Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
@@ -70,8 +71,14 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
 
     @Override
     @Transactional
-    public byte[] getFile(String idStaff, String idDoc) {
-        return new byte[0];
+    public byte[] getFile(Long idStaff, int idDoc) throws IOException, SQLException {
+        Staff staff = staffRepository.findOne(idStaff);
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist or is deleted");
+        }
+        List<StuffDocuments> list = staff.getMainStaff().getDocuments();
+        StuffDocuments stuffDocuments = list.get(idDoc-1);
+        return stuffDocuments.getFile();
     }
 
     @Override
