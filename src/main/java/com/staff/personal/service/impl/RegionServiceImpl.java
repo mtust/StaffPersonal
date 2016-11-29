@@ -6,6 +6,7 @@ import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -17,25 +18,29 @@ import java.util.Set;
 public class RegionServiceImpl implements RegionService {
 
     @Autowired
-    RegionRepository regionRepository;
+    private RegionRepository regionRepository;
 
     @Override
+    @Transactional
     public RestMessageDTO createRegion(Region region) {
         regionRepository.save(region);
         return new RestMessageDTO("Success", true);
     }
 
     @Override
+    @Transactional
     public Region getRegionById(Long id) {
         return regionRepository.findOne(id);
     }
 
     @Override
+    @Transactional
     public List<Region> getAllRegions() {
         return regionRepository.findAll();
     }
 
     @Override
+    @Transactional
     public RestMessageDTO deleteRegionById(Long id) {
         regionRepository.delete(id);
         return new RestMessageDTO("Success", true);

@@ -26,9 +26,9 @@ import java.util.List;
 public class HospitalsServiceImpl implements HospitalsService{
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
     @Autowired
-    HospitalsRepository hospitalsRepository;
+    private HospitalsRepository hospitalsRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");

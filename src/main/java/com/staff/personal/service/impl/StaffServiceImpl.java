@@ -78,15 +78,24 @@ public class StaffServiceImpl implements StaffService {
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Override
+    @Transactional
     public MainStaff getMainStaffForStuff(Long id) {
         log.info("IN getAllMainStaff Controller");
-        return staffRepository.findOne(id).getMainStaff();
+        Staff staff = staffRepository.findOne(id);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        return staff.getMainStaff();
     }
 
 
     @Override
+    @Transactional
     public RestMessageDTO deleteMainStaffById(Long dataId) {
         Staff staff = staffRepository.findOne(dataId);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + dataId + " dosen't exist");
+        }
         staff.setMainStaff(null);
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
@@ -127,7 +136,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("IN createMainStaff");
         log.info(mainStaffDTO.toString());
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         try {
@@ -228,7 +237,7 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public RestMessageDTO deleteStaff(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         staff.setIsDeleted(true);
@@ -322,6 +331,9 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public RestMessageDTO updateStaffById(Long id, StaffDTO staffDTO) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         this.createUpdateStuff(staff, staffDTO);
         return new RestMessageDTO("Success", true);
     }
@@ -330,6 +342,9 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public RestMessageDTO updateAllStaffById(Long id, AllStaffDTO staffDTO) {
         Staff staff = staffRepository.findOne(id);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         Region region = null;
         if (staffDTO.getRegion() != null) {
             region = regionService.getRegionById(staffDTO.getRegion().getId());
@@ -378,6 +393,9 @@ public class StaffServiceImpl implements StaffService {
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = b.create();
         Staff staff = staffRepository.getOne(id);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
         GetAllStaffDTO allStaffDTO1 = this.createGetAllStuffDTO(staff);
         log.info("allStaffDTO:" + allStaffDTO);
         JsonElement jsonElement = gson.toJsonTree(allStaffDTO);

@@ -25,17 +25,17 @@ import java.util.List;
 public class EducationServiceImpl implements EducationService {
 
     @Autowired
-    EducationRepository educationRepository;
+    private EducationRepository educationRepository;
     @Autowired
-    MainEducationBlockRepository mainEducationRepository;
+    private MainEducationBlockRepository mainEducationRepository;
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
 
     @Override
     @Transactional
     public RestMessageDTO createEducation(EducationDTO educationDTO, Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         } else {
             Education education = new Education();
@@ -53,7 +53,7 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public Education getEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         log.info("getEducation");
@@ -66,7 +66,7 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public RestMessageDTO delEducation(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         log.info("delEducation");
@@ -82,6 +82,9 @@ public class EducationServiceImpl implements EducationService {
     @Transactional
     public RestMessageDTO delMainEducation(Long idStuff, Long idMainEducation) {
         Staff staff = staffRepository.findOne(idStuff);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + idStuff + " dosen't exist");
+        }
         log.info("delEducation");
         Education education = staff.getEducation();
         educationRepository.delete(education);

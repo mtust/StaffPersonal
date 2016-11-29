@@ -20,15 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class OtherServiceImpl implements OtherService {
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
     @Autowired
-    OtherRepository otherRepository;
+    private OtherRepository otherRepository;
 
     @Override
     @Transactional
     public RestMessageDTO createOther(Other other, Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         staff.setOther(other);
@@ -40,7 +40,7 @@ public class OtherServiceImpl implements OtherService {
     @Transactional
     public Other getOther(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getOther();
@@ -50,7 +50,7 @@ public class OtherServiceImpl implements OtherService {
     @Transactional
     public RestMessageDTO delOther(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         staff.setOther(null);

@@ -29,9 +29,9 @@ import java.text.SimpleDateFormat;
 public class FiredServiceImpl implements FiredService {
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
     @Autowired
-    FiredRepository firedRepository;
+    private FiredRepository firedRepository;
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
@@ -40,9 +40,10 @@ public class FiredServiceImpl implements FiredService {
     @Override
     public RestMessageDTO addFired(Long id, FiredDTO firedDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        }        Fired fired = new Fired();
+        }
+        Fired fired = new Fired();
         try {
             try {
                 fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
@@ -90,7 +91,7 @@ public class FiredServiceImpl implements FiredService {
     @Override
     public RestMessageDTO delFired(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Fired fired = staff.getFired();

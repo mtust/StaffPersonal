@@ -26,7 +26,7 @@ import java.util.List;
 public class BenefitsServiceImpl implements BenefitsService {
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
     @Autowired
@@ -36,7 +36,7 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Transactional
     public RestMessageDTO addBenefit(BenefitsDTO benefitsDTO, Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         Benefits benefits = new Benefits();
@@ -74,7 +74,7 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Transactional
     public List<Benefits> getBenefits(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getBenefits();

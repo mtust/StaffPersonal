@@ -32,7 +32,7 @@ public class MainStaffPhotoServiceImpl implements MainStaffPhotoService {
     @Transactional
     public RestMessageDTO addPhoto(MultipartFile multipartFile, Long id) throws IOException {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         List<MainStaffPhotos> list = staff.getMainStaffPhotos();
@@ -48,7 +48,7 @@ public class MainStaffPhotoServiceImpl implements MainStaffPhotoService {
     @Transactional
     public byte[] getPhoto(Long id) throws SQLException, IOException {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         List<MainStaffPhotos> list = staff.getMainStaffPhotos();

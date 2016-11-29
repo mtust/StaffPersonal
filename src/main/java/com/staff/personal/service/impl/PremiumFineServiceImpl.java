@@ -72,6 +72,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     }
 
     @Override
+    @Transactional
     public RestMessageDTO delPremiumFine(Long idSt, Long idPrFine) {
         Staff staff = staffRepository.findOne(idSt);
         if(staff == null || staff.getIsDeleted() == true){
