@@ -85,8 +85,8 @@ public class BenefitsServiceImpl implements BenefitsService {
     public RestMessageDTO delBenefitsById(Long idStaff, Long idBen) {
         log.info("in delBenefitsById");
         Staff staff = staffRepository.findOne(idStaff);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist or is deleted");
         }
         List<Benefits> list = staff.getBenefits();
         for (Benefits benefits : list) {

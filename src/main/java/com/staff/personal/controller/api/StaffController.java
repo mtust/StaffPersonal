@@ -284,6 +284,12 @@ public class StaffController {
         return premiumFineService.getPremiumFine(id);
     }
 
+    @RequestMapping(value = "{id}/premiumFine/{idPrFine}", method = RequestMethod.DELETE)
+    RestMessageDTO delPremiumFine(@PathVariable Long id, @PathVariable Long idPrFine) {
+        log.info("in delPremiumFine");
+        return premiumFineService.delPremiumFine(id,idPrFine);
+    }
+
     //PROMOTION
     @RequestMapping(value = "{id}/promotion", method = RequestMethod.POST)
     RestMessageDTO addpromotion(@PathVariable Long id, @RequestBody PromotionDTO promotionDTO) {

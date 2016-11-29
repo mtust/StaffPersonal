@@ -37,8 +37,8 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Transactional
     public RestMessageDTO addHospitals(Long id, HospitalsDTO hospitalsDTo) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         Hospitals hospitals = new Hospitals();
         List<Hospitals> list = staff.getHospitals();
@@ -68,7 +68,7 @@ public class HospitalsServiceImpl implements HospitalsService{
     @Transactional
     public List<Hospitals> getHospitals(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getHospitals();
