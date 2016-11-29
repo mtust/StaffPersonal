@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -92,15 +93,15 @@ public class ReportsServiceImpl implements ReportsService {
 
 
 
-   /* @Transactional
+    @Transactional
     @Override
-    public byte[] getReportsFile(Long id){
+    public byte[] getReportsFile(Long id,int idR) throws IOException, SQLException {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         List<Reports> list = staff.getReports();
-        Reports reports = list.get(2);
+        Reports reports = list.get(idR - 1);
         return reports.getFile();
-    }*/
+    }
 }

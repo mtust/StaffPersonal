@@ -5,6 +5,7 @@ import com.staff.personal.dto.RestMessageDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -18,5 +19,5 @@ public interface ReportsService {
 
     RestMessageDTO delReport(Long idS, Long idReports);
 
-     /*byte[] getReportsFile(Long id);*/
+     byte[] getReportsFile(Long id, int idR) throws IOException, SQLException;
 }

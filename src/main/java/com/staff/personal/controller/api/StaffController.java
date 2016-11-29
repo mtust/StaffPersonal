@@ -326,14 +326,20 @@ public class StaffController {
 
     @RequestMapping(value = "{id}/reports", method = RequestMethod.GET)
     @ResponseBody
-    List<GetReportsInfoDTO> getReportsInfo(@PathVariable Long id) throws IOException, SQLException {
+    List<GetReportsInfoDTO> getReportsInfo(@PathVariable Long id) {
         log.info("IN CONTROLLER getReports");
         return reportsService.getReportsInfo(id);
+    }
+    @RequestMapping(value = "{id}/reports/{idReport}", method = RequestMethod.GET)
+    @ResponseBody
+    byte[] downloadReport(@PathVariable Long id, @PathVariable int idReport)throws IOException, SQLException{
+        log.info("IN CONTROLLER getReports");
+        return reportsService.getReportsFile(id,idReport);
     }
 
 
     @RequestMapping(value = "{id}/reports/{idReports}", method = RequestMethod.DELETE)
-    RestMessageDTO delReports(@PathVariable Long id, @PathVariable Long idReports) {
+    RestMessageDTO delReports(@PathVariable Long id, @PathVariable Long idReports) throws IOException, SQLException  {
         log.info("in delReports");
         return reportsService.delReport(id,idReports);
     }
