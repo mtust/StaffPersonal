@@ -7,6 +7,7 @@ import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.StaffDocumentDTO;
 import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.StaffRepository;
+import com.staff.personal.repository.StuffDocumentsRepository;
 import com.staff.personal.service.StaffDocumentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,16 @@ import java.util.List;
 @Service
 public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     @Autowired
-    StaffRepository staffRepository;
-
+    private StaffRepository staffRepository;
+    @Autowired
+    private StuffDocumentsRepository stuffDocumentsRepository;
 
     @Override
     @Transactional
     public RestMessageDTO addDocument(MultipartFile multipartFile, Long id) throws IOException {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         StuffDocuments stuffDocuments = new StuffDocuments();
         stuffDocuments.setFile(multipartFile.getBytes());
@@ -52,8 +54,8 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     @Transactional
     public List<StaffDocumentDTO> getDocumentsNames(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         List<StaffDocumentDTO> documentDTOs = new ArrayList<>();
         List<StuffDocuments> list = staff.getMainStaff().getDocuments();
@@ -67,7 +69,26 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     }
 
     @Override
+    @Transactional
     public byte[] getFile(String idStaff, String idDoc) {
         return new byte[0];
+    }
+
+    @Override
+    @Transactional
+    public RestMessageDTO delDocument(Long id, Long idDoc) {
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
+        }
+        List<StuffDocuments> list = staff.getMainStaff().getDocuments();
+        for (StuffDocuments stuffDocument : list) {
+            if (stuffDocument.getId() == idDoc) {
+                list.remove(stuffDocument);
+                stuffDocumentsRepository.delete(stuffDocument);
+                break;
+            }
+        }
+        return new RestMessageDTO("Succes", true);
     }
 }

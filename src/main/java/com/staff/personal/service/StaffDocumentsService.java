@@ -17,4 +17,6 @@ public interface StaffDocumentsService {
     List<StaffDocumentDTO> getDocumentsNames(Long id);
 
     byte[] getFile(String idStaff, String idDoc);
+
+    RestMessageDTO delDocument(Long id, Long idDoc);
 }

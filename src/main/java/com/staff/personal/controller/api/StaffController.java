@@ -354,5 +354,11 @@ public class StaffController {
         return staffDocumentsService.getDocumentsNames(id);
     }
 
+    @RequestMapping(value = "{id}/staffDoc/{idDoc}", method = RequestMethod.DELETE)
+    RestMessageDTO delStaffDoc(@PathVariable Long id, @PathVariable Long idDoc) {
+        log.info("in delStaffDoc");
+        return staffDocumentsService.delDocument(id,idDoc);
+    }
+
 
 }
