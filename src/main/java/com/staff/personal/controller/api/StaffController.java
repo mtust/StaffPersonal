@@ -298,9 +298,15 @@ public class StaffController {
     }
 
     @RequestMapping(value = "{id}/promotion", method = RequestMethod.GET)
-    List<Promotion> getpromotion(@PathVariable Long id) {
+    List<Promotion> getPromotion(@PathVariable Long id) {
         log.info("in promotion");
         return promotionService.getPromotions(id);
+    }
+
+    @RequestMapping(value = "{id}/promotion/{idPr}", method = RequestMethod.DELETE)
+    RestMessageDTO delPromotion(@PathVariable Long id, @PathVariable Long idPr) {
+        log.info("in delPromotion");
+        return promotionService.delPromotions(id,idPr);
     }
 
 

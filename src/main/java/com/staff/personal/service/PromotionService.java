@@ -14,4 +14,6 @@ public interface PromotionService {
     RestMessageDTO addPromotion(Long id,PromotionDTO promotionDTO);
 
     List<Promotion> getPromotions(Long id);
+
+    RestMessageDTO delPromotions(Long idS, Long idPr);
 }

@@ -65,7 +65,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Transactional
     public List<PremiumFine> getPremiumFine(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
+        if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getPremiumFines();
@@ -85,6 +85,8 @@ public class PremiumFineServiceImpl implements PremiumFineService {
                 break;
             }
         }
+        staff.setPremiumFines(list);
+        staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
     }
 }

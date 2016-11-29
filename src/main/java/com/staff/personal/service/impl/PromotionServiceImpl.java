@@ -6,6 +6,7 @@ import com.staff.personal.dto.PromotionDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
+import com.staff.personal.repository.PromotionRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.PromotionService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,8 @@ public class PromotionServiceImpl implements PromotionService{
 
     @Autowired
     private StaffRepository staffRepository;
+    @Autowired
+    private PromotionRepository promotionRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
@@ -34,8 +37,8 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public RestMessageDTO addPromotion(Long id, PromotionDTO promotionDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         Promotion promotion = new Promotion();
         List<Promotion> list = staff.getPromotions();
@@ -63,9 +66,26 @@ public class PromotionServiceImpl implements PromotionService{
     @Transactional
     public List<Promotion> getPromotions(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         return staff.getPromotions();
+    }
+
+    @Override
+    public RestMessageDTO delPromotions(Long idS, Long idPr) {
+        Staff staff = staffRepository.findOne(idS);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + idS + " dosen't exist or is deleted");
+        }
+        List<Promotion> list = staff.getPromotions();
+        for (Promotion promotion : list) {
+            if (promotion.getId() == idPr){
+                list.remove(promotion);
+                promotionRepository.delete(promotion);
+                break;
+            }
+        }
+        return new RestMessageDTO("Succes", true);
     }
 }
