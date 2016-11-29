@@ -86,9 +86,14 @@ public class EducationServiceImpl implements EducationService {
             throw new ObjectDoNotExistException("staff object with id = " + idStuff + " dosen't exist");
         }
         log.info("delEducation");
-        Education education = staff.getEducation();
-        educationRepository.delete(education);
-        staffRepository.save(staff);
+        List<MainEducationBlock> list = staff.getEducation().getMainEducationBlocks();
+        for (MainEducationBlock mainEducationBlock : list) {
+            if (mainEducationBlock.getId() == idMainEducation){
+                list.remove(mainEducationBlock);
+                mainEducationRepository.delete(mainEducationBlock);
+                break;
+            }
+        }
         return new RestMessageDTO("Succes", true);
     }
 

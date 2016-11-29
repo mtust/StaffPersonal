@@ -139,6 +139,11 @@ public class StaffController {
         log.info("delEducationByStaffId");
         return educationService.delEducation(id);
     }
+    @RequestMapping(value = "{id}/education/{idMainEducation}", method = RequestMethod.DELETE)
+    RestMessageDTO delMainEducationBlock(@PathVariable Long id,@PathVariable Long idMainEducation) {
+        log.info("delMainEducationBlock");
+        return educationService.delMainEducation(id,idMainEducation);
+    }
 
     //WORK EXPERIENCE
     @RequestMapping(value = "{id}/workExperience", method = RequestMethod.POST)
