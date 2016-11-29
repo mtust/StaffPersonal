@@ -1,6 +1,7 @@
 package com.staff.personal.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.staff.personal.domain.*;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class AllStaffDTO {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private FiredDTO fired;
     private Other other;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private List<HospitalsDTO> hospitals;
 
 }

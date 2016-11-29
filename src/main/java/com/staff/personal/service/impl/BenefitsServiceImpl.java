@@ -28,6 +28,7 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Autowired
     StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
     @Autowired
     private BenefitsRepository benefitsRepository;
 
@@ -42,10 +43,18 @@ public class BenefitsServiceImpl implements BenefitsService {
         List<Benefits> list = staff.getBenefits();
         try {
             benefits.setName(benefitsDTO.getName());
-            benefits.setFromDate(simpleDateFormat.parse(benefitsDTO.getFromDate()));
-            benefits.setToDate(simpleDateFormat.parse(benefitsDTO.getToDate()));
+            try {
+                benefits.setFromDate(simpleDateFormat.parse(benefitsDTO.getFromDate()));
+                benefits.setToDate(simpleDateFormat.parse(benefitsDTO.getToDate()));
+
+                benefits.setOrderDate(simpleDateFormat.parse(benefitsDTO.getOrderDate()));
+            } catch (ParseException e){
+                benefits.setFromDate(simpleDateFormatNew.parse(benefitsDTO.getFromDate()));
+                benefits.setToDate(simpleDateFormatNew.parse(benefitsDTO.getToDate()));
+
+                benefits.setOrderDate(simpleDateFormatNew.parse(benefitsDTO.getOrderDate()));
+            }
             benefits.setOrder(benefitsDTO.getOrder());
-            benefits.setOrderDate(simpleDateFormat.parse(benefitsDTO.getOrderDate()));
             benefits.setCertification(benefitsDTO.getCertification());
             benefits.setPrivilege(benefitsDTO.getPrivilege());
             benefits.setActsAndComments(benefitsDTO.getActsAndComments());

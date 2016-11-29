@@ -30,6 +30,7 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     @Autowired
     WorkExperienceRepository workExperienceRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Autowired
     StaffRepository staffRepository;
@@ -58,8 +59,13 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
             for (WorkExperienceDTO workExperienceDTO : workExperienceDTOList) {
                 WorkExperience workExperience = new WorkExperience();
                 workExperience.setName(workExperienceDTO.getOrgName());
-                workExperience.setFromDate(simpleDateFormat.parse(workExperienceDTO.getFromDate()));
-                workExperience.setToDate(simpleDateFormat.parse(workExperienceDTO.getToDate()));
+                try{
+                    workExperience.setFromDate(simpleDateFormat.parse(workExperienceDTO.getFromDate()));
+                    workExperience.setToDate(simpleDateFormat.parse(workExperienceDTO.getToDate()));
+                } catch (ParseException e){
+                    workExperience.setFromDate(simpleDateFormatNew.parse(workExperienceDTO.getFromDate()));
+                    workExperience.setToDate(simpleDateFormatNew.parse(workExperienceDTO.getToDate()));
+                }
                 list.add(workExperience);
             }
             log.info("list after foreach \n" + list.toString());

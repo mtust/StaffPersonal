@@ -28,6 +28,7 @@ public class HolidayServiceImpl implements HolidayService{
     @Autowired
     StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
 
     @Override
@@ -41,8 +42,13 @@ public class HolidayServiceImpl implements HolidayService{
         try {
             holiday.setTypeHoliday(holidayDTO.getTypeHoliday());
             holiday.setHolidayPlace(holidayDTO.getHolidayPlace());
-            holiday.setFromDate(simpleDateFormat.parse(holidayDTO.getFromDate()));
-            holiday.setToDate(simpleDateFormat.parse(holidayDTO.getToDate()));
+            try {
+                holiday.setFromDate(simpleDateFormat.parse(holidayDTO.getFromDate()));
+                holiday.setToDate(simpleDateFormat.parse(holidayDTO.getToDate()));
+            } catch (ParseException e){
+                holiday.setFromDate(simpleDateFormatNew.parse(holidayDTO.getFromDate()));
+                holiday.setToDate(simpleDateFormatNew.parse(holidayDTO.getToDate()));
+            }
             holiday.setDescription(holidayDTO.getDescription());
             log.info("add holiday \n" + holiday.toString());
             list.add(holiday);

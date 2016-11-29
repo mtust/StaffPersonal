@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.staff.personal.config.HibernateProxyTypeAdapter;
+import com.staff.personal.config.NullStringToEmptyAdapterFactory;
 import com.staff.personal.domain.MainStaff;
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
@@ -131,24 +132,40 @@ public class StaffServiceImpl implements StaffService {
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
-            mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+            if(mainStaffDTO.getDateOfBirth() != null) {
+                mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+            }
             mainStaff.setPosition(mainStaffDTO.getPosition());
             mainStaff.setNumberConferringSpeclRanks(mainStaffDTO.getNumberConferringSpeclRanks());
-            mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
-            mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
+            if(mainStaffDTO.getDateConferringSpecRanks() != null) {
+                mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
+            }
+                if(mainStaffDTO.getDateNumberPurpose() != null) {
+                    mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
+                }
             mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
-            mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
-            mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
-            mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+            if(mainStaffDTO.getContractFromDate() != null) {
+                mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
+            }
+            if(mainStaffDTO.getContractToDate() != null) {
+                mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
+            }
+            if(mainStaffDTO.getExemptionDate() != null) {
+                mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+            }
             mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
             mainStaff.setInCommand(mainStaffDTO.getInCommand());
-            mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+            if(mainStaffDTO.getDateSwear() != null) {
+                mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+            }
             mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
             mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
             mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
             mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
             mainStaff.setStaffOfficerCategory(mainStaffDTO.getStaffOfficerCategory());
-            mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
+            if(mainStaffDTO.getLastCertification() != null) {
+                mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
+            }
             mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
             mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
             mainStaff.setBiography(mainStaffDTO.getBiography());
@@ -321,14 +338,16 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional
     public RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO){
+
         GsonBuilder b = new GsonBuilder();
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = b.create();
         Staff staff = staffRepository.getOne(id);
+        GetAllStaffDTO allStaffDTO1 = this.createGetAllStuffDTO(staff);
         log.info("allStaffDTO:" + allStaffDTO);
         JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
         Set<Map.Entry<String, JsonElement>> set = jsonElement.getAsJsonObject().entrySet();
-        JsonElement jsonElement1 = gson.toJsonTree(staff);
+        JsonElement jsonElement1 = gson.toJsonTree(allStaffDTO1);
         JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> set1 = jsonElement1.getAsJsonObject().entrySet();
         log.info("set:" + set);
@@ -336,6 +355,28 @@ public class StaffServiceImpl implements StaffService {
         this.change(set, jsonObject1);
 
         log.info("jsonObject2:" + jsonObject1);
+        Gson gsonNew = new GsonBuilder().registerTypeAdapterFactory(NullStringToEmptyAdapterFactory.FACTORY).create();
+        allStaffDTO = gsonNew.fromJson(jsonObject1, AllStaffDTO.class);
+        log.info("allStaffDTO" + allStaffDTO);
+        if(allStaffDTO.getBenefits() == null){
+            allStaffDTO.setBenefits(new ArrayList<>());
+        }
+        if(allStaffDTO.getHolidays() == null){
+            allStaffDTO.setHolidays(new ArrayList<>());
+        }
+        if(allStaffDTO.getHospitals() == null){
+            allStaffDTO.setHospitals(new ArrayList<>());
+        }
+        if(allStaffDTO.getPremiumFines() == null){
+            allStaffDTO.setPremiumFines(new ArrayList<>());
+        }
+        if(allStaffDTO.getPromotions() == null){
+            allStaffDTO.setPromotions(new ArrayList<>());
+        }
+        if(allStaffDTO.getWorkExperiences() == null){
+            allStaffDTO.setWorkExperiences(new ArrayList<>());
+        }
+        this.updateAllStaffById(id, allStaffDTO);
         return new RestMessageDTO("Success", true);
     }
 

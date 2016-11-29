@@ -27,6 +27,7 @@ public class PromotionServiceImpl implements PromotionService{
     @Autowired
     private StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
 
     @Override
@@ -40,8 +41,13 @@ public class PromotionServiceImpl implements PromotionService{
         List<Promotion> list = staff.getPromotions();
         try {
             promotion.setCompanyName(promotionDTO.getCompanyName());
-            promotion.setFromDate(simpleDateFormat.parse(promotionDTO.getFromDate()));
-            promotion.setToDate(simpleDateFormat.parse(promotionDTO.getToDate()));
+            try{
+             promotion.setFromDate(simpleDateFormat.parse(promotionDTO.getFromDate()));
+                promotion.setToDate(simpleDateFormat.parse(promotionDTO.getToDate()));
+            } catch (ParseException e){
+                promotion.setFromDate(simpleDateFormatNew.parse(promotionDTO.getFromDate()));
+                promotion.setToDate(simpleDateFormatNew.parse(promotionDTO.getToDate()));
+            }
             log.info("addPromotion \n" + promotion.toString());
             list.add(promotion);
             staff.setPromotions(list);

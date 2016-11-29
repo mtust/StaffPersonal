@@ -38,7 +38,7 @@ public class StaffServiceTest {
     private StaffService staffService;
 
     @Test
-    @Ignore
+    //@Ignore
     public void updateWholeStuffFieldByIdTest(){
         GsonBuilder b = new GsonBuilder();
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);

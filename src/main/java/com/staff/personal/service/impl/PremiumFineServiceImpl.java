@@ -27,6 +27,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Autowired
     private StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Override
     @Transactional
@@ -40,7 +41,11 @@ public class PremiumFineServiceImpl implements PremiumFineService {
         try {
             premiumFine.setName(premiumFineDTO.getName());
             premiumFine.setOrder(premiumFineDTO.getOrder());
-            premiumFine.setOrderDate(simpleDateFormat.parse(premiumFineDTO.getOrderDate()));
+            try {
+                premiumFine.setOrderDate(simpleDateFormat.parse(premiumFineDTO.getOrderDate()));
+            } catch (ParseException e){
+                premiumFine.setOrderDate(simpleDateFormatNew.parse(premiumFineDTO.getOrderDate()));
+            }
             premiumFine.setSerialNumber(premiumFineDTO.getSerialNumber());
             log.info("add premiumFine \n" + premiumFine.toString());
             list.add(premiumFine);

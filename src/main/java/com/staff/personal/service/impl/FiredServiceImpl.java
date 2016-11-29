@@ -35,6 +35,7 @@ public class FiredServiceImpl implements FiredService {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
     @Transactional
     @Override
     public RestMessageDTO addFired(Long id, FiredDTO firedDTO) {
@@ -43,7 +44,13 @@ public class FiredServiceImpl implements FiredService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }        Fired fired = new Fired();
         try {
-            fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
+            try {
+                fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
+                fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
+            } catch (ParseException e){
+                fired.setDateFiring(simpleDateFormatNew.parse(firedDTO.getDateFiring()));
+                fired.setReferenceLEKDate(simpleDateFormatNew.parse(firedDTO.getReferenceLEKDate()));
+            }
             fired.setOrderNumber(firedDTO.getOrderNumber());
             fired.setWhereFired(firedDTO.getWhereFired());
             fired.setArticle(firedDTO.getArticle());
@@ -51,7 +58,7 @@ public class FiredServiceImpl implements FiredService {
             fired.setSpecialRank(firedDTO.getSpecialRank());
             fired.setMilitaryAccount(firedDTO.getMilitaryAccount());
             fired.setReferenceLEKCertificate(firedDTO.getReferenceLEKCertificate());
-            fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
+
             fired.setReferenceLEKNumber(firedDTO.getReferenceLEKNumber());
             fired.setConclusion(firedDTO.getConclusion());
             fired.setSeniority(firedDTO.getSeniority());
