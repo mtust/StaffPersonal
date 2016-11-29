@@ -254,7 +254,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     public List<GetAllStaffDTO> getWholeStaff() {
-        List<Staff> listAll = staffRepository.findByIsDeletedIsFalse();
+        List<Staff> listAll = staffRepository.findByIsDeletedFalse();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
@@ -276,7 +276,7 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     @Override
     public List<GetStaffDTO> getAllStaff() {
-        List<Staff> listAll = staffRepository.findByIsDeletedIsFalse();
+        List<Staff> listAll = staffRepository.findByIsDeletedFalse();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         List<Staff> list = null;
@@ -294,6 +294,28 @@ public class StaffServiceImpl implements StaffService {
 
         return listDTO;
     }
+    @Transactional
+    @Override
+    public List<GetStaffDTO> getAllDeletedStaff() {
+        List<Staff> listAll = staffRepository.findByIsDeletedTrue();
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        List<Staff> list = null;
+        if (regions.isEmpty()) {
+            list = listAll;
+        } else {
+            list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
+        }
+        List<GetStaffDTO> listDTO = new ArrayList<>();
+        for (Staff staff : list) {
+            GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
+            listDTO.add(getStaffDTO);
+        }
+        log.info("list after foreach \n" + listDTO.toString());
+
+        return listDTO;
+    }
+
 
     @Override
     @Transactional
