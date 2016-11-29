@@ -326,6 +326,13 @@ public class StaffController {
         return reportsService.getReportsInfo(id);
     }
 
+
+    @RequestMapping(value = "{id}/reports/{idReports}", method = RequestMethod.DELETE)
+    RestMessageDTO delReports(@PathVariable Long id, @PathVariable Long idReports) {
+        log.info("in delReports");
+        return reportsService.delReport(id,idReports);
+    }
+
    /* @RequestMapping(value = "{id}/reportsF", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     @ResponseBody
     byte[] getReportsFile(@PathVariable Long id) throws IOException, SQLException {

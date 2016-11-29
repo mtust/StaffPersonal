@@ -6,6 +6,7 @@ import com.staff.personal.domain.StuffDocuments;
 import com.staff.personal.dto.GetReportsInfoDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.ObjectDoNotExistException;
+import com.staff.personal.repository.ReportsRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.ReportsService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,14 +28,16 @@ import java.util.List;
 public class ReportsServiceImpl implements ReportsService {
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
+    @Autowired
+    private ReportsRepository reportsRepository;
 
     @Override
     @Transactional
     public RestMessageDTO addReport(Long id, MultipartFile multipartFile, String name, String text) throws IOException{
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         Reports reports = new Reports();
         List<Reports> list = staff.getReports();
@@ -50,8 +54,8 @@ public class ReportsServiceImpl implements ReportsService {
     @Transactional
     public List<GetReportsInfoDTO> getReportsInfo(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null){
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         List<Reports> list = staff.getReports();
         List<GetReportsInfoDTO> reportsInfoDTOs = new ArrayList<>();
@@ -64,6 +68,29 @@ public class ReportsServiceImpl implements ReportsService {
         }
         return reportsInfoDTOs;
     }
+
+    @Override
+    @Transactional
+    public RestMessageDTO delReport(Long idS, Long idReports) {
+        Staff staff = staffRepository.findOne(idS);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + idS + " dosen't exist or is deleted");
+        }
+        log.info("in delReport");
+        Collection<Reports> list = staff.getReports();
+        for (Reports reports : list) {
+            log.info("in foreach");
+            if (reports.getId() == idReports){
+                log.info("in if statment");
+                list.remove(reports);
+                reportsRepository.delete(reports);
+                break;
+            }
+        }
+        return new RestMessageDTO("Succes", true);
+    }
+
+
 
    /* @Transactional
     @Override

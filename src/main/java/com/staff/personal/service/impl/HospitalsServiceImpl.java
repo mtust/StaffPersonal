@@ -88,9 +88,6 @@ public class HospitalsServiceImpl implements HospitalsService{
                 break;
             }
         }
-        staff.setHospitals(list);
-        staffRepository.save(staff);
-
         return new RestMessageDTO("Succes", true);
     }
 }

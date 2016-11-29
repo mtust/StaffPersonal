@@ -16,5 +16,7 @@ public interface ReportsService {
 
     List<GetReportsInfoDTO> getReportsInfo(Long id);
 
+    RestMessageDTO delReport(Long idS, Long idReports);
+
      /*byte[] getReportsFile(Long id);*/
 }
