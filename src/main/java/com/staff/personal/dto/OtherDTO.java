@@ -1,13 +1,16 @@
 package com.staff.personal.dto;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 
 /**
  * Created by nazar on 14.11.16.
  */
+@Data
 public class OtherDTO {
 
-    private Long id;
+    private String id;
 
     private String birthplace;
 

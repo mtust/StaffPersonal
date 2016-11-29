@@ -78,7 +78,7 @@ public class BenefitsServiceImpl implements BenefitsService {
         if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        List<Benefits> benefitsList = staff.getBenefits();
+        /*List<Benefits> benefitsList = staff.getBenefits();
         List<BenefitsDTO> list = new ArrayList<>();
         for (Benefits benefits : benefitsList) {
             BenefitsDTO benefitsDTO = new BenefitsDTO();
@@ -93,8 +93,8 @@ public class BenefitsServiceImpl implements BenefitsService {
             benefitsDTO.setActsAndComments(benefits.getActsAndComments());
             benefitsDTO.setOtherInfo(benefits.getOtherInfo());
             list.add(benefitsDTO);
-        }
-        return list;
+        }*/
+        return this.createBenefitsDTO(staff.getBenefits());
     }
 
     @Override
@@ -119,5 +119,26 @@ public class BenefitsServiceImpl implements BenefitsService {
         staff.setBenefits(list);
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    @Transactional
+    public List<BenefitsDTO> createBenefitsDTO(List<Benefits> list){
+        List<BenefitsDTO> benefitsDTOList = new ArrayList<>();
+        for (Benefits benefits : list) {
+            BenefitsDTO benefitsDTO = new BenefitsDTO();
+            benefitsDTO.setId(benefits.getId().toString());
+            benefitsDTO.setName(benefits.getName());
+            benefitsDTO.setFromDate(simpleDateFormat.format(benefits.getFromDate()));
+            benefitsDTO.setToDate(simpleDateFormat.format(benefits.getToDate()));
+            benefitsDTO.setOrder(benefits.getOrder());
+            benefitsDTO.setOrderDate(simpleDateFormat.format(benefits.getOrderDate()));
+            benefitsDTO.setCertification(benefits.getCertification());
+            benefitsDTO.setPrivilege(benefits.getPrivilege());
+            benefitsDTO.setActsAndComments(benefits.getActsAndComments());
+            benefitsDTO.setOtherInfo(benefits.getOtherInfo());
+            benefitsDTOList.add(benefitsDTO);
+        }
+        return  benefitsDTOList;
     }
 }

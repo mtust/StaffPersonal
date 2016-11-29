@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,6 +74,7 @@ public class PromotionServiceImpl implements PromotionService{
     }
 
     @Override
+    @Transactional
     public RestMessageDTO delPromotions(Long idS, Long idPr) {
         Staff staff = staffRepository.findOne(idS);
         if(staff == null || staff.getIsDeleted() == true){
@@ -87,5 +89,19 @@ public class PromotionServiceImpl implements PromotionService{
             }
         }
         return new RestMessageDTO("Succes", true);
+    }
+    @Override
+    @Transactional
+    public List<PromotionDTO> createPromotionDTO(List<Promotion> list){
+        List<PromotionDTO> promotionDTOList = new ArrayList<>();
+        for (Promotion promotion : list) {
+            PromotionDTO promotionDTO = new PromotionDTO();
+            promotionDTO.setId(promotion.getId().toString());
+            promotionDTO.setCompanyName(promotion.getCompanyName());
+            promotionDTO.setFromDate(simpleDateFormat.format(promotion.getFromDate()));
+            promotionDTO.setToDate(simpleDateFormat.format(promotion.getToDate()));
+            promotionDTOList.add(promotionDTO);
+        }
+        return promotionDTOList;
     }
 }

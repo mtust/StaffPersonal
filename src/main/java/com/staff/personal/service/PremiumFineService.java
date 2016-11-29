@@ -16,4 +16,6 @@ public interface PremiumFineService {
     List<PremiumFine> getPremiumFine(Long id);
 
     RestMessageDTO delPremiumFine(Long idSt, Long idPrFine);
+
+    List<PremiumFineDTO> createPremiumFineDTO(List<PremiumFine> list);
 }

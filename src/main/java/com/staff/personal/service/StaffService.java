@@ -32,4 +32,5 @@ public interface StaffService {
 
 	@Transactional
 	RestMessageDTO updateWholeStaffByIdPatch(Long id, AllStaffDTO allStaffDTO);
+
 }

@@ -18,6 +18,8 @@ public interface HolidayService {
 
     RestMessageDTO delHoliday(Long idStaff, Long idHoliday);
 
+    List<HolidayDTO> createHolidayDTO(List<Holiday> list);
+
 
 
 

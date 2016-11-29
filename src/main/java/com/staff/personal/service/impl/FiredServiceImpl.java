@@ -103,4 +103,25 @@ public class FiredServiceImpl implements FiredService {
 
         return new RestMessageDTO("Succes", true);
     }
+
+    @Override
+    @Transactional
+    public FiredDTO createFiredDTO(Fired fired) {
+        FiredDTO firedDTO = new FiredDTO();
+        firedDTO.setId(fired.getId().toString());
+        firedDTO.setDateFiring(simpleDateFormat.format(fired.getDateFiring()));
+        firedDTO.setOrderNumber(fired.getOrderNumber());
+        firedDTO.setWhereFired(fired.getWhereFired());
+        firedDTO.setArticle(fired.getArticle());
+        firedDTO.setLastPosition(fired.getLastPosition());
+        firedDTO.setSpecialRank(fired.getSpecialRank());
+        firedDTO.setMilitaryAccount(fired.getMilitaryAccount());
+        firedDTO.setReferenceLEKCertificate(fired.getReferenceLEKCertificate());
+        firedDTO.setReferenceLEKDate(simpleDateFormat.format(fired.getReferenceLEKDate()));
+        firedDTO.setReferenceLEKNumber(fired.getReferenceLEKNumber());
+        firedDTO.setConclusion(fired.getConclusion());
+        firedDTO.setSeniority(fired.getSeniority());
+        firedDTO.setPersonalFileForwarded(fired.getPersonalFileForwarded());
+        return firedDTO;
+    }
 }

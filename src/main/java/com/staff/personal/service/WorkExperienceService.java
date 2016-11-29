@@ -17,4 +17,6 @@ public interface WorkExperienceService {
 
     RestMessageDTO delWorkExperiences(Long id, Long idExp);
 
+    List<WorkExperienceDTO> createWorkExperienceDTO(List<WorkExperience> list);
+
 }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,5 +95,22 @@ public class HolidayServiceImpl implements HolidayService{
         staff.setHolidays(list);
         staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
+    }
+
+    @Override
+    @Transactional
+    public List<HolidayDTO> createHolidayDTO(List<Holiday> list) {
+        List<HolidayDTO> holidayDTOList = new ArrayList<>();
+        for (Holiday holiday : list) {
+            HolidayDTO holidayDTO = new HolidayDTO();
+            holidayDTO.setId(holiday.getId().toString());
+            holidayDTO.setDescription(holiday.getDescription());
+            holidayDTO.setHolidayPlace(holiday.getHolidayPlace());
+            holidayDTO.setTypeHoliday(holiday.getTypeHoliday());
+            holidayDTO.setFromDate(simpleDateFormat.format(holiday.getFromDate()));
+            holidayDTO.setToDate(simpleDateFormat.format(holiday.getToDate()));
+            holidayDTOList.add(holidayDTO);
+        }
+        return holidayDTOList;
     }
 }

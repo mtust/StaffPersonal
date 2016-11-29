@@ -3,9 +3,7 @@ package com.staff.personal.service.impl;
 import com.google.gson.*;
 import com.staff.personal.config.HibernateProxyTypeAdapter;
 import com.staff.personal.config.NullStringToEmptyAdapterFactory;
-import com.staff.personal.domain.MainStaff;
-import com.staff.personal.domain.Region;
-import com.staff.personal.domain.Staff;
+import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.exception.BadRequestParametersException;
 import com.staff.personal.exception.ObjectDoNotExistException;
@@ -97,36 +95,6 @@ public class StaffServiceImpl implements StaffService {
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
-
-    private MainStaffDTO createMainStaffDTO(Staff staff) {
-        MainStaffDTO mainStaffDTO = new MainStaffDTO();
-        MainStaff mainStaff = staff.getMainStaff();
-        mainStaffDTO.setFullName(mainStaff.getFullName());
-        mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
-        mainStaffDTO.setPosition(mainStaff.getPosition());
-        mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
-        mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
-        mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
-        mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
-        mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
-        mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
-        mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
-
-        mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
-        mainStaffDTO.setInCommand(mainStaff.getInCommand());
-
-        mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
-        mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
-        mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
-        mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
-
-        mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
-        mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
-        mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
-        mainStaffDTO.setBiography(mainStaff.getBiography());
-        return mainStaffDTO;
-    }
-
     @Override
     @Transactional
     public RestMessageDTO createMainStaff(MainStaffDTO mainStaffDTO, Long id) {
@@ -263,6 +231,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    @Transactional
     public GetAllStaffDTO getWholeStaff(Long id) {
         log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
@@ -430,6 +399,34 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
+    public MainStaffDTO createMainStaffDTO(MainStaff mainStaff) {
+        MainStaffDTO mainStaffDTO = new MainStaffDTO();
+        mainStaffDTO.setId(mainStaff.getId().toString());
+        mainStaffDTO.setFullName(mainStaff.getFullName());
+        mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
+        mainStaffDTO.setDateOfBirth(simpleDateFormat.format(mainStaff.getDateOfBirth()));
+        mainStaffDTO.setDateConferringSpecRanks(simpleDateFormat.format(mainStaff.getDateConferringSpecRanks()));
+        mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
+        mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
+        mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
+        mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
+        mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
+        mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
+        mainStaffDTO.setInCommand(mainStaff.getInCommand());
+        mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+        mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
+        mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
+        mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
+        mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
+        mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
+        mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
+        mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
+        mainStaffDTO.setBiography(mainStaff.getBiography());
+
+
+        return mainStaffDTO;
+    }
+
 
     private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
         Region region = null;
@@ -455,22 +452,6 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
-    private GetAllStaffDTO createGetAllStuffDTO(Staff staff) {
-        GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
-        getAllStaffDTO.setId(staff.getId());
-        getAllStaffDTO.setWorkExperiences(staff.getWorkExperiences());
-        getAllStaffDTO.setEducation(staff.getEducation());
-        getAllStaffDTO.setMainStaff(this.createMainStaffDTO(staff));
-        getAllStaffDTO.setRegion(staff.getRegion());
-        getAllStaffDTO.setBenefits(staff.getBenefits());
-        getAllStaffDTO.setFired(staff.getFired());
-        getAllStaffDTO.setHolidays(staff.getHolidays());
-        getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
-        getAllStaffDTO.setPremiumFines(staff.getPremiumFines());
-        getAllStaffDTO.setPromotions(staff.getPromotions());
-        return getAllStaffDTO;
-    }
-
     private void change(Set<Map.Entry<String, JsonElement>> set, JsonObject jsonObject1) {
         for (Map.Entry<String, JsonElement> entry : set
                 ) {
@@ -492,5 +473,51 @@ public class StaffServiceImpl implements StaffService {
         }
     }
 
+    private GetAllStaffDTO createGetAllStuffDTO(Staff staff) {
+        GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();
+        getAllStaffDTO.setId(staff.getId());
+        getAllStaffDTO.setWorkExperiences(workExperienceService.createWorkExperienceDTO(staff.getWorkExperiences()));
+        getAllStaffDTO.setEducation(staff.getEducation());
+        getAllStaffDTO.setMainStaff(this.createMainStaffDTO(staff.getMainStaff()));
+        getAllStaffDTO.setRegion(staff.getRegion());
+        getAllStaffDTO.setBenefits(benefitsService.createBenefitsDTO(staff.getBenefits()));
+        getAllStaffDTO.setFired(firedService.createFiredDTO(staff.getFired()));
+        getAllStaffDTO.setHolidays(holidayService.createHolidayDTO(staff.getHolidays()));
+        getAllStaffDTO.setIsDeleted(staff.getIsDeleted());
+        getAllStaffDTO.setPremiumFines(premiumFineService.createPremiumFineDTO(staff.getPremiumFines()));
+        getAllStaffDTO.setPromotions(promotionService.createPromotionDTO(staff.getPromotions()));
+        getAllStaffDTO.setOther(staff.getOther());
+        return getAllStaffDTO;
+    }
+
+
+
 
 }
+
+   /* private MainStaffDTO createMainStaffDTO(Staff staff) {
+        MainStaffDTO mainStaffDTO = new MainStaffDTO();
+        MainStaff mainStaff = staff.getMainStaff();
+        mainStaffDTO.setFullName(mainStaff.getFullName());
+        mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
+        mainStaffDTO.setPosition(mainStaff.getPosition());
+        mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
+        mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
+        mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
+        mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
+        mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
+        mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+        mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
+        mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
+        mainStaffDTO.setInCommand(mainStaff.getInCommand());
+        mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
+        mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
+        mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
+        mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
+
+        mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
+        mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
+        mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
+        mainStaffDTO.setBiography(mainStaff.getBiography());
+        return mainStaffDTO;
+    }*/

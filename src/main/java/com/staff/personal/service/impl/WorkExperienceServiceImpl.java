@@ -98,4 +98,18 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         }
         return new RestMessageDTO("Succes", true);
     }
+    @Override
+    @Transactional
+    public List<WorkExperienceDTO> createWorkExperienceDTO(List<WorkExperience> list){
+        List<WorkExperienceDTO> experienceDTOs = new ArrayList<>();
+        for (WorkExperience workExperience : list) {
+            WorkExperienceDTO workExperienceDTO = new WorkExperienceDTO();
+            workExperienceDTO.setId(workExperience.getId().toString());
+            workExperienceDTO.setOrgName(workExperience.getName());
+            workExperienceDTO.setFromDate(simpleDateFormat.format(workExperience.getFromDate()));
+            workExperienceDTO.setToDate(simpleDateFormat.format(workExperience.getToDate()));
+            experienceDTOs.add(workExperienceDTO);
+        }
+        return experienceDTOs;
+    }
 }

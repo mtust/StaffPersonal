@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,5 +90,21 @@ public class PremiumFineServiceImpl implements PremiumFineService {
         staff.setPremiumFines(list);
         staffRepository.save(staff);
         return new RestMessageDTO("Succes", true);
+    }
+
+    @Override
+    @Transactional
+    public List<PremiumFineDTO> createPremiumFineDTO(List<PremiumFine> list) {
+        List<PremiumFineDTO> premiumFineDTOList = new ArrayList<>();
+        for (PremiumFine premiumFine : list) {
+            PremiumFineDTO premiumFineDTO = new PremiumFineDTO();
+            premiumFineDTO.setId(premiumFine.getId().toString());
+            premiumFineDTO.setName(premiumFine.getName());
+            premiumFineDTO.setOrder(premiumFine.getOrder());
+            premiumFineDTO.setSerialNumber(premiumFine.getSerialNumber());
+            premiumFineDTO.setOrderDate(simpleDateFormat.format(premiumFine.getOrderDate()));
+            premiumFineDTOList.add(premiumFineDTO);
+        }
+        return premiumFineDTOList;
     }
 }
