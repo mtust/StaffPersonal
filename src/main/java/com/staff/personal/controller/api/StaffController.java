@@ -153,10 +153,10 @@ public class StaffController {
         return workExperienceService.getWorkExperiences(id);
     }
 
-    @RequestMapping(value = "{id}/workExperience", method = RequestMethod.DELETE)
-    RestMessageDTO delWorkExperience(@PathVariable Long id) {
+    @RequestMapping(value = "{id}/workExperience/{idExp}", method = RequestMethod.DELETE)
+    RestMessageDTO delWorkExperience(@PathVariable Long id,@PathVariable Long idExp) {
         log.info("delWorkExperience by id Experience!");
-        return workExperienceService.delWorkExperiences(id);
+        return workExperienceService.delWorkExperiences(id,idExp);
     }
 
     //OTHER

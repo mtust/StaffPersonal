@@ -28,20 +28,20 @@ import java.util.List;
 public class WorkExperienceServiceImpl implements WorkExperienceService {
 
     @Autowired
-    WorkExperienceRepository workExperienceRepository;
+    private WorkExperienceRepository workExperienceRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Autowired
-    StaffRepository staffRepository;
+    private StaffRepository staffRepository;
 
 
     @Override
     @Transactional
     public List<WorkExperience> getWorkExperiences(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         return staff.getWorkExperiences();
     }
@@ -51,8 +51,8 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     public RestMessageDTO crateWorkExperience(List<WorkExperienceDTO> workExperienceDTOList, Long id) {
         log.info("in crateWorkExperience");
         Staff staff = staffRepository.findOne(id);
-        if (staff == null) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         try {
             List<WorkExperience> list = new ArrayList<WorkExperience>();
@@ -79,14 +79,23 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         return new RestMessageDTO("succes", true);
     }
 
-    //need fix!
+
     @Override
     @Transactional
-    public RestMessageDTO delWorkExperiences(Long id) {
+    public RestMessageDTO delWorkExperiences(Long id, Long idExp) {
         log.info("delWorkExperiences");
         Staff staff = staffRepository.findOne(id);
-        staff.setWorkExperiences(null);
-        staffRepository.save(staff);
+        if(staff == null || staff.getIsDeleted() == true){
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
+        }
+        List<WorkExperience> list = staff.getWorkExperiences();
+        for (WorkExperience workExperience : list) {
+            if (workExperience.getId()==idExp){
+                list.remove(workExperience);
+                workExperienceRepository.delete(workExperience);
+                break;
+            }
+        }
         return new RestMessageDTO("Succes", true);
     }
 }

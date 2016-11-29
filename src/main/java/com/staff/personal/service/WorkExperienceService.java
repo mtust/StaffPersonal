@@ -15,6 +15,6 @@ public interface WorkExperienceService {
 
     List<WorkExperience> getWorkExperiences(Long id);
 
-    RestMessageDTO delWorkExperiences(Long id);
+    RestMessageDTO delWorkExperiences(Long id, Long idExp);
 
 }
