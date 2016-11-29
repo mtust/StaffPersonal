@@ -107,7 +107,10 @@ public class FiredServiceImpl implements FiredService {
     @Override
     @Transactional
     public FiredDTO createFiredDTO(Fired fired) {
-        FiredDTO firedDTO = new FiredDTO();
+        if (fired == null) {
+            return new FiredDTO();
+        } else {
+            FiredDTO firedDTO = new FiredDTO();
         firedDTO.setId(fired.getId().toString());
         firedDTO.setDateFiring(simpleDateFormat.format(fired.getDateFiring()));
         firedDTO.setOrderNumber(fired.getOrderNumber());
@@ -123,5 +126,6 @@ public class FiredServiceImpl implements FiredService {
         firedDTO.setSeniority(fired.getSeniority());
         firedDTO.setPersonalFileForwarded(fired.getPersonalFileForwarded());
         return firedDTO;
+    }
     }
 }
