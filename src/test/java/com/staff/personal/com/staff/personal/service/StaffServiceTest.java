@@ -21,10 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
 import java.util.Set;
-
-/**
- * Created by mtustanovskyy on 11/28/16.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
@@ -38,14 +34,14 @@ public class StaffServiceTest {
     private StaffService staffService;
 
     @Test
-    //@Ignore
+    @Ignore
     public void updateWholeStuffFieldByIdTest(){
         GsonBuilder b = new GsonBuilder();
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = b.create();
         AllStaffDTO allStaffDTO = new AllStaffDTO();
         MainStaffDTO mainStaffDTO = new MainStaffDTO();
-        mainStaffDTO.setFullName("pezda");
+        mainStaffDTO.setFullName("з");
         Staff staff = staffRepository.getOne(new Long(2));
         log.info("mainStaffDTO:" + mainStaffDTO);
         allStaffDTO.setMainStaff(mainStaffDTO);
