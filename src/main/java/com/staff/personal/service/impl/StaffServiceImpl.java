@@ -75,6 +75,7 @@ public class StaffServiceImpl implements StaffService {
     MainStaffRepository mainStaffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             //new SimpleDateFormat("dd.MM.yyyy");
+            private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Override
     public MainStaff getMainStaffForStuff(Long id) {
@@ -96,25 +97,26 @@ public class StaffServiceImpl implements StaffService {
         MainStaff mainStaff = staff.getMainStaff();
             mainStaffDTO.setFullName(mainStaff.getFullName());
             mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
-            mainStaffDTO.setSpecialRank(simpleDateFormat.format(mainStaff.getDateOfBirth()));
             mainStaffDTO.setPosition(mainStaff.getPosition());
-            mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
-            mainStaffDTO.setDateConferringSpecRanks(simpleDateFormat.format(mainStaff.getDateConferringSpecRanks()));
             mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
-            mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
+            mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
             mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
             mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
             mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
+            mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+            mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
+
             mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
             mainStaffDTO.setInCommand(mainStaff.getInCommand());
-            mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
+
             mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
             mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
             mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
             mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
-            mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
+
             mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
             mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
+        mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
             mainStaffDTO.setBiography(mainStaff.getBiography());
         return mainStaffDTO;
     }
@@ -132,40 +134,73 @@ public class StaffServiceImpl implements StaffService {
             MainStaff mainStaff = new MainStaff();
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
-            if(mainStaffDTO.getDateOfBirth() != null) {
-                mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
-            }
             mainStaff.setPosition(mainStaffDTO.getPosition());
             mainStaff.setNumberConferringSpeclRanks(mainStaffDTO.getNumberConferringSpeclRanks());
-            if(mainStaffDTO.getDateConferringSpecRanks() != null) {
-                mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
-            }
-                if(mainStaffDTO.getDateNumberPurpose() != null) {
+            try {
+                if (mainStaffDTO.getDateOfBirth() != null) {
+                    mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+                }
+
+                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
+                    mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
+                }
+                if (mainStaffDTO.getDateNumberPurpose() != null) {
                     mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
                 }
+
+                if (mainStaffDTO.getContractFromDate() != null) {
+                    mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
+                }
+                if (mainStaffDTO.getContractToDate() != null) {
+                    mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
+                }
+                if (mainStaffDTO.getExemptionDate() != null) {
+                    mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+                }
+                if (mainStaffDTO.getLastCertification() != null) {
+                    mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
+                }
+                if (mainStaffDTO.getDateSwear() != null) {
+                    mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+                }
+            }catch (ParseException e){
+                if (mainStaffDTO.getDateOfBirth() != null) {
+                    mainStaff.setDateOfBirth(simpleDateFormatNew.parse(mainStaffDTO.getDateOfBirth()));
+                }
+
+                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
+                    mainStaff.setDateConferringSpecRanks(simpleDateFormatNew.parse(mainStaffDTO.getDateConferringSpecRanks()));
+                }
+                if (mainStaffDTO.getDateNumberPurpose() != null) {
+                    mainStaff.setDateNumberPurpose(simpleDateFormatNew.parse(mainStaffDTO.getDateNumberPurpose()));
+                }
+
+                if (mainStaffDTO.getContractFromDate() != null) {
+                    mainStaff.setContractFromDate(simpleDateFormatNew.parse(mainStaffDTO.getContractFromDate()));
+                }
+                if (mainStaffDTO.getContractToDate() != null) {
+                    mainStaff.setContractToDate(simpleDateFormatNew.parse(mainStaffDTO.getContractToDate()));
+                }
+                if (mainStaffDTO.getExemptionDate() != null) {
+                    mainStaff.setExemptionDate(simpleDateFormatNew.parse(mainStaffDTO.getExemptionDate()));
+                }
+                if (mainStaffDTO.getLastCertification() != null) {
+                    mainStaff.setLastCertification(simpleDateFormatNew.parse(mainStaffDTO.getLastCertification()));
+                }
+                if (mainStaffDTO.getDateSwear() != null) {
+                    mainStaff.setDateSwear(simpleDateFormatNew.parse(mainStaffDTO.getDateSwear()));
+                }
+            }
             mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
-            if(mainStaffDTO.getContractFromDate() != null) {
-                mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
-            }
-            if(mainStaffDTO.getContractToDate() != null) {
-                mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
-            }
-            if(mainStaffDTO.getExemptionDate() != null) {
-                mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
-            }
             mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
             mainStaff.setInCommand(mainStaffDTO.getInCommand());
-            if(mainStaffDTO.getDateSwear() != null) {
-                mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
-            }
+
             mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
             mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
             mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
             mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
             mainStaff.setStaffOfficerCategory(mainStaffDTO.getStaffOfficerCategory());
-            if(mainStaffDTO.getLastCertification() != null) {
-                mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
-            }
+
             mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
             mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
             mainStaff.setBiography(mainStaffDTO.getBiography());

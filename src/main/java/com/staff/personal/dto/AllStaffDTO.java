@@ -26,7 +26,6 @@ public class AllStaffDTO {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private FiredDTO fired;
     private Other other;
-    @JsonInclude(JsonInclude.Include.ALWAYS)
     private List<HospitalsDTO> hospitals;
 
 }

@@ -28,6 +28,7 @@ public class HospitalsServiceImpl implements HospitalsService{
     StaffRepository staffRepository;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static SimpleDateFormat simpleDateFormatNew = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
 
     @Override
     @Transactional
@@ -40,8 +41,14 @@ public class HospitalsServiceImpl implements HospitalsService{
         List<Hospitals> list = staff.getHospitals();
         try {
             hospitals.setTypeHospital(hospitalsDTo.getTypeHospital());
-            hospitals.setFromDate(simpleDateFormat.parse(hospitalsDTo.getFromDate()));
-            hospitals.setToDate(simpleDateFormat.parse(hospitalsDTo.getToDate()));
+            try {
+                hospitals.setFromDate(simpleDateFormat.parse(hospitalsDTo.getFromDate()));
+                hospitals.setToDate(simpleDateFormat.parse(hospitalsDTo.getToDate()));
+            } catch (ParseException e){
+
+                hospitals.setFromDate(simpleDateFormatNew.parse(hospitalsDTo.getFromDate()));
+                hospitals.setToDate(simpleDateFormatNew.parse(hospitalsDTo.getToDate()));
+            }
             hospitals.setDescription(hospitalsDTo.getDescription());
             log.info(hospitals.toString());
             list.add(hospitals);
