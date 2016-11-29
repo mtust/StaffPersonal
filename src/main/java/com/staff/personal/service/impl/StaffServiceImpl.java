@@ -509,6 +509,7 @@ public class StaffServiceImpl implements StaffService {
         getAllStaffDTO.setPremiumFines(premiumFineService.createPremiumFineDTO(staff.getPremiumFines()));
         getAllStaffDTO.setPromotions(promotionService.createPromotionDTO(staff.getPromotions()));
         getAllStaffDTO.setOther(staff.getOther());
+        getAllStaffDTO.setHospitals(hospitalsService.createHospitalsDTO(staff.getHospitals()));
         return getAllStaffDTO;
     }
 
