@@ -422,6 +422,8 @@ public class StaffServiceImpl implements StaffService {
         mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
         mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
         mainStaffDTO.setBiography(mainStaff.getBiography());
+        mainStaffDTO.setPosition(mainStaff.getPosition());
+        mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
 
 
         return mainStaffDTO;
