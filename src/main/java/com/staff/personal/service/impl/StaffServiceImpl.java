@@ -1,9 +1,6 @@
 package com.staff.personal.service.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.staff.personal.config.HibernateProxyTypeAdapter;
 import com.staff.personal.config.NullStringToEmptyAdapterFactory;
 import com.staff.personal.domain.MainStaff;
@@ -482,9 +479,10 @@ public class StaffServiceImpl implements StaffService {
                 log.info("entry:" + entry);
                 jsonObject1.add(entry.getKey(), entry.getValue());
             } else if (element.isJsonArray()) {
-                for (JsonElement jsonArrayElement :
-                        element.getAsJsonArray()) {
-                    this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
+                JsonArray jsonArray = element.getAsJsonArray();
+                for(int i = 0; i < jsonArray.size(); i++) {
+                    log.info(jsonArray.get(i).toString());
+                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
                 }
             } else if (element.isJsonObject()) {
                 this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
