@@ -351,7 +351,88 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        this.createUpdateStuff(staff, staffDTO);
+        if(staffDTO.getEducationDTO() != null){
+            Education education = new Education();
+            EducationDTO educationDTO = staffDTO.getEducationDTO();
+            education.setLanguage(educationDTO.getLanguage());
+            education.setId(educationDTO.getId());
+            education.setMainEducationBlocks(educationDTO.getMainEducationBlocks());
+            education.setOtherStudying(educationDTO.getOtherStudying());
+            staff.setEducation(education);
+        }
+
+        if(staffDTO.getMainStaffDTO() != null){
+            MainStaff mainStaff = new MainStaff();
+            MainStaffDTO mainStaffDTO = staffDTO.getMainStaffDTO();
+            mainStaff.setId(mainStaffDTO.getId());
+            mainStaff.setBiography(mainStaffDTO.getBiography());
+            mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
+            mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
+            try {
+                mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try {
+                mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try {
+                mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try {
+                mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try{
+                mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try {
+                mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            try {
+                mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+            } catch (Exception e){
+                log.info(e.getMessage());
+            }
+            mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
+            mainStaff.setFullName(mainStaffDTO.getFullName());
+            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
+        }
+        if(staffDTO.getRegionId() != null) {
+            Region region = regionService.getRegionById(staffDTO.getRegionId());
+            staff.setRegion(region);
+        }
+        if(staffDTO.getWorkExperienceDTOs() != null){
+            List<WorkExperience> wes = new ArrayList<>();
+            for (WorkExperienceDTO weDTO: staffDTO.getWorkExperienceDTOs()
+                 ) {
+                WorkExperience we = new WorkExperience();
+                we.setId(weDTO.getId());
+                try {
+                    we.setFromDate(simpleDateFormat.parse(weDTO.getFromDate()));
+                } catch (Exception e){
+                    log.info(e.getMessage());
+                }
+                try {
+                    we.setToDate(simpleDateFormat.parse(weDTO.getToDate()));
+                } catch (Exception e){
+                    log.info(e.getMessage());
+                }
+                we.setName(weDTO.getOrgName());
+                wes.add(we);
+            }
+            staff.setWorkExperiences(wes);
+        }
+        staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
 
@@ -375,28 +456,41 @@ public class StaffServiceImpl implements StaffService {
         workExperienceService.crateWorkExperience(staffDTO.getWorkExperiences(), staff.getId());
         otherService.createOther(staffDTO.getOther(), staff.getId());
         educationService.createEducation(staffDTO.getEducation(), staff.getId());
+        if(staffDTO.getPremiumFines() != null){
         for (PremiumFineDTO premium :
                 staffDTO.getPremiumFines()) {
             premiumFineService.addPremiumFine(staff.getId(), premium);
         }
-        for (PromotionDTO promotion :
-                staffDTO.getPromotions()) {
-            promotionService.addPromotion(staff.getId(), promotion);
         }
-        for (HolidayDTO holiday : staffDTO.getHolidays()
-                ) {
-            holidayService.addHoliday(staff.getId(), holiday);
+        if(staffDTO.getPromotions() != null) {
+            for (PromotionDTO promotion :
+                    staffDTO.getPromotions()) {
+                promotionService.addPromotion(staff.getId(), promotion);
+            }
         }
-        for (HospitalsDTO hospital : staffDTO.getHospitals()
-                ) {
-            hospitalsService.addHospitals(staff.getId(), hospital);
+        if(staffDTO.getHolidays() != null) {
+            for (HolidayDTO holiday : staffDTO.getHolidays()
+                    ) {
+                holidayService.addHoliday(staff.getId(), holiday);
+            }
+        }
+        if(staffDTO.getHospitals() != null) {
+            for (HospitalsDTO hospital : staffDTO.getHospitals()
+                    ) {
+                hospitalsService.addHospitals(staff.getId(), hospital);
+            }
+        }
+        if(staffDTO.getFired() != null) {
+
+            firedService.addFired(staff.getId(), staffDTO.getFired());
+
         }
 
-        firedService.addFired(staff.getId(), staffDTO.getFired());
-
-        for (BenefitsDTO benefit : staffDTO.getBenefits()
-                ) {
-            benefitsService.addBenefit(benefit, staff.getId());
+        if(staffDTO.getBenefits() != null) {
+            for (BenefitsDTO benefit : staffDTO.getBenefits()
+                    ) {
+                benefitsService.addBenefit(benefit, staff.getId());
+            }
         }
 
         return new RestMessageDTO("Success", true);
@@ -447,7 +541,7 @@ public class StaffServiceImpl implements StaffService {
 
     public MainStaffDTO createMainStaffDTO(MainStaff mainStaff) {
         MainStaffDTO mainStaffDTO = new MainStaffDTO();
-        mainStaffDTO.setId(mainStaff.getId().toString());
+        mainStaffDTO.setId(mainStaff.getId());
         mainStaffDTO.setFullName(mainStaff.getFullName());
         mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
         if (mainStaff.getDateOfBirth() != null) {

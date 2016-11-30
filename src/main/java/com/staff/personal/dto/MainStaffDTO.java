@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class MainStaffDTO {
 
-    String id;
+    Long id;
     String fullName;
     String specialRank;
     String dateOfBirth;
