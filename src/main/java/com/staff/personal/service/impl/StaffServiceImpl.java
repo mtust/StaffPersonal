@@ -276,14 +276,16 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     @Override
     public List<GetStaffDTO> getAllStaff() {
-        List<Staff> listAll = staffRepository.findByIsDeletedFalse();
+        //List<Staff> listAll = staffRepository.findByIsDeletedFalse();
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        List<Staff> list = null;
+        Set<Staff> listAll = staffRepository.findByIsDeletedFalseAndRegionIn(regions);
+        Set<Staff> list = null;
         if (regions.isEmpty()) {
             list = listAll;
         } else {
-            list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toList());
+           // list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toSet());
+            list = listAll;
         }
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
