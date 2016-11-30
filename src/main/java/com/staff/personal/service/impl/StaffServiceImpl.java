@@ -393,20 +393,15 @@ public class StaffServiceImpl implements StaffService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         GetAllStaffDTO allStaffDTO1 = this.createGetAllStuffDTO(staff);
-        log.info("allStaffDTO:" + allStaffDTO);
         JsonElement jsonElement = gson.toJsonTree(allStaffDTO);
         Set<Map.Entry<String, JsonElement>> set = jsonElement.getAsJsonObject().entrySet();
         JsonElement jsonElement1 = gson.toJsonTree(allStaffDTO1);
         JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> set1 = jsonElement1.getAsJsonObject().entrySet();
-        log.info("set:" + set);
-        log.info("jsonObject1:" + jsonObject1);
         this.change(set, jsonObject1);
 
-        log.info("jsonObject2:" + jsonObject1);
         Gson gsonNew = new GsonBuilder().registerTypeAdapterFactory(NullStringToEmptyAdapterFactory.FACTORY).create();
         allStaffDTO = gsonNew.fromJson(jsonObject1, AllStaffDTO.class);
-        log.info("allStaffDTO" + allStaffDTO);
         if (allStaffDTO.getBenefits() == null) {
             allStaffDTO.setBenefits(new ArrayList<>());
         }
@@ -508,13 +503,21 @@ public class StaffServiceImpl implements StaffService {
                 ) {
             JsonElement element = entry.getValue();
             if (element.isJsonPrimitive()) {
-                log.info("entry:" + entry);
                 jsonObject1.add(entry.getKey(), entry.getValue());
             } else if (element.isJsonArray()) {
                 JsonArray jsonArray = element.getAsJsonArray();
                 for (int i = 0; i < jsonArray.size(); i++) {
                     log.info(jsonArray.get(i).toString());
-                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+//                    if(jsonArray.get(i).isJsonArray() == false && jsonArray.get(i).getAsJsonObject().get("id") == null) {
+//                        log.info("!!!" + jsonArray.get(i).toString());
+//                        JsonArray jsonArray1  = jsonObject1.get(entry.getKey()).getAsJsonArray();
+//                        log.info("!!!!" + jsonArray1);
+//                        log.info(entry.getKey().toString());
+//                        jsonArray1.add(jsonArray.get(i));
+//                       jsonObject1.add(entry.getKey(), jsonArray1);
+//                    } else {
+                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+//                    }
                 }
             } else if (element.isJsonObject()) {
                 this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
