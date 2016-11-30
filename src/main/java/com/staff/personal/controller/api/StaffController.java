@@ -80,6 +80,11 @@ public class StaffController {
         return staffService.getAllStaff();
     }
 
+    @RequestMapping(value = "allDeleted", method = RequestMethod.GET)
+    List<GetStaffDTO> getAllDeletedStaff() {
+        return staffService.getAllDeletedStaff();
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     List<GetAllStaffDTO> getStaff() {
         return staffService.getWholeStaff();

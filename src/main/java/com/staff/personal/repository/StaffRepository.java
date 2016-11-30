@@ -8,15 +8,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
 
-//    public List<Staff> findByRegions(Collection<Region> regions);
+      public Set<Staff> findByIsDeletedFalseAndRegionIn(Collection<Region> regions);
+      public Set<Staff> findByIsDeletedTrueAndRegionIn(Collection<Region> regions);
 
-      public List<Staff> findByIsDeletedIsTrue();
+      public List<Staff> findByIsDeletedTrue();
 
-      public List<Staff> findByIsDeletedIsFalse();
+      public List<Staff> findByIsDeletedFalse();
+
 
 }
