@@ -218,7 +218,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        if (regions == null) {
+       /* if (regions == null) {
             regions = new HashSet<Region>();
         }
         log.info("user regions: " + regions);
@@ -226,8 +226,11 @@ public class StaffServiceImpl implements StaffService {
         log.info("stuff regions " + staff.getRegion());
         if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
+        }*/
+        Staff staff = staffRepository.findOneByIsDeletedFalseAndIdAndRegionIn(id, regions);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
-
         return this.createGetStuffDTO(staff);
 
     }
@@ -284,7 +287,7 @@ public class StaffServiceImpl implements StaffService {
         if (regions.isEmpty()) {
             list = listAll;
         } else {
-           // list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toSet());
+            // list = listAll.stream().filter(staff -> regions.contains(staff.getRegion())).collect(Collectors.toSet());
             list = listAll;
         }
         List<GetStaffDTO> listDTO = new ArrayList<>();
@@ -296,6 +299,7 @@ public class StaffServiceImpl implements StaffService {
 
         return listDTO;
     }
+
     @Transactional
     @Override
     public List<GetStaffDTO> getAllDeletedStaff() {
@@ -581,9 +585,9 @@ public class StaffServiceImpl implements StaffService {
     private GetStaffDTO createGetStuffDTO(Staff staff) {
         GetStaffDTO getStaffDTO = new GetStaffDTO();
         getStaffDTO.setId(staff.getId());
-        getStaffDTO.setWorkExperiences(staff.getWorkExperiences());
+        getStaffDTO.setWorkExperiences(workExperienceService.createWorkExperienceDTO(staff.getWorkExperiences()));
         getStaffDTO.setEducation(staff.getEducation());
-        getStaffDTO.setMainStaff(staff.getMainStaff());
+        getStaffDTO.setMainStaffDTO(this.createMainStaffDTO(staff.getMainStaff()));
         getStaffDTO.setRegion(staff.getRegion());
         return getStaffDTO;
     }
