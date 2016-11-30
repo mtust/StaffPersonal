@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class WorkExperienceDTO{
-    String id;
+    Long id;
     String orgName;
     String fromDate;
     String toDate;

@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class EducationDTO {
 
+    Long id;
+
     List<MainEducationBlock> mainEducationBlocks;
 
     String otherStudying;

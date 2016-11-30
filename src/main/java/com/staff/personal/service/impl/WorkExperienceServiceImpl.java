@@ -54,27 +54,29 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         if(staff == null || staff.getIsDeleted() == true){
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
-        try {
-            List<WorkExperience> list = new ArrayList<WorkExperience>();
-            for (WorkExperienceDTO workExperienceDTO : workExperienceDTOList) {
-                WorkExperience workExperience = new WorkExperience();
-                workExperience.setName(workExperienceDTO.getOrgName());
-                try{
-                    workExperience.setFromDate(simpleDateFormat.parse(workExperienceDTO.getFromDate()));
-                    workExperience.setToDate(simpleDateFormat.parse(workExperienceDTO.getToDate()));
-                } catch (ParseException e){
-                    workExperience.setFromDate(simpleDateFormatNew.parse(workExperienceDTO.getFromDate()));
-                    workExperience.setToDate(simpleDateFormatNew.parse(workExperienceDTO.getToDate()));
+        if(workExperienceDTOList != null) {
+            try {
+                List<WorkExperience> list = new ArrayList<WorkExperience>();
+                for (WorkExperienceDTO workExperienceDTO : workExperienceDTOList) {
+                    WorkExperience workExperience = new WorkExperience();
+                    workExperience.setName(workExperienceDTO.getOrgName());
+                    try {
+                        workExperience.setFromDate(simpleDateFormat.parse(workExperienceDTO.getFromDate()));
+                        workExperience.setToDate(simpleDateFormat.parse(workExperienceDTO.getToDate()));
+                    } catch (ParseException e) {
+                        workExperience.setFromDate(simpleDateFormatNew.parse(workExperienceDTO.getFromDate()));
+                        workExperience.setToDate(simpleDateFormatNew.parse(workExperienceDTO.getToDate()));
+                    }
+                    list.add(workExperience);
                 }
-                list.add(workExperience);
+                log.info("list after foreach \n" + list.toString());
+                staff.setWorkExperiences(list);
+                workExperienceRepository.save(list);
+                staffRepository.saveAndFlush(staff);
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
             }
-            log.info("list after foreach \n" + list.toString());
-            staff.setWorkExperiences(list);
-            workExperienceRepository.save(list);
-            staffRepository.saveAndFlush(staff);
-        } catch (ParseException e) {
-            log.warn(e.getMessage());
-            throw new BadRequestParametersException("Дата у не вірному форматі");
         }
         return new RestMessageDTO("succes", true);
     }
@@ -104,7 +106,7 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         List<WorkExperienceDTO> experienceDTOs = new ArrayList<>();
         for (WorkExperience workExperience : list) {
             WorkExperienceDTO workExperienceDTO = new WorkExperienceDTO();
-            workExperienceDTO.setId(workExperience.getId().toString());
+            workExperienceDTO.setId(workExperience.getId());
             workExperienceDTO.setOrgName(workExperience.getName());
             if (workExperience.getToDate() != null) {
                 workExperienceDTO.setToDate(simpleDateFormat.format(workExperience.getToDate()));
