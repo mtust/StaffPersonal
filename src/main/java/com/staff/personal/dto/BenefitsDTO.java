@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class BenefitsDTO {
-    private String id;
+    private Long id;
     private String name;
     private String fromDate;
     private String toDate;

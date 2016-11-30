@@ -55,6 +55,9 @@ public class BenefitsServiceImpl implements BenefitsService {
 
                 benefits.setOrderDate(simpleDateFormatNew.parse(benefitsDTO.getOrderDate()));
             }
+            if(benefitsDTO.getId() != null){
+                benefits.setId(benefitsDTO.getId());
+            }
             benefits.setOrder(benefitsDTO.getOrder());
             benefits.setCertification(benefitsDTO.getCertification());
             benefits.setPrivilege(benefitsDTO.getPrivilege());
@@ -127,7 +130,7 @@ public class BenefitsServiceImpl implements BenefitsService {
         List<BenefitsDTO> benefitsDTOList = new ArrayList<>();
         for (Benefits benefits : list) {
             BenefitsDTO benefitsDTO = new BenefitsDTO();
-            benefitsDTO.setId(benefits.getId().toString());
+            benefitsDTO.setId(benefits.getId());
             benefitsDTO.setName(benefits.getName());
             if (benefits.getFromDate() != null) {
             benefitsDTO.setFromDate(simpleDateFormat.format(benefits.getFromDate()));

@@ -46,11 +46,19 @@ public class FiredServiceImpl implements FiredService {
         Fired fired = new Fired();
         try {
             try {
-                fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
-                fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
+                if(firedDTO.getDateFiring() != null) {
+                    fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
+                }
+                if(firedDTO.getReferenceLEKDate() != null) {
+                    fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
+                }
             } catch (ParseException e) {
-                fired.setDateFiring(simpleDateFormatNew.parse(firedDTO.getDateFiring()));
-                fired.setReferenceLEKDate(simpleDateFormatNew.parse(firedDTO.getReferenceLEKDate()));
+                if(firedDTO.getDateFiring() != null) {
+                    fired.setDateFiring(simpleDateFormatNew.parse(firedDTO.getDateFiring()));
+                }
+                if(firedDTO.getReferenceLEKDate() != null) {
+                    fired.setReferenceLEKDate(simpleDateFormatNew.parse(firedDTO.getReferenceLEKDate()));
+                }
             }
             fired.setOrderNumber(firedDTO.getOrderNumber());
             fired.setWhereFired(firedDTO.getWhereFired());
