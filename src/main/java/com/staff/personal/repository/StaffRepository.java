@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.staff.personal.domain.Staff;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,12 +15,15 @@ import java.util.Set;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
 
-      public Set<Staff> findByIsDeletedFalseAndRegionIn(Collection<Region> regions);
-      public Set<Staff> findByIsDeletedTrueAndRegionIn(Collection<Region> regions);
+    public Set<Staff> findByIsDeletedFalseAndRegionIn(Collection<Region> regions);
 
-      public List<Staff> findByIsDeletedTrue();
+    public Staff findOneByIsDeletedFalseAndIdAndRegionIn(Long id, Collection<Region> regions);
 
-      public List<Staff> findByIsDeletedFalse();
+    public Set<Staff> findByIsDeletedTrueAndRegionIn(Collection<Region> regions);
+
+    public List<Staff> findByIsDeletedTrue();
+
+    public List<Staff> findByIsDeletedFalse();
 
 
 }
