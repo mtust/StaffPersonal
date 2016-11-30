@@ -15,11 +15,11 @@ import java.util.Set;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
 
-    public Set<Staff> findByIsDeletedFalseAndRegionIn(Collection<Region> regions);
+    public List<Staff> findByIsDeletedFalseAndRegionIn(Collection<Region> regions);
+
+    public List<Staff> findByIsDeletedTrueAndRegionIn(Collection<Region> regions);
 
     public Staff findOneByIsDeletedFalseAndIdAndRegionIn(Long id, Collection<Region> regions);
-
-    public Set<Staff> findByIsDeletedTrueAndRegionIn(Collection<Region> regions);
 
     public List<Staff> findByIsDeletedTrue();
 

@@ -2,6 +2,7 @@ package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
+import com.staff.personal.security.Secured;
 import com.staff.personal.service.*;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +81,7 @@ public class StaffController {
         return staffService.getAllStaff();
     }
 
+    //@Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "allDeleted", method = RequestMethod.GET)
     List<GetStaffDTO> getAllDeletedStaff() {
         return staffService.getAllDeletedStaff();
