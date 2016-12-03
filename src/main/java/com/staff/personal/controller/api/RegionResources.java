@@ -25,7 +25,7 @@ public class RegionResources {
 
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.POST)
-    public RestMessageDTO createRegion(Region region){
+    public RestMessageDTO createRegion(@RequestBody Region region){
         return regionService.createRegion(region);
     }
 
