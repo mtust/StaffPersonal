@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id);
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
         userDTO.setRoleName(user.getRole().name());
         userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
@@ -162,6 +163,7 @@ public class UserServiceImpl implements UserService {
         for (User user: users
              ) {
             UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
             userDTO.setRoleName(user.getRole().name());
             userDTO.setEmail(user.getEmail());
             userDTO.setFirstName(user.getFirstName());

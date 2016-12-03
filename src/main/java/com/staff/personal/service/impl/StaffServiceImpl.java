@@ -623,6 +623,10 @@ public class StaffServiceImpl implements StaffService {
                 JsonArray jsonArray = element.getAsJsonArray();
                 for (int i = 0; i < jsonArray.size(); i++) {
                     log.info(jsonArray.get(i).toString());
+                    if(jsonArray.get(i).getAsJsonObject().get("id") != null){
+                        log.info("not null");
+                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonArray.get(i).getAsJsonObject());
+                    }
 //                    if(jsonArray.get(i).isJsonArray() == false && jsonArray.get(i).getAsJsonObject().get("id") == null) {
 //                        log.info("!!!" + jsonArray.get(i).toString());
 //                        JsonArray jsonArray1  = jsonObject1.get(entry.getKey()).getAsJsonArray();
