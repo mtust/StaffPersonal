@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by mtustanovskyy on 11/2/16.
@@ -31,6 +32,11 @@ public class UserResources {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    List<UserDTO> getUsers(){
+        return userService.getUsers();
     }
 
     @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)

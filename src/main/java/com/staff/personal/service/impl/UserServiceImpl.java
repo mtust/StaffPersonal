@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -151,5 +153,21 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.valueOf(role));
         userRepository.save(user);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public List<UserDTO> getUsers() {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        for (User user: users
+             ) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setRoleName(user.getRole().name());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setFirstName(user.getFirstName());
+            userDTO.setLastName(user.getLastName());
+            userDTOS.add(userDTO);
+        }
+        return  userDTOS;
     }
 }
