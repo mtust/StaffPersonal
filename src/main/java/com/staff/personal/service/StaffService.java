@@ -39,4 +39,8 @@ public interface StaffService {
 
 	List<GetStaffDTO> getAllStaffDeletedByOperator();
 
+	RestMessageDTO restoreDeletedStaffByAdmin(Long id);
+
+	RestMessageDTO restoreDeletedStaffByOperator(Long id);
+
 }

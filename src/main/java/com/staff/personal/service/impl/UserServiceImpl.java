@@ -157,11 +157,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<UserDTO> getUsers() {
         List<UserDTO> userDTOS = new ArrayList<>();
         List<User> users = userRepository.findAll();
-        for (User user: users
-             ) {
+        for (User user: users) {
             UserDTO userDTO = new UserDTO();
             userDTO.setId(user.getId());
             userDTO.setRoleName(user.getRole().name());

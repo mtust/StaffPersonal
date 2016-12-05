@@ -213,6 +213,38 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
+    public RestMessageDTO restoreDeletedStaffByAdmin(Long id){
+        log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        Staff staff = staffRepository.findOneByIdAndRegionIn(id, regions);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        } else if (staff.getIsDeleted() == true){
+            staff.setIsDeleted(false);
+            staff.setIsDeletedByOperator(false);
+            staffRepository.save(staff);
+            log.info("Staff was restored" + staff.getId() + " " + staff.getMainStaff().getFullName());
+        }else {
+            throw new ObjectDoNotExistException("This object is not deleted by admin");
+        }
+        return new RestMessageDTO("Succes", true);
+    }
+    public RestMessageDTO restoreDeletedStaffByOperator(Long id){
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        Staff staff = staffRepository.findOneByIdAndRegionIn(id,regions);
+        if (staff == null) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        } else if (staff.getIsDeletedByOperator() == true){
+            staff.setIsDeletedByOperator(false);
+            staffRepository.save(staff);
+        }else {
+            throw new ObjectDoNotExistException("This object is not deleted by operator");
+        }
+        return new RestMessageDTO("Succes", true);
+    }
+
     @Override
     @Transactional
     public GetStaffDTO getStaff(Long id) {
@@ -663,18 +695,9 @@ public class StaffServiceImpl implements StaffService {
                         log.info("2: " + jsonObject1.get(entry.getKey()).getAsJsonArray());
                     }
 
-//                    if(jsonArray.get(i).isJsonArray() == false && jsonArray.get(i).getAsJsonObject().get("id") == null) {
-//                        log.info("!!!" + jsonArray.get(i).toString());
-//                        JsonArray jsonArray1  = jsonObject1.get(entry.getKey()).getAsJsonArray();
-//                        log.info("!!!!" + jsonArray1);
-//                        log.info(entry.getKey().toString());
-//                        jsonArray1.add(jsonArray.get(i));
-//                       jsonObject1.add(entry.getKey(), jsonArray1);
-//                    } else {
                     this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
-//                    }
 
-                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
 
                 }
             } else if (element.isJsonObject()) {

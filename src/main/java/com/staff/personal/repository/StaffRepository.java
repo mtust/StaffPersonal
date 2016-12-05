@@ -21,7 +21,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     public List<Staff> findByIsDeletedByOperatorTrueAndRegionIn(Collection<Region> regions);
 
-    public List<Staff> findByIsDeletedTrue();
+    public Staff findOneByIdAndRegionIn(Long id, Collection<Region> regions);
 
     public List<Staff> findByIsDeletedFalse();
 

@@ -34,6 +34,7 @@ public class UserResources {
         return userService.getUserById(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.GET)
     List<UserDTO> getUsers(){
         return userService.getUsers();

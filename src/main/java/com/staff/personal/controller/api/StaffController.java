@@ -118,6 +118,20 @@ public class StaffController {
     RestMessageDTO updateStaffWholeById(@PathVariable Long id, @RequestBody AllStaffDTO allStaffDTO){
         return staffService.updateAllStaffById(id, allStaffDTO);
     }
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "{id}/restore/admin", method = RequestMethod.PATCH)
+    RestMessageDTO restoreDeletedStaffByAdmin(@PathVariable Long id){
+        return staffService.restoreDeletedStaffByAdmin(id);
+    }
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "{id}/restore/operator", method = RequestMethod.PATCH)
+    RestMessageDTO restoreDeletedStaffByOperator(@PathVariable Long id){
+        return staffService.restoreDeletedStaffByOperator(id);
+    }
+
+
+
+
 
     //MAIN STAFF
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.GET)
@@ -132,7 +146,7 @@ public class StaffController {
         log.info(mainStaffDTO.toString());
         return staffService.createMainStaff(mainStaffDTO, id);
     }
-
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/mainStaff", method = RequestMethod.DELETE)
     RestMessageDTO deleteMainStaff(@PathVariable Long id) {
         return staffService.deleteMainStaffById(id);
@@ -150,12 +164,13 @@ public class StaffController {
         log.info("getEducationByStaffId");
         return educationService.getEducation(id);
     }
-
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/education", method = RequestMethod.DELETE)
     RestMessageDTO delEducationByStaffId(@PathVariable Long id) {
         log.info("delEducationByStaffId");
         return educationService.delEducation(id);
     }
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/education/{idMainEducation}", method = RequestMethod.DELETE)
     RestMessageDTO delMainEducationBlock(@PathVariable Long id,@PathVariable Long idMainEducation) {
         log.info("delMainEducationBlock");
@@ -174,7 +189,7 @@ public class StaffController {
         log.info("in getWorkExperience");
         return workExperienceService.getWorkExperiences(id);
     }
-
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/workExperience/{idExp}", method = RequestMethod.DELETE)
     RestMessageDTO delWorkExperience(@PathVariable Long id,@PathVariable Long idExp) {
         log.info("delWorkExperience by id Experience!");
@@ -194,7 +209,7 @@ public class StaffController {
         log.info("in getWorkExperience");
         return otherService.getOther(id);
     }
-
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/other", method = RequestMethod.DELETE)
     RestMessageDTO delOther(@PathVariable Long id) {
         log.info("in getWorkExperience");
@@ -229,7 +244,7 @@ public class StaffController {
         log.info("in getBenefits");
         return benefitsService.getBenefits(id);
     }
-
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/benefits/{idBen}", method = RequestMethod.DELETE)
     RestMessageDTO delBenefitsByID(@PathVariable Long id, @PathVariable Long idBen) {
         log.info("in delBenefitsByID");
@@ -249,7 +264,7 @@ public class StaffController {
         log.info("in getFired \n" + firedService.getFired(id).toString());
         return firedService.getFired(id).toString();
     }
-    //!!!does not work
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/fired", method = RequestMethod.DELETE)
     RestMessageDTO delFired(@PathVariable Long id) {
             return firedService.delFired(id);
@@ -268,6 +283,7 @@ public class StaffController {
         return holidayService.getHolidays(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/holiday/{idHol}", method = RequestMethod.DELETE)
     RestMessageDTO delHoliday(@PathVariable Long id, @PathVariable Long idHol) {
         log.info("in delHoliday");
@@ -287,6 +303,7 @@ public class StaffController {
         return hospitalsService.getHospitals(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/hospitals/{idHosp}", method = RequestMethod.DELETE)
     RestMessageDTO delHospitals(@PathVariable Long id, @PathVariable Long idHosp) {
         log.info("in delHospitals");
@@ -306,6 +323,7 @@ public class StaffController {
         return premiumFineService.getPremiumFine(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/premiumFine/{idPrFine}", method = RequestMethod.DELETE)
     RestMessageDTO delPremiumFine(@PathVariable Long id, @PathVariable Long idPrFine) {
         log.info("in delPremiumFine");
@@ -325,6 +343,7 @@ public class StaffController {
         return promotionService.getPromotions(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/promotion/{idPr}", method = RequestMethod.DELETE)
     RestMessageDTO delPromotion(@PathVariable Long id, @PathVariable Long idPr) {
         log.info("in delPromotion");
@@ -355,6 +374,7 @@ public class StaffController {
     }
 
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/reports/{idReports}", method = RequestMethod.DELETE)
     RestMessageDTO delReports(@PathVariable Long id, @PathVariable Long idReports) throws IOException, SQLException  {
         log.info("in delReports");
@@ -382,6 +402,7 @@ public class StaffController {
         return staffDocumentsService.getDocumentsInfo(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}/staffDoc/{idDoc}", method = RequestMethod.DELETE)
     RestMessageDTO delStaffDoc(@PathVariable Long id, @PathVariable Long idDoc) {
         log.info("in delStaffDoc");
