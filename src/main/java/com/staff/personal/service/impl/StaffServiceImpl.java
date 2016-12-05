@@ -208,6 +208,7 @@ public class StaffServiceImpl implements StaffService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         staff.setIsDeleted(true);
+        staff.setIsDeletedByOperator(false);
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
@@ -227,7 +228,7 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }*/
-        Staff staff = staffRepository.findOneByIsDeletedFalseAndIdAndRegionIn(id, regions);
+        Staff staff = staffRepository.findOneByIsDeletedFalseAndIsDeletedByOperatorFalseAndIdAndRegionIn(id, regions);
         if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
@@ -251,7 +252,7 @@ public class StaffServiceImpl implements StaffService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);*/
-        Staff staff = staffRepository.findOneByIsDeletedFalseAndIdAndRegionIn(id,regions);
+        Staff staff = staffRepository.findOneByIsDeletedFalseAndIsDeletedByOperatorFalseAndIdAndRegionIn(id, regions);
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
         return getAllStaffDTO;
     }
@@ -274,7 +275,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("list after foreach \n" + listDTO.toString());*/
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        List<Staff> list = staffRepository.findByIsDeletedFalseAndRegionIn(regions);
+        List<Staff> list = staffRepository.findByIsDeletedFalseAndIsDeletedByOperatorFalseAndRegionIn(regions);
         List<GetAllStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
             GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
@@ -305,7 +306,7 @@ public class StaffServiceImpl implements StaffService {
         log.info("list after foreach \n" + listDTO.toString());*/
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        List<Staff> list = staffRepository.findByIsDeletedFalseAndRegionIn(regions);
+        List<Staff> list = staffRepository.findByIsDeletedFalseAndIsDeletedByOperatorFalseAndRegionIn(regions);
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
             GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
@@ -334,11 +335,41 @@ public class StaffServiceImpl implements StaffService {
         log.info("list after foreach \n" + listDTO.toString());*/
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        List<Staff> list = staffRepository.findByIsDeletedTrueAndRegionIn(regions);
+        List<Staff> list = staffRepository.findByIsDeletedTrueAndIsDeletedByOperatorFalseAndRegionIn(regions);
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
             GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
             listDTO.add(getStaffDTO);
+        }
+        return listDTO;
+    }
+
+    @Override
+    @Transactional
+    public RestMessageDTO deleteByOperator(Long id) {
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
+        }
+        staff.setIsDeletedByOperator(true);
+        staffRepository.save(staff);
+        return new RestMessageDTO("Succes", true);
+    }
+
+    @Override
+    @Transactional
+    public List<GetStaffDTO> getAllStaffDeletedByOperator() {
+        Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
+        Set<Region> regions = userService.getUserRegions(userId);
+        List<Staff> list = staffRepository.findByIsDeletedByOperatorTrueAndRegionIn(regions);
+        List<GetStaffDTO> listDTO = new ArrayList<>();
+        if (list.isEmpty()) {
+            return listDTO;
+        } else {
+            for (Staff staff : list) {
+                GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
+                listDTO.add(getStaffDTO);
+            }
         }
         return listDTO;
     }
@@ -351,7 +382,7 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        if(staffDTO.getEducationDTO() != null){
+        if (staffDTO.getEducationDTO() != null) {
             Education education = new Education();
             EducationDTO educationDTO = staffDTO.getEducationDTO();
             education.setLanguage(educationDTO.getLanguage());
@@ -361,7 +392,7 @@ public class StaffServiceImpl implements StaffService {
             staff.setEducation(education);
         }
 
-        if(staffDTO.getMainStaffDTO() != null){
+        if (staffDTO.getMainStaffDTO() != null) {
             MainStaff mainStaff = new MainStaff();
             MainStaffDTO mainStaffDTO = staffDTO.getMainStaffDTO();
             mainStaff.setId(mainStaffDTO.getId());
@@ -370,61 +401,61 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
             try {
                 mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             try {
                 mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             try {
                 mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             try {
                 mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
-            try{
+            try {
                 mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             try {
                 mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             try {
                 mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
             mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
         }
-        if(staffDTO.getRegionId() != null) {
+        if (staffDTO.getRegionId() != null) {
             Region region = regionService.getRegionById(staffDTO.getRegionId());
             staff.setRegion(region);
         }
-        if(staffDTO.getWorkExperienceDTOs() != null){
+        if (staffDTO.getWorkExperienceDTOs() != null) {
             List<WorkExperience> wes = new ArrayList<>();
-            for (WorkExperienceDTO weDTO: staffDTO.getWorkExperienceDTOs()
-                 ) {
+            for (WorkExperienceDTO weDTO : staffDTO.getWorkExperienceDTOs()
+                    ) {
                 WorkExperience we = new WorkExperience();
                 we.setId(weDTO.getId());
                 try {
                     we.setFromDate(simpleDateFormat.parse(weDTO.getFromDate()));
-                } catch (Exception e){
+                } catch (Exception e) {
                     log.info(e.getMessage());
                 }
                 try {
                     we.setToDate(simpleDateFormat.parse(weDTO.getToDate()));
-                } catch (Exception e){
+                } catch (Exception e) {
                     log.info(e.getMessage());
                 }
                 we.setName(weDTO.getOrgName());
@@ -456,37 +487,37 @@ public class StaffServiceImpl implements StaffService {
         workExperienceService.crateWorkExperience(staffDTO.getWorkExperiences(), staff.getId());
         otherService.createOther(staffDTO.getOther(), staff.getId());
         educationService.createEducation(staffDTO.getEducation(), staff.getId());
-        if(staffDTO.getPremiumFines() != null){
-        for (PremiumFineDTO premium :
-                staffDTO.getPremiumFines()) {
-            premiumFineService.addPremiumFine(staff.getId(), premium);
+        if (staffDTO.getPremiumFines() != null) {
+            for (PremiumFineDTO premium :
+                    staffDTO.getPremiumFines()) {
+                premiumFineService.addPremiumFine(staff.getId(), premium);
+            }
         }
-        }
-        if(staffDTO.getPromotions() != null) {
+        if (staffDTO.getPromotions() != null) {
             for (PromotionDTO promotion :
                     staffDTO.getPromotions()) {
                 promotionService.addPromotion(staff.getId(), promotion);
             }
         }
-        if(staffDTO.getHolidays() != null) {
+        if (staffDTO.getHolidays() != null) {
             for (HolidayDTO holiday : staffDTO.getHolidays()
                     ) {
                 holidayService.addHoliday(staff.getId(), holiday);
             }
         }
-        if(staffDTO.getHospitals() != null) {
+        if (staffDTO.getHospitals() != null) {
             for (HospitalsDTO hospital : staffDTO.getHospitals()
                     ) {
                 hospitalsService.addHospitals(staff.getId(), hospital);
             }
         }
-        if(staffDTO.getFired() != null) {
+        if (staffDTO.getFired() != null) {
 
             firedService.addFired(staff.getId(), staffDTO.getFired());
 
         }
 
-        if(staffDTO.getBenefits() != null) {
+        if (staffDTO.getBenefits() != null) {
             for (BenefitsDTO benefit : staffDTO.getBenefits()
                     ) {
                 benefitsService.addBenefit(benefit, staff.getId());
@@ -623,7 +654,7 @@ public class StaffServiceImpl implements StaffService {
                 JsonArray jsonArray = element.getAsJsonArray();
                 for (int i = 0; i < jsonArray.size(); i++) {
                     log.info(jsonArray.get(i).toString());
-                    if(jsonArray.get(i).getAsJsonObject().get("id") != null){
+                    if (jsonArray.get(i).getAsJsonObject().get("id") != null) {
                         log.info("not null");
                         this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonArray.get(i).getAsJsonObject());
                     }
@@ -635,7 +666,7 @@ public class StaffServiceImpl implements StaffService {
 //                        jsonArray1.add(jsonArray.get(i));
 //                       jsonObject1.add(entry.getKey(), jsonArray1);
 //                    } else {
-                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
 //                    }
                 }
             } else if (element.isJsonObject()) {
@@ -666,30 +697,3 @@ public class StaffServiceImpl implements StaffService {
 
 
 }
-
-   /* private MainStaffDTO createMainStaffDTO(Staff staff) {
-        MainStaffDTO mainStaffDTO = new MainStaffDTO();
-        MainStaff mainStaff = staff.getMainStaff();
-        mainStaffDTO.setFullName(mainStaff.getFullName());
-        mainStaffDTO.setSpecialRank(mainStaff.getSpecialRank());
-        mainStaffDTO.setPosition(mainStaff.getPosition());
-        mainStaffDTO.setDateNumberPurpose(simpleDateFormat.format(mainStaff.getDateNumberPurpose()));
-        mainStaffDTO.setLastCertification(simpleDateFormat.format(mainStaff.getLastCertification()));
-        mainStaffDTO.setContractFromDate(simpleDateFormat.format(mainStaff.getContractFromDate()));
-        mainStaffDTO.setContractToDate(simpleDateFormat.format(mainStaff.getContractToDate()));
-        mainStaffDTO.setExemptionDate(simpleDateFormat.format(mainStaff.getExemptionDate()));
-        mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
-        mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
-        mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
-        mainStaffDTO.setInCommand(mainStaff.getInCommand());
-        mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
-        mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
-        mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
-        mainStaffDTO.setStaffOfficerCategory(mainStaff.getStaffOfficerCategory());
-
-        mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
-        mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
-        mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
-        mainStaffDTO.setBiography(mainStaff.getBiography());
-        return mainStaffDTO;
-    }*/

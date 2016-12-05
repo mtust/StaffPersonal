@@ -60,9 +60,10 @@ public class Staff implements Serializable {
 	@ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	private Region region;
 
-//	@ColumnDefault(value = "false")
 	@Column
 	private Boolean isDeleted = false;
+	@Column
+	private Boolean isDeletedByOperator = false;
 	
 	
 }

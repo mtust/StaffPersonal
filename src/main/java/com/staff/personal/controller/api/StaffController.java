@@ -61,8 +61,13 @@ public class StaffController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    RestMessageDTO deleteStaff(@PathVariable Long id) {
+    RestMessageDTO deleteStaffByAdmin(@PathVariable Long id) {
         return staffService.deleteStaff(id);
+    }
+
+    @RequestMapping(value = "{id}/operator", method = RequestMethod.DELETE)
+    RestMessageDTO deleteStaffByOperator(@PathVariable Long id) {
+        return staffService.deleteByOperator(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -81,11 +86,18 @@ public class StaffController {
         return staffService.getAllStaff();
     }
 
-    //@Secured(value = Role.ROLE_ADMIN)
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "allDeleted", method = RequestMethod.GET)
     List<GetStaffDTO> getAllDeletedStaff() {
         return staffService.getAllDeletedStaff();
     }
+
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "allDeletedByOperator", method = RequestMethod.GET)
+    List<GetStaffDTO> getAllDeletedStaffByOperator() {
+        return staffService.getAllStaffDeletedByOperator();
+    }
+
 
     @RequestMapping(method = RequestMethod.GET)
     List<GetAllStaffDTO> getStaff() {
