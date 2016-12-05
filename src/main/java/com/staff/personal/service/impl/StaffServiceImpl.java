@@ -657,7 +657,12 @@ public class StaffServiceImpl implements StaffService {
                     if (jsonArray.get(i).getAsJsonObject().get("id") != null) {
                         log.info("not null");
                         this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonArray.get(i).getAsJsonObject());
+                    } else {
+                        log.info("1: " + jsonObject1.get(entry.getKey()).getAsJsonArray());
+                        jsonObject1.get(entry.getKey()).getAsJsonArray().add(jsonArray.get(i).getAsJsonObject());
+                        log.info("2: " + jsonObject1.get(entry.getKey()).getAsJsonArray());
                     }
+
 //                    if(jsonArray.get(i).isJsonArray() == false && jsonArray.get(i).getAsJsonObject().get("id") == null) {
 //                        log.info("!!!" + jsonArray.get(i).toString());
 //                        JsonArray jsonArray1  = jsonObject1.get(entry.getKey()).getAsJsonArray();
@@ -668,6 +673,9 @@ public class StaffServiceImpl implements StaffService {
 //                    } else {
                     this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
 //                    }
+
+                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+
                 }
             } else if (element.isJsonObject()) {
                 this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
