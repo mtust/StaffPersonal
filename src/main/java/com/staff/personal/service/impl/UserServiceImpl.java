@@ -10,6 +10,7 @@ import com.staff.personal.dto.UserDTO;
 import com.staff.personal.dto.UserRegistrationDTO;
 import com.staff.personal.exception.GeneralServiceException;
 import com.staff.personal.exception.ObjectAlreadyExistException;
+import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.repository.UserPhotosRepository;
 import com.staff.personal.repository.UserRepository;
 import com.staff.personal.service.UserService;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private HttpServletRequest requestContext;
+
+    @Autowired
+    private RegionRepository regionRepository;
 
     @Override
     public void save(User user) {
@@ -171,5 +175,18 @@ public class UserServiceImpl implements UserService {
             userDTOS.add(userDTO);
         }
         return  userDTOS;
+    }
+
+    @Transactional
+    @Override
+    public RestMessageDTO setRegions(List<Integer> regionsId, Long id) {
+        User user = userRepository.findById(id);
+        List<Region> regions = regionRepository.findAll();
+        Set<Region> userRegions = user.getRegions();
+        for (Integer integer : regionsId) {
+            userRegions.add(regions.get(integer - 1));
+        }
+        userRepository.save(user);
+        return new RestMessageDTO("Succes", true);
     }
 }

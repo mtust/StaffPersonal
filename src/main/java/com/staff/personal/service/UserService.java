@@ -40,4 +40,6 @@ public interface UserService {
     RestMessageDTO changeUserRole(Long id, String role);
 
     List<UserDTO> getUsers();
+
+    RestMessageDTO setRegions(List<Integer> regionsId, Long id);
 }
