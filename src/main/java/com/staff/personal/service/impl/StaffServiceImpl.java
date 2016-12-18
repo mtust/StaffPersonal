@@ -680,6 +680,8 @@ public class StaffServiceImpl implements StaffService {
         for (Map.Entry<String, JsonElement> entry : set
                 ) {
             JsonElement element = entry.getValue();
+            log.info(element.toString() + " :el");
+            log.info(jsonObject1.toString() + " :obj");
             if (element.isJsonPrimitive()) {
                 jsonObject1.add(entry.getKey(), entry.getValue());
             } else if (element.isJsonArray()) {
@@ -701,6 +703,9 @@ public class StaffServiceImpl implements StaffService {
 
                 }
             } else if (element.isJsonObject()) {
+                if(jsonObject1.get(entry.getKey()) == null){
+                    jsonObject1.add(entry.getKey(), new JsonObject());
+                }
                 this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
             }
 
