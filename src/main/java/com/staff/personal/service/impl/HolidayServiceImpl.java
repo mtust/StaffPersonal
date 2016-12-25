@@ -117,4 +117,34 @@ public class HolidayServiceImpl implements HolidayService {
         }
         return holidayDTOList;
     }
+
+    @Override
+    public List<Holiday> updateHolidays(List<HolidayDTO> holidayDTOS) {
+        List<Holiday> holidayList = new ArrayList<>();
+
+        for(HolidayDTO holidayDTO : holidayDTOS) {
+            Holiday holiday = new Holiday();
+            try {
+                if(holidayDTO.getId() != null){
+                    holiday.setId(Long.parseLong(holidayDTO.getId()));
+                }
+                holiday.setTypeHoliday(holidayDTO.getTypeHoliday());
+                holiday.setHolidayPlace(holidayDTO.getHolidayPlace());
+                try {
+                    holiday.setFromDate(simpleDateFormat.parse(holidayDTO.getFromDate()));
+                    holiday.setToDate(simpleDateFormat.parse(holidayDTO.getToDate()));
+                } catch (ParseException e) {
+                    holiday.setFromDate(simpleDateFormatNew.parse(holidayDTO.getFromDate()));
+                    holiday.setToDate(simpleDateFormatNew.parse(holidayDTO.getToDate()));
+                }
+                holiday.setDescription(holidayDTO.getDescription());
+                log.info("add holiday \n" + holiday.toString());
+                holidayList.add(holiday);
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+        }
+        return holidayRepository.save(holidayList);
+    }
 }

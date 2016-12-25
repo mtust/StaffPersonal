@@ -19,4 +19,7 @@ public interface WorkExperienceService {
 
     List<WorkExperienceDTO> createWorkExperienceDTO(List<WorkExperience> list);
 
+    List<WorkExperience> createWorkExperienceFromDTO(List<WorkExperienceDTO> workExperienceDTOS);
+
+    List<WorkExperience> updateWorkExperiances(List<WorkExperienceDTO> workExperienceDTOS);
 }

@@ -140,4 +140,47 @@ public class FiredServiceImpl implements FiredService {
             return firedDTO;
         }
     }
+
+    @Override
+    public Fired updateFired(FiredDTO firedDTO) {
+        Fired fired = new Fired();
+        try {
+
+            if(firedDTO.getId() != null){
+                fired.setId(Long.parseLong(firedDTO.getId()));
+            }
+            try {
+                if(firedDTO.getDateFiring() != null) {
+                    fired.setDateFiring(simpleDateFormat.parse(firedDTO.getDateFiring()));
+                }
+                if(firedDTO.getReferenceLEKDate() != null) {
+                    fired.setReferenceLEKDate(simpleDateFormat.parse(firedDTO.getReferenceLEKDate()));
+                }
+            } catch (ParseException e) {
+                if(firedDTO.getDateFiring() != null) {
+                    fired.setDateFiring(simpleDateFormatNew.parse(firedDTO.getDateFiring()));
+                }
+                if(firedDTO.getReferenceLEKDate() != null) {
+                    fired.setReferenceLEKDate(simpleDateFormatNew.parse(firedDTO.getReferenceLEKDate()));
+                }
+            }
+            fired.setOrderNumber(firedDTO.getOrderNumber());
+            fired.setWhereFired(firedDTO.getWhereFired());
+            fired.setArticle(firedDTO.getArticle());
+            fired.setLastPosition(firedDTO.getLastPosition());
+            fired.setSpecialRank(firedDTO.getSpecialRank());
+            fired.setMilitaryAccount(firedDTO.getMilitaryAccount());
+            fired.setReferenceLEKCertificate(firedDTO.getReferenceLEKCertificate());
+
+            fired.setReferenceLEKNumber(firedDTO.getReferenceLEKNumber());
+            fired.setConclusion(firedDTO.getConclusion());
+            fired.setSeniority(firedDTO.getSeniority());
+            fired.setPersonalFileForwarded(firedDTO.getPersonalFileForwarded());
+            log.info("fired after save \n" + fired.toString());
+        } catch (ParseException e) {
+            log.warn(e.getMessage());
+            throw new BadRequestParametersException("Дата у не вірному форматі");
+        }
+        return firedRepository.save(fired);
+    }
 }

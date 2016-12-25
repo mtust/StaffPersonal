@@ -150,4 +150,40 @@ public class BenefitsServiceImpl implements BenefitsService {
         }
         return  benefitsDTOList;
     }
+
+    @Override
+    public List<Benefits> updateBenefits(List<BenefitsDTO> benefitsDTOS) {
+        List<Benefits> benefitsList = new ArrayList<>();
+        for(BenefitsDTO benefitsDTO : benefitsDTOS) {
+            Benefits benefits = new Benefits();
+            try {
+                benefits.setName(benefitsDTO.getName());
+                try {
+                    benefits.setFromDate(simpleDateFormat.parse(benefitsDTO.getFromDate()));
+                    benefits.setToDate(simpleDateFormat.parse(benefitsDTO.getToDate()));
+
+                    benefits.setOrderDate(simpleDateFormat.parse(benefitsDTO.getOrderDate()));
+                } catch (ParseException e) {
+                    benefits.setFromDate(simpleDateFormatNew.parse(benefitsDTO.getFromDate()));
+                    benefits.setToDate(simpleDateFormatNew.parse(benefitsDTO.getToDate()));
+
+                    benefits.setOrderDate(simpleDateFormatNew.parse(benefitsDTO.getOrderDate()));
+                }
+                if (benefitsDTO.getId() != null) {
+                    benefits.setId(benefitsDTO.getId());
+                }
+                benefits.setOrder(benefitsDTO.getOrder());
+                benefits.setCertification(benefitsDTO.getCertification());
+                benefits.setPrivilege(benefitsDTO.getPrivilege());
+                benefits.setActsAndComments(benefitsDTO.getActsAndComments());
+                benefits.setOtherInfo(benefitsDTO.getOtherInfo());
+                log.info(benefits.toString());
+                benefitsList.add(benefits);
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+        }
+        return benefitsRepository.save(benefitsList);
+    }
 }

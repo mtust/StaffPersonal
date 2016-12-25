@@ -19,4 +19,5 @@ public interface PromotionService {
 
     List<PromotionDTO> createPromotionDTO(List<Promotion> list);
 
+    List<Promotion> updatePromotion(List<PromotionDTO> promotions);
 }

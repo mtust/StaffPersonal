@@ -18,4 +18,6 @@ public interface HospitalsService {
     RestMessageDTO delHospitals(Long idStaff, Long idHosp);
 
     List<HospitalsDTO> createHospitalsDTO(List<Hospitals> list);
+
+    List<Hospitals> updateHospitals(List<HospitalsDTO> hospitals);
 }

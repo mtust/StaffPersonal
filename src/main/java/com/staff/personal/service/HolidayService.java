@@ -21,6 +21,5 @@ public interface HolidayService {
     List<HolidayDTO> createHolidayDTO(List<Holiday> list);
 
 
-
-
+    List<Holiday> updateHolidays(List<HolidayDTO> holidays);
 }

@@ -109,4 +109,30 @@ public class PremiumFineServiceImpl implements PremiumFineService {
         }
         return premiumFineDTOList;
     }
+
+    @Override
+    public List<PremiumFine> updatePremiumFine(List<PremiumFineDTO> premiumFineDTOS) {
+        List<PremiumFine> premiumFines = new ArrayList<>();
+        PremiumFine premiumFine = new PremiumFine();
+        for (PremiumFineDTO premiumFineDTO : premiumFineDTOS){
+            try {
+                if(premiumFineDTO.getId() != null) {
+                    premiumFine.setId(Long.parseLong(premiumFineDTO.getId()));
+                }
+                premiumFine.setName(premiumFineDTO.getName());
+                premiumFine.setOrder(premiumFineDTO.getOrder());
+                try {
+                    premiumFine.setOrderDate(simpleDateFormat.parse(premiumFineDTO.getOrderDate()));
+                } catch (ParseException e) {
+                    premiumFine.setOrderDate(simpleDateFormatNew.parse(premiumFineDTO.getOrderDate()));
+                }
+                premiumFine.setSerialNumber(premiumFineDTO.getSerialNumber());
+                log.info("add premiumFine \n" + premiumFine.toString());
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+    }
+        return premiumFineRepository.save(premiumFines);
+    }
 }

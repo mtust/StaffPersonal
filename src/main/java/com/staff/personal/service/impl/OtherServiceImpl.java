@@ -59,4 +59,10 @@ public class OtherServiceImpl implements OtherService {
         return new RestMessageDTO("Succes", true);
     }
 
+    @Override
+    @Transactional
+    public Other createOther(Other other){
+        return otherRepository.save(other);
+    };
+
 }

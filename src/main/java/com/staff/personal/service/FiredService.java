@@ -19,4 +19,6 @@ public interface FiredService {
     RestMessageDTO delFired(Long id);
 
     FiredDTO createFiredDTO(Fired fired);
+
+    Fired updateFired(FiredDTO fired);
 }

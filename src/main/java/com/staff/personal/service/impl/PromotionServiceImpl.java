@@ -109,4 +109,33 @@ public class PromotionServiceImpl implements PromotionService {
         }
         return promotionDTOList;
     }
+
+    @Override
+    public List<Promotion> updatePromotion(List<PromotionDTO> promotions) {
+        List<Promotion> list = new ArrayList<>();
+
+        for(PromotionDTO promotionDTO : promotions) {
+            Promotion promotion = new Promotion();
+            try {
+                promotion.setCompanyName(promotionDTO.getCompanyName());
+                try {
+                    if(promotionDTO.getId() != null) {
+                        promotion.setId(Long.parseLong(promotionDTO.getId()));
+                    }
+                    promotion.setFromDate(simpleDateFormat.parse(promotionDTO.getFromDate()));
+                    promotion.setToDate(simpleDateFormat.parse(promotionDTO.getToDate()));
+                } catch (ParseException e) {
+                    promotion.setFromDate(simpleDateFormatNew.parse(promotionDTO.getFromDate()));
+                    promotion.setToDate(simpleDateFormatNew.parse(promotionDTO.getToDate()));
+                }
+                log.info("addPromotion \n" + promotion.toString());
+                list.add(promotion);
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+        }
+
+        return promotionRepository.save(list);
+    }
 }

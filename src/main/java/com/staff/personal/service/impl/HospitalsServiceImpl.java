@@ -112,4 +112,33 @@ public class HospitalsServiceImpl implements HospitalsService {
 
         return hospitalsDTOList;
     }
+
+    @Override
+    public List<Hospitals> updateHospitals(List<HospitalsDTO> hospitalsDTOS) {
+        List<Hospitals> hospitalsList = new ArrayList<>();
+        for(HospitalsDTO hospitalsDTO : hospitalsDTOS) {
+            Hospitals hospitals = new Hospitals();
+            try {
+                if(hospitalsDTO.getId() != null) {
+                    hospitals.setId(Long.parseLong(hospitalsDTO.getId()));
+                }
+                hospitals.setTypeHospital(hospitalsDTO.getTypeHospital());
+                try {
+                    hospitals.setFromDate(simpleDateFormat.parse(hospitalsDTO.getFromDate()));
+                    hospitals.setToDate(simpleDateFormat.parse(hospitalsDTO.getToDate()));
+                } catch (ParseException e) {
+
+                    hospitals.setFromDate(simpleDateFormatNew.parse(hospitalsDTO.getFromDate()));
+                    hospitals.setToDate(simpleDateFormatNew.parse(hospitalsDTO.getToDate()));
+                }
+                hospitals.setDescription(hospitalsDTO.getDescription());
+                log.info(hospitals.toString());
+                hospitalsList.add(hospitals);
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+        }
+        return hospitalsRepository.save(hospitalsList);
+    }
 }

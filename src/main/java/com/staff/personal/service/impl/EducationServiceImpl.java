@@ -97,6 +97,17 @@ public class EducationServiceImpl implements EducationService {
         return new RestMessageDTO("Succes", true);
     }
 
+    @Override
+    public Education updateEducation(EducationDTO educationDTO){
+        Education education = new Education();
+        List<MainEducationBlock> mainEducationBlocks = mainEducationRepository.save(educationDTO.getMainEducationBlocks());
+        education.setId(educationDTO.getId());
+        education.setLanguage(educationDTO.getLanguage());
+        education.setOtherStudying(educationDTO.getOtherStudying());
+        education.setMainEducationBlocks(mainEducationBlocks);
+        return education;
+    }
+
 }
 
 

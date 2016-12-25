@@ -106,88 +106,9 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
-        try {
-            MainStaff mainStaff = new MainStaff();
-            mainStaff.setFullName(mainStaffDTO.getFullName());
-            mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
-            mainStaff.setPosition(mainStaffDTO.getPosition());
-            mainStaff.setNumberConferringSpeclRanks(mainStaffDTO.getNumberConferringSpeclRanks());
-            try {
-                if (mainStaffDTO.getDateOfBirth() != null) {
-                    mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
-                }
 
-                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
-                    mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
-                }
-                if (mainStaffDTO.getDateNumberPurpose() != null) {
-                    mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
-                }
-
-                if (mainStaffDTO.getContractFromDate() != null) {
-                    mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
-                }
-                if (mainStaffDTO.getContractToDate() != null) {
-                    mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
-                }
-                if (mainStaffDTO.getExemptionDate() != null) {
-                    mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
-                }
-                if (mainStaffDTO.getLastCertification() != null) {
-                    mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
-                }
-                if (mainStaffDTO.getDateSwear() != null) {
-                    mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
-                }
-            } catch (ParseException e) {
-                if (mainStaffDTO.getDateOfBirth() != null) {
-                    mainStaff.setDateOfBirth(simpleDateFormatNew.parse(mainStaffDTO.getDateOfBirth()));
-                }
-
-                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
-                    mainStaff.setDateConferringSpecRanks(simpleDateFormatNew.parse(mainStaffDTO.getDateConferringSpecRanks()));
-                }
-                if (mainStaffDTO.getDateNumberPurpose() != null) {
-                    mainStaff.setDateNumberPurpose(simpleDateFormatNew.parse(mainStaffDTO.getDateNumberPurpose()));
-                }
-
-                if (mainStaffDTO.getContractFromDate() != null) {
-                    mainStaff.setContractFromDate(simpleDateFormatNew.parse(mainStaffDTO.getContractFromDate()));
-                }
-                if (mainStaffDTO.getContractToDate() != null) {
-                    mainStaff.setContractToDate(simpleDateFormatNew.parse(mainStaffDTO.getContractToDate()));
-                }
-                if (mainStaffDTO.getExemptionDate() != null) {
-                    mainStaff.setExemptionDate(simpleDateFormatNew.parse(mainStaffDTO.getExemptionDate()));
-                }
-                if (mainStaffDTO.getLastCertification() != null) {
-                    mainStaff.setLastCertification(simpleDateFormatNew.parse(mainStaffDTO.getLastCertification()));
-                }
-                if (mainStaffDTO.getDateSwear() != null) {
-                    mainStaff.setDateSwear(simpleDateFormatNew.parse(mainStaffDTO.getDateSwear()));
-                }
-            }
-            mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
-            mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
-            mainStaff.setInCommand(mainStaffDTO.getInCommand());
-
-            mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
-            mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
-            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
-            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
-            mainStaff.setStaffOfficerCategory(mainStaffDTO.getStaffOfficerCategory());
-
-            mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
-            mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
-            mainStaff.setBiography(mainStaffDTO.getBiography());
-            log.info(mainStaff.toString());
-            staff.setMainStaff(mainStaff);
-            staffRepository.save(staff);
-        } catch (ParseException e) {
-            log.warn(e.getMessage());
-            throw new BadRequestParametersException("Дата у не вірному форматі");
-        }
-
+        staff.setMainStaff(this.createMainStaffFromDTO(mainStaffDTO));
+        staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
     }
 
@@ -213,33 +134,34 @@ public class StaffServiceImpl implements StaffService {
         return new RestMessageDTO("Success", true);
     }
 
-    public RestMessageDTO restoreDeletedStaffByAdmin(Long id){
+    public RestMessageDTO restoreDeletedStaffByAdmin(Long id) {
         log.info("claims in service: " + ((Claims) requestContext.getAttribute("claims")).get("id"));
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
         Staff staff = staffRepository.findOneByIdAndRegionIn(id, regions);
         if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        } else if (staff.getIsDeleted() == true){
+        } else if (staff.getIsDeleted() == true) {
             staff.setIsDeleted(false);
             staff.setIsDeletedByOperator(false);
             staffRepository.save(staff);
             log.info("Staff was restored" + staff.getId() + " " + staff.getMainStaff().getFullName());
-        }else {
+        } else {
             throw new ObjectDoNotExistException("This object is not deleted by admin");
         }
         return new RestMessageDTO("Succes", true);
     }
-    public RestMessageDTO restoreDeletedStaffByOperator(Long id){
+
+    public RestMessageDTO restoreDeletedStaffByOperator(Long id) {
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
-        Staff staff = staffRepository.findOneByIdAndRegionIn(id,regions);
+        Staff staff = staffRepository.findOneByIdAndRegionIn(id, regions);
         if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
-        } else if (staff.getIsDeletedByOperator() == true){
+        } else if (staff.getIsDeletedByOperator() == true) {
             staff.setIsDeletedByOperator(false);
             staffRepository.save(staff);
-        }else {
+        } else {
             throw new ObjectDoNotExistException("This object is not deleted by operator");
         }
         return new RestMessageDTO("Succes", true);
@@ -338,7 +260,9 @@ public class StaffServiceImpl implements StaffService {
         log.info("list after foreach \n" + listDTO.toString());*/
         Long userId = Long.parseLong(((Claims) requestContext.getAttribute("claims")).get("id").toString());
         Set<Region> regions = userService.getUserRegions(userId);
+        log.info("regions: " + regions.toString());
         List<Staff> list = staffRepository.findByIsDeletedFalseAndIsDeletedByOperatorFalseAndRegionIn(regions);
+        log.info("list: " + list);
         List<GetStaffDTO> listDTO = new ArrayList<>();
         for (Staff staff : list) {
             GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
@@ -513,48 +437,56 @@ public class StaffServiceImpl implements StaffService {
                 staff.setRegion(region);
             }
         }
+
+        staff.setMainStaff(mainStaffRepository.save(this.createMainStaffFromDTO(staffDTO.getMainStaff())));
+        staff.setWorkExperiences(workExperienceService.updateWorkExperiances(staffDTO.getWorkExperiences()));
+        staff.setOther(otherService.createOther(staffDTO.getOther()));
+        staff.setEducation(educationService.updateEducation(staffDTO.getEducation()));
+        staff.setPremiumFines(premiumFineService.updatePremiumFine(staffDTO.getPremiumFines()));
+        staff.setPromotions(promotionService.updatePromotion(staffDTO.getPromotions()));
+        staff.setHolidays(holidayService.updateHolidays(staffDTO.getHolidays()));
+        staff.setHospitals(hospitalsService.updateHospitals(staffDTO.getHospitals()));
+        staff.setFired(firedService.updateFired(staffDTO.getFired()));
+        staff.setBenefits(benefitsService.updateBenefits(staffDTO.getBenefits()));
         staff = staffRepository.save(staff);
-
-        this.createMainStaff(staffDTO.getMainStaff(), staff.getId());
-        workExperienceService.crateWorkExperience(staffDTO.getWorkExperiences(), staff.getId());
-        otherService.createOther(staffDTO.getOther(), staff.getId());
-        educationService.createEducation(staffDTO.getEducation(), staff.getId());
-        if (staffDTO.getPremiumFines() != null) {
-            for (PremiumFineDTO premium :
-                    staffDTO.getPremiumFines()) {
-                premiumFineService.addPremiumFine(staff.getId(), premium);
-            }
-        }
-        if (staffDTO.getPromotions() != null) {
-            for (PromotionDTO promotion :
-                    staffDTO.getPromotions()) {
-                promotionService.addPromotion(staff.getId(), promotion);
-            }
-        }
-        if (staffDTO.getHolidays() != null) {
-            for (HolidayDTO holiday : staffDTO.getHolidays()
-                    ) {
-                holidayService.addHoliday(staff.getId(), holiday);
-            }
-        }
-        if (staffDTO.getHospitals() != null) {
-            for (HospitalsDTO hospital : staffDTO.getHospitals()
-                    ) {
-                hospitalsService.addHospitals(staff.getId(), hospital);
-            }
-        }
-        if (staffDTO.getFired() != null) {
-
-            firedService.addFired(staff.getId(), staffDTO.getFired());
-
-        }
-
-        if (staffDTO.getBenefits() != null) {
-            for (BenefitsDTO benefit : staffDTO.getBenefits()
-                    ) {
-                benefitsService.addBenefit(benefit, staff.getId());
-            }
-        }
+//        otherService.createOther(staffDTO.getOther(), staff.getId());
+//        educationService.createEducation(staffDTO.getEducation(), staff.getId());
+//        if (staffDTO.getPremiumFines() != null) {
+//            for (PremiumFineDTO premium :
+//                    staffDTO.getPremiumFines()) {
+//                premiumFineService.addPremiumFine(staff.getId(), premium);
+//            }
+//        }
+//        if (staffDTO.getPromotions() != null) {
+//            for (PromotionDTO promotion :
+//                    staffDTO.getPromotions()) {
+//                promotionService.addPromotion(staff.getId(), promotion);
+//            }
+//        }
+//        if (staffDTO.getHolidays() != null) {
+//            for (HolidayDTO holiday : staffDTO.getHolidays()
+//                    ) {
+//                holidayService.addHoliday(staff.getId(), holiday);
+//            }
+//        }
+//        if (staffDTO.getHospitals() != null) {
+//            for (HospitalsDTO hospital : staffDTO.getHospitals()
+//                    ) {
+//                hospitalsService.addHospitals(staff.getId(), hospital);
+//            }
+//        }
+//        if (staffDTO.getFired() != null) {
+//
+//            firedService.addFired(staff.getId(), staffDTO.getFired());
+//
+//        }
+//
+//        if (staffDTO.getBenefits() != null) {
+//            for (BenefitsDTO benefit : staffDTO.getBenefits()
+//                    ) {
+//                benefitsService.addBenefit(benefit, staff.getId());
+//            }
+//        }
 
         return new RestMessageDTO("Success", true);
     }
@@ -676,37 +608,41 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
-    private void change(Set<Map.Entry<String, JsonElement>> set, JsonObject jsonObject1) {
-        for (Map.Entry<String, JsonElement> entry : set
+    private void change(Set<Map.Entry<String, JsonElement>> setFromDTO, JsonObject wholeObject) {
+        for (Map.Entry<String, JsonElement> entry : setFromDTO
                 ) {
-            JsonElement element = entry.getValue();
-            log.info(element.toString() + " :el");
-            log.info(jsonObject1.toString() + " :obj");
-            if (element.isJsonPrimitive()) {
-                jsonObject1.add(entry.getKey(), entry.getValue());
-            } else if (element.isJsonArray()) {
-                JsonArray jsonArray = element.getAsJsonArray();
+            JsonElement concreteEntity = entry.getValue();
+            log.info(concreteEntity.toString() + " :el");
+            log.info(wholeObject.toString() + " :obj");
+            if (concreteEntity.isJsonPrimitive()) {
+                wholeObject.add(entry.getKey(), entry.getValue());
+            } else if (concreteEntity.isJsonArray()) {
+                JsonArray jsonArray = concreteEntity.getAsJsonArray();
                 for (int i = 0; i < jsonArray.size(); i++) {
                     log.info(jsonArray.get(i).toString());
                     if (jsonArray.get(i).getAsJsonObject().get("id") != null) {
                         log.info("not null");
-                        this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonArray.get(i).getAsJsonObject());
+                        for (Map.Entry<String, JsonElement> changeFromDTO : jsonArray.get(i).getAsJsonObject().entrySet()) {
+                            wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject().remove(changeFromDTO.getKey());
+                            wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject().add(changeFromDTO.getKey(), changeFromDTO.getValue());
+                        }
+                        // this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
                     } else {
-                        log.info("1: " + jsonObject1.get(entry.getKey()).getAsJsonArray());
-                        jsonObject1.get(entry.getKey()).getAsJsonArray().add(jsonArray.get(i).getAsJsonObject());
-                        log.info("2: " + jsonObject1.get(entry.getKey()).getAsJsonArray());
+                        log.info("1: " + wholeObject.get(entry.getKey()).getAsJsonArray());
+                        wholeObject.get(entry.getKey()).getAsJsonArray().add(jsonArray.get(i).getAsJsonObject());
+                        log.info("2: " + wholeObject.get(entry.getKey()).getAsJsonArray());
                     }
 
-                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
-
-                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+                    // this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
+//
+//                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
 
                 }
-            } else if (element.isJsonObject()) {
-                if(jsonObject1.get(entry.getKey()) == null){
-                    jsonObject1.add(entry.getKey(), new JsonObject());
+            } else if (concreteEntity.isJsonObject()) {
+                if (wholeObject.get(entry.getKey()) == null) {
+                    wholeObject.add(entry.getKey(), new JsonObject());
                 }
-                this.change(element.getAsJsonObject().entrySet(), jsonObject1.get(entry.getKey()).getAsJsonObject());
+                this.change(concreteEntity.getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonObject());
             }
 
 
@@ -729,6 +665,92 @@ public class StaffServiceImpl implements StaffService {
         getAllStaffDTO.setOther(staff.getOther());
         getAllStaffDTO.setHospitals(hospitalsService.createHospitalsDTO(staff.getHospitals()));
         return getAllStaffDTO;
+    }
+
+    private MainStaff createMainStaffFromDTO(MainStaffDTO mainStaffDTO) {
+        MainStaff mainStaff = new MainStaff();
+        try {
+
+
+            mainStaff.setFullName(mainStaffDTO.getFullName());
+            mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
+            mainStaff.setPosition(mainStaffDTO.getPosition());
+            mainStaff.setNumberConferringSpeclRanks(mainStaffDTO.getNumberConferringSpeclRanks());
+            try {
+                if (mainStaffDTO.getDateOfBirth() != null) {
+                    mainStaff.setDateOfBirth(simpleDateFormat.parse(mainStaffDTO.getDateOfBirth()));
+                }
+
+                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
+                    mainStaff.setDateConferringSpecRanks(simpleDateFormat.parse(mainStaffDTO.getDateConferringSpecRanks()));
+                }
+                if (mainStaffDTO.getDateNumberPurpose() != null) {
+                    mainStaff.setDateNumberPurpose(simpleDateFormat.parse(mainStaffDTO.getDateNumberPurpose()));
+                }
+
+                if (mainStaffDTO.getContractFromDate() != null) {
+                    mainStaff.setContractFromDate(simpleDateFormat.parse(mainStaffDTO.getContractFromDate()));
+                }
+                if (mainStaffDTO.getContractToDate() != null) {
+                    mainStaff.setContractToDate(simpleDateFormat.parse(mainStaffDTO.getContractToDate()));
+                }
+                if (mainStaffDTO.getExemptionDate() != null) {
+                    mainStaff.setExemptionDate(simpleDateFormat.parse(mainStaffDTO.getExemptionDate()));
+                }
+                if (mainStaffDTO.getLastCertification() != null) {
+                    mainStaff.setLastCertification(simpleDateFormat.parse(mainStaffDTO.getLastCertification()));
+                }
+                if (mainStaffDTO.getDateSwear() != null) {
+                    mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
+                }
+            } catch (ParseException e) {
+                if (mainStaffDTO.getDateOfBirth() != null) {
+                    mainStaff.setDateOfBirth(simpleDateFormatNew.parse(mainStaffDTO.getDateOfBirth()));
+                }
+
+                if (mainStaffDTO.getDateConferringSpecRanks() != null) {
+                    mainStaff.setDateConferringSpecRanks(simpleDateFormatNew.parse(mainStaffDTO.getDateConferringSpecRanks()));
+                }
+                if (mainStaffDTO.getDateNumberPurpose() != null) {
+                    mainStaff.setDateNumberPurpose(simpleDateFormatNew.parse(mainStaffDTO.getDateNumberPurpose()));
+                }
+
+                if (mainStaffDTO.getContractFromDate() != null) {
+                    mainStaff.setContractFromDate(simpleDateFormatNew.parse(mainStaffDTO.getContractFromDate()));
+                }
+                if (mainStaffDTO.getContractToDate() != null) {
+                    mainStaff.setContractToDate(simpleDateFormatNew.parse(mainStaffDTO.getContractToDate()));
+                }
+                if (mainStaffDTO.getExemptionDate() != null) {
+                    mainStaff.setExemptionDate(simpleDateFormatNew.parse(mainStaffDTO.getExemptionDate()));
+                }
+                if (mainStaffDTO.getLastCertification() != null) {
+                    mainStaff.setLastCertification(simpleDateFormatNew.parse(mainStaffDTO.getLastCertification()));
+                }
+                if (mainStaffDTO.getDateSwear() != null) {
+                    mainStaff.setDateSwear(simpleDateFormatNew.parse(mainStaffDTO.getDateSwear()));
+                }
+            }
+            mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
+            mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
+            mainStaff.setInCommand(mainStaffDTO.getInCommand());
+
+            mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
+            mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
+            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
+            mainStaff.setGroupRemuneration(mainStaffDTO.getGroupRemuneration());
+            mainStaff.setStaffOfficerCategory(mainStaffDTO.getStaffOfficerCategory());
+
+            mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
+            mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
+            mainStaff.setBiography(mainStaffDTO.getBiography());
+
+
+        } catch (ParseException e) {
+            log.warn(e.getMessage());
+            throw new BadRequestParametersException("Дата у не вірному форматі");
+        }
+        return mainStaff;
     }
 
 

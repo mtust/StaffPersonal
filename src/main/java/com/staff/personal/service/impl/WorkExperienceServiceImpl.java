@@ -40,7 +40,7 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     @Transactional
     public List<WorkExperience> getWorkExperiences(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         return staff.getWorkExperiences();
@@ -51,10 +51,10 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
     public RestMessageDTO crateWorkExperience(List<WorkExperienceDTO> workExperienceDTOList, Long id) {
         log.info("in crateWorkExperience");
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
-        if(workExperienceDTOList != null) {
+        if (workExperienceDTOList != null) {
             try {
                 List<WorkExperience> list = new ArrayList<WorkExperience>();
                 for (WorkExperienceDTO workExperienceDTO : workExperienceDTOList) {
@@ -81,18 +81,44 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         return new RestMessageDTO("succes", true);
     }
 
+    @Override
+    public List<WorkExperience> createWorkExperienceFromDTO(List<WorkExperienceDTO> workExperienceDTOS) {
+        List<WorkExperience> list = new ArrayList<WorkExperience>();
+        if (workExperienceDTOS != null) {
+            try {
+                for (WorkExperienceDTO workExperienceDTO : workExperienceDTOS) {
+                    WorkExperience workExperience = new WorkExperience();
+                    workExperience.setId(workExperienceDTO.getId());
+                    workExperience.setName(workExperienceDTO.getOrgName());
+                    try {
+                        workExperience.setFromDate(simpleDateFormat.parse(workExperienceDTO.getFromDate()));
+                        workExperience.setToDate(simpleDateFormat.parse(workExperienceDTO.getToDate()));
+                    } catch (ParseException e) {
+                        workExperience.setFromDate(simpleDateFormatNew.parse(workExperienceDTO.getFromDate()));
+                        workExperience.setToDate(simpleDateFormatNew.parse(workExperienceDTO.getToDate()));
+                    }
+                    list.add(workExperience);
+                }
+            } catch (ParseException e) {
+                log.warn(e.getMessage());
+                throw new BadRequestParametersException("Дата у не вірному форматі");
+            }
+        }
+        return list;
+    }
+
 
     @Override
     @Transactional
     public RestMessageDTO delWorkExperiences(Long id, Long idExp) {
         log.info("delWorkExperiences");
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         List<WorkExperience> list = staff.getWorkExperiences();
         for (WorkExperience workExperience : list) {
-            if (workExperience.getId()==idExp){
+            if (workExperience.getId() == idExp) {
                 list.remove(workExperience);
                 workExperienceRepository.delete(workExperience);
                 break;
@@ -100,9 +126,10 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         }
         return new RestMessageDTO("Succes", true);
     }
+
     @Override
     @Transactional
-    public List<WorkExperienceDTO> createWorkExperienceDTO(List<WorkExperience> list){
+    public List<WorkExperienceDTO> createWorkExperienceDTO(List<WorkExperience> list) {
         List<WorkExperienceDTO> experienceDTOs = new ArrayList<>();
         for (WorkExperience workExperience : list) {
             WorkExperienceDTO workExperienceDTO = new WorkExperienceDTO();
@@ -110,11 +137,19 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
             workExperienceDTO.setOrgName(workExperience.getName());
             if (workExperience.getToDate() != null) {
                 workExperienceDTO.setToDate(simpleDateFormat.format(workExperience.getToDate()));
-            } if (workExperience.getFromDate() != null) {
+            }
+            if (workExperience.getFromDate() != null) {
                 workExperienceDTO.setFromDate(simpleDateFormat.format(workExperience.getFromDate()));
             }
             experienceDTOs.add(workExperienceDTO);
         }
         return experienceDTOs;
+    }
+
+
+    @Override
+    public List<WorkExperience> updateWorkExperiances(List<WorkExperienceDTO> workExperienceDTOS) {
+        List<WorkExperience> workExperiences = this.createWorkExperienceFromDTO(workExperienceDTOS);
+        return workExperienceRepository.save(workExperiences);
     }
 }
