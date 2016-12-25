@@ -502,7 +502,7 @@ public class StaffServiceImpl implements StaffService {
         GsonBuilder b = new GsonBuilder();
         b.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = b.create();
-        Staff staff = staffRepository.getOne(id);
+        Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
@@ -675,7 +675,7 @@ public class StaffServiceImpl implements StaffService {
         MainStaff mainStaff = new MainStaff();
         try {
 
-
+            mainStaff.setId(mainStaffDTO.getId());
             mainStaff.setFullName(mainStaffDTO.getFullName());
             mainStaff.setSpecialRank(mainStaffDTO.getSpecialRank());
             mainStaff.setPosition(mainStaffDTO.getPosition());
