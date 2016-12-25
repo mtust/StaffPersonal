@@ -37,7 +37,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Transactional
     public RestMessageDTO addPremiumFine(Long id, PremiumFineDTO premiumFineDTO) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         PremiumFine premiumFine = new PremiumFine();
@@ -47,7 +47,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
             premiumFine.setOrder(premiumFineDTO.getOrder());
             try {
                 premiumFine.setOrderDate(simpleDateFormat.parse(premiumFineDTO.getOrderDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 premiumFine.setOrderDate(simpleDateFormatNew.parse(premiumFineDTO.getOrderDate()));
             }
             premiumFine.setSerialNumber(premiumFineDTO.getSerialNumber());
@@ -66,7 +66,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Transactional
     public List<PremiumFine> getPremiumFine(Long id) {
         Staff staff = staffRepository.findOne(id);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
         return staff.getPremiumFines();
@@ -76,12 +76,12 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Transactional
     public RestMessageDTO delPremiumFine(Long idSt, Long idPrFine) {
         Staff staff = staffRepository.findOne(idSt);
-        if(staff == null || staff.getIsDeleted() == true){
+        if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + idSt + " dosen't exist or is deleted");
         }
         List<PremiumFine> list = staff.getPremiumFines();
         for (PremiumFine premiumFine : list) {
-            if (premiumFine.getId() == idPrFine){
+            if (premiumFine.getId() == idPrFine) {
                 list.remove(premiumFine);
                 premiumFineRepository.delete(premiumFine);
                 break;
@@ -113,10 +113,10 @@ public class PremiumFineServiceImpl implements PremiumFineService {
     @Override
     public List<PremiumFine> updatePremiumFine(List<PremiumFineDTO> premiumFineDTOS) {
         List<PremiumFine> premiumFines = new ArrayList<>();
-        PremiumFine premiumFine = new PremiumFine();
-        for (PremiumFineDTO premiumFineDTO : premiumFineDTOS){
+        for (PremiumFineDTO premiumFineDTO : premiumFineDTOS) {
+            PremiumFine premiumFine = new PremiumFine();
             try {
-                if(premiumFineDTO.getId() != null) {
+                if (premiumFineDTO.getId() != null) {
                     premiumFine.setId(Long.parseLong(premiumFineDTO.getId()));
                 }
                 premiumFine.setName(premiumFineDTO.getName());
@@ -133,7 +133,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
                 log.warn(e.getMessage());
                 throw new BadRequestParametersException("Дата у не вірному форматі");
             }
-    }
+        }
         return premiumFineRepository.save(premiumFines);
     }
 }

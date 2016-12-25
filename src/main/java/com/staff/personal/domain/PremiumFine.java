@@ -20,7 +20,7 @@ public class PremiumFine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column
 	private Long id;
 
 	@Column(name = "name")
