@@ -626,10 +626,18 @@ public class StaffServiceImpl implements StaffService {
                     log.info(jsonArray.get(i).toString());
                     if (jsonArray.get(i).getAsJsonObject().get("id") != null) {
                         log.info("not null");
-                        for (Map.Entry<String, JsonElement> changeFromDTO : jsonArray.get(i).getAsJsonObject().entrySet()) {
-                            wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject().remove(changeFromDTO.getKey());
-                            wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject().add(changeFromDTO.getKey(), changeFromDTO.getValue());
-                        }
+                            for (Map.Entry<String, JsonElement> changeFromDTO : jsonArray.get(i).getAsJsonObject().entrySet()) {
+                                    for(int j = 0; j < wholeObject.get(entry.getKey()).getAsJsonArray().size(); j++) {
+                                        if(wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().get("id").getAsInt() == jsonArray.get(i).getAsJsonObject().get("id").getAsInt()){
+                                            log.info("whole: " + wholeObject);
+                                            wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().remove(changeFromDTO.getKey());
+
+                                            wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().add(changeFromDTO.getKey(), changeFromDTO.getValue());
+                                            log.info("whole: " + wholeObject);
+                                        }
+                                    }
+
+                            }
                         // this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
                     } else {
                         log.info("1: " + wholeObject.get(entry.getKey()).getAsJsonArray());
