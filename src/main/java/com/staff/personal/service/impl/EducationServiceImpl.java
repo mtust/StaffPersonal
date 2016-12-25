@@ -98,6 +98,7 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public Education updateEducation(EducationDTO educationDTO){
         Education education = new Education();
         List<MainEducationBlock> mainEducationBlocks = mainEducationRepository.save(educationDTO.getMainEducationBlocks());
@@ -105,7 +106,7 @@ public class EducationServiceImpl implements EducationService {
         education.setLanguage(educationDTO.getLanguage());
         education.setOtherStudying(educationDTO.getOtherStudying());
         education.setMainEducationBlocks(mainEducationBlocks);
-        return education;
+        return educationRepository.save(education);
     }
 
 }
