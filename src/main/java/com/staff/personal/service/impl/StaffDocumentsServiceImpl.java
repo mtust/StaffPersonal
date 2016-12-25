@@ -77,7 +77,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
             throw new ObjectDoNotExistException("staff object with id = " + idStaff + " dosen't exist or is deleted");
         }
         List<StuffDocuments> list = staff.getMainStaff().getDocuments();
-        StuffDocuments stuffDocuments = list.get(idDoc-1);
+        StuffDocuments stuffDocuments = list.stream().filter(el -> el.getId() == idDoc).findFirst().get();
         return stuffDocuments.getFile();
     }
 
