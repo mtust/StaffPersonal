@@ -440,13 +440,17 @@ public class StaffServiceImpl implements StaffService {
 
         staff.setMainStaff(mainStaffRepository.save(this.createMainStaffFromDTO(staffDTO.getMainStaff())));
         staff.setWorkExperiences(workExperienceService.updateWorkExperiances(staffDTO.getWorkExperiences()));
-        staff.setOther(otherService.createOther(staffDTO.getOther()));
+        if(staffDTO.getOther() != null) {
+            staff.setOther(otherService.createOther(staffDTO.getOther()));
+        }
         staff.setEducation(educationService.updateEducation(staffDTO.getEducation()));
         staff.setPremiumFines(premiumFineService.updatePremiumFine(staffDTO.getPremiumFines()));
         staff.setPromotions(promotionService.updatePromotion(staffDTO.getPromotions()));
         staff.setHolidays(holidayService.updateHolidays(staffDTO.getHolidays()));
         staff.setHospitals(hospitalsService.updateHospitals(staffDTO.getHospitals()));
-        staff.setFired(firedService.updateFired(staffDTO.getFired()));
+        if(staffDTO.getFired() != null) {
+            staff.setFired(firedService.updateFired(staffDTO.getFired()));
+        }
         staff.setBenefits(benefitsService.updateBenefits(staffDTO.getBenefits()));
         staff = staffRepository.save(staff);
 //        otherService.createOther(staffDTO.getOther(), staff.getId());
