@@ -127,6 +127,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
                     premiumFine.setOrderDate(simpleDateFormatNew.parse(premiumFineDTO.getOrderDate()));
                 }
                 premiumFine.setSerialNumber(premiumFineDTO.getSerialNumber());
+                premiumFines.add(premiumFine);
                 log.info("add premiumFine \n" + premiumFine.toString());
             } catch (ParseException e) {
                 log.warn(e.getMessage());
