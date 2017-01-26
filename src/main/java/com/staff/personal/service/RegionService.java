@@ -21,4 +21,5 @@ public interface RegionService {
 
     public RestMessageDTO deleteRegionById(Long id);
 
+    RestMessageDTO updateRegion(Long id, Region region);
 }

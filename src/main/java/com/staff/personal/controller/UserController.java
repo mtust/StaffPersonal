@@ -42,7 +42,7 @@ public class UserController  {
         User user = userService.getUserByUsernameAndPassword(login.username, login.password);
 
         if (user == null) {
-            throw new ServletException("Invalid login");
+            throw new ServletException("Логін або пароль не правильні");
 
         }
         return new LoginResponse(Jwts.builder().setSubject(user.getEmail()).setSubject(user.getPassword())
@@ -70,11 +70,5 @@ public class UserController  {
             this.access_token = token;
         }
     }
-
-
-
-
-
-
 
 }

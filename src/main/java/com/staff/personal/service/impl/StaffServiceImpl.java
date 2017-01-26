@@ -10,6 +10,7 @@ import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.MainStaffRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.*;
+import com.staff.personal.util.PatchUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -512,7 +513,7 @@ public class StaffServiceImpl implements StaffService {
         JsonElement jsonElement1 = gson.toJsonTree(allStaffDTO1);
         JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> set1 = jsonElement1.getAsJsonObject().entrySet();
-        this.change(set, jsonObject1);
+        PatchUtil.getInstance().change(set, jsonObject1);
 
         Gson gsonNew = new GsonBuilder().registerTypeAdapterFactory(NullStringToEmptyAdapterFactory.FACTORY).create();
         allStaffDTO = gsonNew.fromJson(jsonObject1, AllStaffDTO.class);
@@ -612,54 +613,6 @@ public class StaffServiceImpl implements StaffService {
         return getStaffDTO;
     }
 
-    private void change(Set<Map.Entry<String, JsonElement>> setFromDTO, JsonObject wholeObject) {
-        for (Map.Entry<String, JsonElement> entry : setFromDTO
-                ) {
-            JsonElement concreteEntity = entry.getValue();
-            log.info(concreteEntity.toString() + " :el");
-            log.info(wholeObject.toString() + " :obj");
-            if (concreteEntity.isJsonPrimitive()) {
-                wholeObject.add(entry.getKey(), entry.getValue());
-            } else if (concreteEntity.isJsonArray()) {
-                JsonArray jsonArray = concreteEntity.getAsJsonArray();
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    log.info(jsonArray.get(i).toString());
-                    if (jsonArray.get(i).getAsJsonObject().get("id") != null) {
-                        log.info("not null");
-                            for (Map.Entry<String, JsonElement> changeFromDTO : jsonArray.get(i).getAsJsonObject().entrySet()) {
-                                    for(int j = 0; j < wholeObject.get(entry.getKey()).getAsJsonArray().size(); j++) {
-                                        if(wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().get("id").getAsInt() == jsonArray.get(i).getAsJsonObject().get("id").getAsInt()){
-                                            log.info("whole: " + wholeObject);
-                                            wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().remove(changeFromDTO.getKey());
-
-                                            wholeObject.get(entry.getKey()).getAsJsonArray().get(j).getAsJsonObject().add(changeFromDTO.getKey(), changeFromDTO.getValue());
-                                            log.info("whole: " + wholeObject);
-                                        }
-                                    }
-
-                            }
-                        // this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
-                    } else {
-                        log.info("1: " + wholeObject.get(entry.getKey()).getAsJsonArray());
-                        wholeObject.get(entry.getKey()).getAsJsonArray().add(jsonArray.get(i).getAsJsonObject());
-                        log.info("2: " + wholeObject.get(entry.getKey()).getAsJsonArray());
-                    }
-
-                    // this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
-//
-//                    this.change(jsonArray.get(i).getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonArray().get(i).getAsJsonObject());
-
-                }
-            } else if (concreteEntity.isJsonObject()) {
-                if (wholeObject.get(entry.getKey()) == null) {
-                    wholeObject.add(entry.getKey(), new JsonObject());
-                }
-                this.change(concreteEntity.getAsJsonObject().entrySet(), wholeObject.get(entry.getKey()).getAsJsonObject());
-            }
-
-
-        }
-    }
 
     private GetAllStaffDTO createGetAllStuffDTO(Staff staff) {
         GetAllStaffDTO getAllStaffDTO = new GetAllStaffDTO();

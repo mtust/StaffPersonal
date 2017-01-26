@@ -47,6 +47,12 @@ public class RegionResources {
         return regionService.deleteRegionById(id);
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public RestMessageDTO updateRegion(@PathVariable Long id, @RequestBody Region region){
+        return regionService.updateRegion(id, region);
+    }
+
 
 
 }
