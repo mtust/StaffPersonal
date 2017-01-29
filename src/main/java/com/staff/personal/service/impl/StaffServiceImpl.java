@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by nazar on 04.11.16.
@@ -718,5 +717,8 @@ public class StaffServiceImpl implements StaffService {
         return mainStaff;
     }
 
-
+    @Override
+    public List<Staff> getStaffByPositionCode(String code) {
+        return staffRepository.findByMainStaffPosition(code);
+    }
 }

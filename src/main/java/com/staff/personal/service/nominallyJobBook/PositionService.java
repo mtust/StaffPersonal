@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Service
 public interface PositionService {
-    List<Position> getPoistions();
+    List<Position> getPositions();
 
     RestMessageDTO createPosition(Position position);
 

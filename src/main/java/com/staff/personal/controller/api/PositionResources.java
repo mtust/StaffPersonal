@@ -26,7 +26,7 @@ public class PositionResources {
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.GET)
     public List<Position> getPositions(){
-        return positionService.getPoistions();
+        return positionService.getPositions();
     }
 
     @Secured(value = Role.ROLE_ADMIN)

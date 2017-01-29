@@ -25,5 +25,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     public List<Staff> findByIsDeletedFalse();
 
+    public List<Staff> findByMainStaffPosition(String position);
+
 
 }

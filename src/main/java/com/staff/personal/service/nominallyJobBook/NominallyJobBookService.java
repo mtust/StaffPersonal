@@ -1,6 +1,7 @@
 package com.staff.personal.service.nominallyJobBook;
 
 import com.staff.personal.controller.api.nominallJobBook.NominalJobBookResources;
+import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.dto.RestMessageDTO;
@@ -39,4 +40,6 @@ public interface NominallyJobBookService {
     NominallyJobBookParent getNominallyJobBookParent(Long id);
 
     RestMessageDTO createNominalJobBookParent(NominallyJobBookParent nominallyJobBookParent);
+
+    List<Staff> getStaffByNominallyJobBook(Long nominallyJobBookId);
 }

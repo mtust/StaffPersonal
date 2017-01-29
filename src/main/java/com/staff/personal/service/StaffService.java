@@ -1,6 +1,7 @@
 package com.staff.personal.service;
 
 import com.staff.personal.domain.MainStaff;
+import com.staff.personal.domain.Staff;
 import com.staff.personal.dto.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,4 +44,5 @@ public interface StaffService {
 
 	RestMessageDTO restoreDeletedStaffByOperator(Long id);
 
+    List<Staff> getStaffByPositionCode(String code);
 }

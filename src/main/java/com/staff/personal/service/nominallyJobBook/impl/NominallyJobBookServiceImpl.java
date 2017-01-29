@@ -1,13 +1,15 @@
 package com.staff.personal.service.nominallyJobBook.impl;
 
-import com.staff.personal.controller.api.nominallJobBook.NominalJobBookResources;
+import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
+import com.staff.personal.domain.nominallyJobBooks.Position;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import com.staff.personal.repository.NominallyJobBook.NominallyJobBookParentRepository;
 import com.staff.personal.repository.NominallyJobBook.NominallyJobBookRepository;
 import com.staff.personal.repository.RegionRepository;
+import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.nominallyJobBook.NominallyJobBookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
 
     @Autowired
     private NominallyJobBookParentRepository nominallyJobBookParentRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Override
     public PoorNominallyJobBookDTO getPoorNominallyJobBook(Long id) {
@@ -117,7 +122,6 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         NominallyJobBook nominallyJobBook = new NominallyJobBook();
         nominallyJobBook.setRegion(poorNominallyJobBookDTO.getRegion());
         nominallyJobBook.setName(poorNominallyJobBookDTO.getName());
-        nominallyJobBook.setWorkers(new ArrayList<>());
         nominallyJobBook.setCode(poorNominallyJobBookDTO.getCode());
         return nominallyJobBook;
     }
@@ -145,5 +149,18 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         nominallyJobBookParentRepository.save(nominallyJobBookParent);
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public List<Staff> getStaffByNominallyJobBook(Long nominallyJobBookId) {
+        NominallyJobBook nominallyJobBook = nominallyJobBookRepository.getOne(nominallyJobBookId);
+        List<Staff> staffs = new ArrayList<>();
+        for(Position position: nominallyJobBook.getPositions()){
+            staffs.addAll(staffRepository.findByMainStaffPosition(position.getCode()));
+        }
+        return staffs;
+    }
+
+
+
 }
 
