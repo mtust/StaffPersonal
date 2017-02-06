@@ -1,5 +1,6 @@
 package com.staff.personal.controller.api;
 
+import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
 import com.staff.personal.domain.*;
 import com.staff.personal.dto.*;
 import com.staff.personal.security.Secured;
@@ -226,9 +227,9 @@ public class StaffController {
 
     @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    byte[] getPhoto(@PathVariable Long id) throws IOException, SQLException {
+    String getPhoto(@PathVariable Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
-        return mainStaffPhotoService.getPhoto(id);
+        return new String(Base64.encodeBase64(mainStaffPhotoService.getPhoto(id)));
     }
 
 
