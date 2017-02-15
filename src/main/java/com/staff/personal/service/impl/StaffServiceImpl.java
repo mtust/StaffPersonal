@@ -589,6 +589,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
 
+    @Transactional
     private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
         Region region = null;
         if (staffDTO.getRegionId() != null) {
