@@ -77,13 +77,7 @@ public class UserResources {
 
     @RequestMapping(value = "createAdmin", method = RequestMethod.POST)
     public RestMessageDTO createAdmin(){
-        UserDTO userDTO = userService.getMe();
-
-        userService.createAdmin();
-        if(!userDTO.getEmail().equals("admin@admin")){
-            throw new RuntimeException("Дозвіл заборонено");
-        }
-        return new RestMessageDTO("success", true);
+      return userService.createAdmin();
     }
 }
 

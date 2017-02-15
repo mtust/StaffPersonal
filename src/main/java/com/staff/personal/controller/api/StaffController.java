@@ -224,7 +224,7 @@ public class StaffController {
         return mainStaffPhotoService.addPhoto(photo, id);
     }
 
-    @RequestMapping(value = "{id}/photo", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     String getPhoto(@PathVariable Long id) throws IOException, SQLException {
         log.info("IN CONTROLLER getPhoto");
