@@ -42,4 +42,6 @@ public interface UserService {
     List<UserDTO> getUsers();
 
     RestMessageDTO setRegions(List<Integer> regionsId, Long id);
+
+    RestMessageDTO createAdmin();
 }

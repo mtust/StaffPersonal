@@ -207,6 +207,7 @@ public class StaffServiceImpl implements StaffService {
         }
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);*/
         Staff staff = staffRepository.findOneByIsDeletedFalseAndIsDeletedByOperatorFalseAndIdAndRegionIn(id, regions);
+        log.info("whole staff: " + staff);
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
         return getAllStaffDTO;
     }

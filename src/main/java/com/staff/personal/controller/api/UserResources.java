@@ -2,6 +2,7 @@ package com.staff.personal.controller.api;
 
 import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Role;
+import com.staff.personal.domain.User;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.security.Secured;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -71,6 +73,17 @@ public class UserResources {
     RestMessageDTO addRegions(@PathVariable Long id, @RequestBody List<Integer> regions) {
         log.info(regions.toString());
         return userService.setRegions(regions, id);
+    }
+
+    @RequestMapping(value = "createAdmin", method = RequestMethod.POST)
+    public RestMessageDTO createAdmin(){
+        UserDTO userDTO = userService.getMe();
+
+        userService.createAdmin();
+        if(!userDTO.getEmail().equals("admin@admin")){
+            throw new RuntimeException("Дозвіл заборонено");
+        }
+        return new RestMessageDTO("success", true);
     }
 }
 

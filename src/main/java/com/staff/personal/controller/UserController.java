@@ -2,6 +2,7 @@ package com.staff.personal.controller;
 
 import com.staff.personal.domain.Role;
 import com.staff.personal.domain.User;
+import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.UserDTO;
 import com.staff.personal.dto.UserRegistrationDTO;
 import com.staff.personal.service.UserService;

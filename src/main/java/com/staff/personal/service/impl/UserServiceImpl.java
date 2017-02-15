@@ -189,4 +189,16 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return new RestMessageDTO("Succes", true);
     }
+
+    @Override
+    public RestMessageDTO createAdmin() {
+        UserDTO userDTO = this.getMe();
+        User user = userRepository.findById(userDTO.getId());
+        if(!user.getEmail().equals("admin@admin") && !BCrypt.checkpw("admin", user.getPassword())){
+            throw new RuntimeException("Дозволу на дану операцію немає");
+        }
+        user.setRole(Role.ROLE_ADMIN);
+        userRepository.save(user);
+        return new RestMessageDTO("success", true);
+    }
 }
