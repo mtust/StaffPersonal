@@ -1,6 +1,9 @@
 package com.staff.personal.dto;
 
+import com.staff.personal.domain.Region;
 import lombok.Data;
+
+import java.util.Set;
 
 /**
  * Created by mtustanovskyy on 10/30/16.
@@ -14,5 +17,6 @@ public class UserDTO {
     String roleName;
     String firstName;
     String lastName;
+    Set<Region> regions;
 
 }

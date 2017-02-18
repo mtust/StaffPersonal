@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
+        userDTO.setRegions(user.getRegions());
         return userDTO;
     }
 
@@ -173,6 +174,7 @@ public class UserServiceImpl implements UserService {
             userDTO.setFirstName(user.getFirstName());
             userDTO.setLastName(user.getLastName());
             userDTOS.add(userDTO);
+            userDTO.setRegions(user.getRegions());
         }
         return  userDTOS;
     }
@@ -200,5 +202,11 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.ROLE_ADMIN);
         userRepository.save(user);
         return new RestMessageDTO("success", true);
+    }
+
+    @Override
+    public UserDTO patchUser(User user) {
+        User userNew = userRepository.save(user);
+        return getUserById(userNew.getId());
     }
 }

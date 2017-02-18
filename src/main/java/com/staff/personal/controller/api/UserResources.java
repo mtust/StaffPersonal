@@ -79,6 +79,11 @@ public class UserResources {
     public RestMessageDTO createAdmin(){
       return userService.createAdmin();
     }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public UserDTO createUser(@RequestBody User user){
+        return userService.patchUser(user);
+    }
 }
 
 

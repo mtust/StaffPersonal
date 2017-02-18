@@ -36,4 +36,5 @@ public class NominallyJobBook {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Position> positions;
 
+
 }

@@ -44,4 +44,6 @@ public interface UserService {
     RestMessageDTO setRegions(List<Integer> regionsId, Long id);
 
     RestMessageDTO createAdmin();
+
+    UserDTO patchUser(User user);
 }
