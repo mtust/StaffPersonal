@@ -190,10 +190,13 @@ public class UserServiceImpl implements UserService {
             regionMap.put(region.getId(), region);
         }
         Set<Region> userRegions = new HashSet<>();
+        log.info(String.valueOf(regionsId));
         for (Integer integer : regionsId) {
-            userRegions.add(regionMap.get(integer));
+            userRegions.add(regionMap.get(new Long(integer)));
         }
         user.setRegions(userRegions);
+        log.info(userRegions.toString());
+        log.info(user.toString());
         userRepository.save(user);
         return new RestMessageDTO("success", true);
     }
