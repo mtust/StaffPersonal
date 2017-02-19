@@ -80,6 +80,7 @@ public class UserResources {
       return userService.createAdmin();
     }
 
+    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.PUT)
     public UserDTO createUser(@RequestBody User user){
         return userService.patchUser(user);

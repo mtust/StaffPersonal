@@ -206,6 +206,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO patchUser(User user) {
+        if(user.getId() != null && (user.getPassword().equals("") || user.getPassword() == null)){
+            user.setPassword(userRepository.getOne(user.getId()).getPassword());
+        }
         User userNew = userRepository.save(user);
         return getUserById(userNew.getId());
     }
