@@ -219,11 +219,11 @@ public class UserServiceImpl implements UserService {
                 user.setFirstName(userOld.getFirstName());
             }
 
-            if(user.getRegions().equals("") || user.getRegions() == null){
+            if(user.getRegions().isEmpty() || user.getRegions() == null){
                 user.setRegions(userOld.getRegions());
             }
 
-            if(user.getRole().equals("") || user.getRole() == null){
+            if(user.getRole().equals("")|| user.getRole() == null){
                 user.setRole(userOld.getRole());
             }
             if(user.getEmail().equals("") || user.getEmail() == null){
@@ -231,7 +231,7 @@ public class UserServiceImpl implements UserService {
             }
 
         }
-        
+
         User userNew = userRepository.save(user);
         return getUserById(userNew.getId());
     }
