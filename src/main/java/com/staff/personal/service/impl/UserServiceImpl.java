@@ -75,7 +75,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsernameAndPassword(String username, String password) {
 
         User user = userRepository.findByEmail(username);
-
+        if(user == null){
+            throw new RuntimeException("логін користувача або пароль неправильні");
+        }
         if (user != null && !BCrypt.checkpw(password, user.getPassword())) {
             log.warn("iмя користувача або пароль неправильні: ");
             throw new GeneralServiceException("iмя користувача або пароль неправильні");
@@ -207,27 +209,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO patchUser(User user) {
         User userOld;
+        log.info(user.toString());
         if(user.getId() != null){
             userOld = userRepository.getOne(user.getId());
-            if(user.getPassword().equals("") || user.getPassword() == null) {
+            if( user.getPassword() == null || user.getPassword().equals("")) {
                 user.setPassword(userOld.getPassword());
             }
-            if(user.getEmail().equals("") || user.getEmail() == null){
+            if(user.getEmail() == null || user.getEmail().equals("")){
                 user.setEmail(userOld.getEmail());
             }
-            if(user.getFirstName().equals("") || user.getFirstName() == null){
+            if(user.getFirstName() == null || user.getFirstName().equals("") ){
                 user.setFirstName(userOld.getFirstName());
             }
 
-            if(user.getRegions().isEmpty() || user.getRegions() == null){
+            if(user.getRegions() == null || user.getRegions().isEmpty() ){
                 user.setRegions(userOld.getRegions());
             }
 
-            if(user.getRole().equals("")|| user.getRole() == null){
+            if(user.getRole() == null || user.getRole().equals("")){
                 user.setRole(userOld.getRole());
-            }
-            if(user.getEmail().equals("") || user.getEmail() == null){
-                user.setEmail(userOld.getEmail());
             }
 
         }
