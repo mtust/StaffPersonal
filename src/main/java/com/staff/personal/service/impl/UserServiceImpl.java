@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
             userRegions.add(regions.get(integer - 1));
         }
         userRepository.save(user);
-        return new RestMessageDTO("Succes", true);
+        return new RestMessageDTO("success", true);
     }
 
     @Override
@@ -206,9 +206,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO patchUser(User user) {
-        if(user.getId() != null && (user.getPassword().equals("") || user.getPassword() == null)){
-            user.setPassword(userRepository.getOne(user.getId()).getPassword());
+        User userOld;
+        if(user.getId() != null){
+            userOld = userRepository.getOne(user.getId());
+            if(user.getPassword().equals("") || user.getPassword() == null) {
+                user.setPassword(userOld.getPassword());
+            }
+            if(user.getEmail().equals("") || user.getEmail() == null){
+                user.setEmail(userOld.getEmail());
+            }
+            if(user.getFirstName().equals("") || user.getFirstName() == null){
+                user.setFirstName(userOld.getFirstName());
+            }
+
+            if(user.getRegions().equals("") || user.getRegions() == null){
+                user.setRegions(userOld.getRegions());
+            }
+
+            if(user.getRole().equals("") || user.getRole() == null){
+                user.setRole(userOld.getRole());
+            }
+            if(user.getEmail().equals("") || user.getEmail() == null){
+                user.setEmail(userOld.getEmail());
+            }
+
         }
+        
         User userNew = userRepository.save(user);
         return getUserById(userNew.getId());
     }
