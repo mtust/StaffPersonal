@@ -27,9 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by mtustanovskyy on 10/29/16.
@@ -186,9 +184,14 @@ public class UserServiceImpl implements UserService {
     public RestMessageDTO setRegions(List<Integer> regionsId, Long id) {
         User user = userRepository.findById(id);
         List<Region> regions = regionRepository.findAll();
-        Set<Region> userRegions = user.getRegions();
+        Map<Long, Region> regionMap = new HashMap<>();
+        for (Region region: regions
+             ) {
+            regionMap.put(region.getId(), region);
+        }
+        List<Region> userRegions = new ArrayList<>();
         for (Integer integer : regionsId) {
-            userRegions.add(regions.get(integer - 1));
+            userRegions.add(regionMap.get(integer));
         }
         userRepository.save(user);
         return new RestMessageDTO("success", true);
@@ -231,7 +234,6 @@ public class UserServiceImpl implements UserService {
             }
 
         }
-
         User userNew = userRepository.save(user);
         return getUserById(userNew.getId());
     }
