@@ -1,10 +1,10 @@
 package com.staff.personal.service.nominallyJobBook;
 
-import com.staff.personal.controller.api.nominallJobBook.NominalJobBookResources;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public interface NominallyJobBookService {
 
     List<PoorNominallyJobBookDTO> getPoorNominallyJobBooksByRegion(Long regionId);
 
-    RestMessageDTO createNominalJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO);
+    RestMessageDTO createNominalJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO, Long parentId);
 
     RestMessageDTO editNominalJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO);
 
@@ -42,4 +42,6 @@ public interface NominallyJobBookService {
     RestMessageDTO createNominalJobBookParent(NominallyJobBookParent nominallyJobBookParent);
 
     List<Staff> getStaffByNominallyJobBook(Long nominallyJobBookId);
+
+    RestMessageDTO updateParent(Long parentId, ParentNominallyJobBookDTO name);
 }

@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import com.staff.personal.security.Secured;
 import com.staff.personal.service.StaffService;
@@ -68,8 +69,8 @@ public class NominalJobBookResources {
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public RestMessageDTO createNominalJobBook(@RequestBody PoorNominallyJobBookDTO poorNominallyJobBookDTO){
-        return nominallyJobBookService.createNominalJobBook(poorNominallyJobBookDTO);
+    public RestMessageDTO createNominalJobBook(@RequestBody PoorNominallyJobBookDTO poorNominallyJobBookDTO, @RequestParam Long parentId){
+        return nominallyJobBookService.createNominalJobBook(poorNominallyJobBookDTO,parentId );
     }
 
 
@@ -101,6 +102,9 @@ public class NominalJobBookResources {
         return nominallyJobBookService.createNominalJobBookParent(nominallyJobBookParent);
     }
 
-
+    @RequestMapping(value = "parent/{id}", method = RequestMethod.PUT)
+    public RestMessageDTO updateParent(@PathVariable(value = "id") Long parentId, @RequestBody ParentNominallyJobBookDTO name){
+        return nominallyJobBookService.updateParent(parentId, name);
+    }
 
 }

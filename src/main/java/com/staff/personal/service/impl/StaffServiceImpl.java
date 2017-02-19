@@ -601,7 +601,9 @@ public class StaffServiceImpl implements StaffService {
         staff = staffRepository.save(staff);
         this.createMainStaff(staffDTO.getMainStaffDTO(), staff.getId());
         workExperienceService.crateWorkExperience(staffDTO.getWorkExperienceDTOs(), staff.getId());
-        educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        if(staffDTO.getEducationDTO() != null) {
+            educationService.createEducation(staffDTO.getEducationDTO(), staff.getId());
+        }
     }
 
     private GetStaffDTO createGetStuffDTO(Staff staff) {
