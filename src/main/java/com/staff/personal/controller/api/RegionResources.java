@@ -23,31 +23,31 @@ public class RegionResources {
     @Autowired
     private RegionService regionService;
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.POST)
     public RestMessageDTO createRegion(@RequestBody Region region){
         return regionService.createRegion(region);
     }
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public Region getRegionById(@PathVariable Long id){
         return regionService.getRegionById(id);
     }
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Region> getAllRegions(){
         return regionService.getAllRegions();
     }
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public RestMessageDTO deleteRegionById(@PathVariable Long id){
         return regionService.deleteRegionById(id);
     }
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RestMessageDTO updateRegion(@PathVariable Long id, @RequestBody Region region){
         return regionService.updateRegion(id, region);

@@ -85,6 +85,13 @@ public class UserResources {
     public UserDTO createUser(@RequestBody User user){
         return userService.patchUser(user);
     }
+
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+    public RestMessageDTO deleteUser(@PathVariable Long id){
+        return userService.deleteUser(id);
+    }
+
 }
 
 

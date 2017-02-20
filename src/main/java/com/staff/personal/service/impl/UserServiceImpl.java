@@ -167,14 +167,18 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTOS = new ArrayList<>();
         List<User> users = userRepository.findAll();
         for (User user: users) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setRoleName(user.getRole().name());
-            userDTO.setEmail(user.getEmail());
-            userDTO.setFirstName(user.getFirstName());
-            userDTO.setLastName(user.getLastName());
-            userDTOS.add(userDTO);
-            userDTO.setRegions(user.getRegions());
+            if(user != null || (user.getIsEnabled() != null && user.getIsEnabled() != false)) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(user.getId());
+                if (user.getRole() != null) {
+                    userDTO.setRoleName(user.getRole().name());
+                }
+                userDTO.setEmail(user.getEmail());
+                userDTO.setFirstName(user.getFirstName());
+                userDTO.setLastName(user.getLastName());
+                userDTOS.add(userDTO);
+                userDTO.setRegions(user.getRegions());
+            }
         }
         return  userDTOS;
     }
@@ -240,5 +244,16 @@ public class UserServiceImpl implements UserService {
         }
         User userNew = userRepository.save(user);
         return getUserById(userNew.getId());
+    }
+
+    @Override
+    public RestMessageDTO deleteUser(Long id) {
+        User user = userRepository.findById(id);
+        if(user == null){
+            throw new RuntimeException("такого користувача не знайдено");
+        }
+        user.setIsEnabled(false);
+        userRepository.save(user);
+        return new RestMessageDTO("success", true);
     }
 }

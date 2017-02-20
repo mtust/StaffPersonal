@@ -46,4 +46,6 @@ public interface UserService {
     RestMessageDTO createAdmin();
 
     UserDTO patchUser(User user);
+
+    RestMessageDTO deleteUser(Long id);
 }

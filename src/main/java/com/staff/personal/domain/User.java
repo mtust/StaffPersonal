@@ -26,7 +26,7 @@ public class User {
 	@Email
 	private String email;
 	private String password;
-	private Boolean isEnabled;
+	private Boolean isEnabled = true;
 
 	@Enumerated(EnumType.ORDINAL)
 	private Role role;
