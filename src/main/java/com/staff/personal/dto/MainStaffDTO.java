@@ -27,7 +27,7 @@ public class MainStaffDTO {
     String categoriesCivilServants = "";
     String groupRemuneration = "";
     String staffOfficerCategory = "";
-    String lastCertification = "";
+    String lastCertification;
     String concludedCertification = "";
     String personnelProvisionForPost = "";
     String biography = "";

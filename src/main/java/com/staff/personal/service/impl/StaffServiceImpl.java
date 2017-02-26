@@ -595,6 +595,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Transactional
     private void createUpdateStuff(Staff staff, StaffDTO staffDTO) {
+        log.info("create staff: " + staff);
+        log.info("crate staffDTO" + staffDTO);
         Region region = null;
         if (staffDTO.getRegionId() != null) {
             region = regionService.getRegionById(staffDTO.getRegionId());
