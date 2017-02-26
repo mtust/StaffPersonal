@@ -107,6 +107,10 @@ public class StaffServiceImpl implements StaffService {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist");
         }
 
+        Education education = new Education();
+        List<MainEducationBlock> mainEducationBlocks = new ArrayList<MainEducationBlock>();
+        education.setMainEducationBlocks(mainEducationBlocks);
+        staff.setEducation(education);
         staff.setMainStaff(this.createMainStaffFromDTO(mainStaffDTO));
         staffRepository.save(staff);
         return new RestMessageDTO("Success", true);
