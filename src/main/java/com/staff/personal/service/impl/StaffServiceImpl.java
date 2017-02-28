@@ -186,7 +186,11 @@ public class StaffServiceImpl implements StaffService {
         if (staff == null || (staff.getRegion() != null && !regions.contains(staff.getRegion())) || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }*/
+
         Staff staff = staffRepository.findOneByIsDeletedFalseAndIsDeletedByOperatorFalseAndIdAndRegionIn(id, regions);
+        if(staff == null && regions.isEmpty()){
+            staff = staffRepository.findOne(id);
+        }
         if (staff == null) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
@@ -211,6 +215,9 @@ public class StaffServiceImpl implements StaffService {
         }
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);*/
         Staff staff = staffRepository.findOneByIsDeletedFalseAndIsDeletedByOperatorFalseAndIdAndRegionIn(id, regions);
+        if(staff == null && regions.isEmpty()){
+            staff = staffRepository.findOne(id);
+        }
         log.info("whole staff: " + staff);
         GetAllStaffDTO getAllStaffDTO = this.createGetAllStuffDTO(staff);
         return getAllStaffDTO;

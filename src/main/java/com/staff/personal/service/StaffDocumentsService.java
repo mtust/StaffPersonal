@@ -15,9 +15,22 @@ public interface StaffDocumentsService {
 
     RestMessageDTO addDocument(MultipartFile multipartFile, Long id) throws IOException;
 
+    RestMessageDTO addLustration(MultipartFile multipartFile, Long id) throws IOException;
+
+    RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id) throws IOException;
+
+    RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id) throws IOException;
+
     List<StaffDocumentDTO> getDocumentsInfo(Long id);
 
     byte[] getFile(Long idStaff, int idDoc)throws IOException, SQLException;
 
     RestMessageDTO delDocument(Long id, Long idDoc);
+
+    List<StaffDocumentDTO> getLustration(Long id);
+
+    List<StaffDocumentDTO> getSpecPerevirka(Long id);
+
+    List<StaffDocumentDTO> getDeklaration(Long id);
+
 }

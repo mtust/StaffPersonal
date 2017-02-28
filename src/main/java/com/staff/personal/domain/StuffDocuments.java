@@ -21,4 +21,7 @@ public class StuffDocuments {
 	@Lob
 	private byte[] file;
 
+	@Column(name = "type")
+	private String type;
+
 }

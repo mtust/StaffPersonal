@@ -395,11 +395,51 @@ public class StaffController {
        log.info("IN CONTROLLER setStaffDoc");
        return staffDocumentsService.addDocument(file,id);
    }
+
+    @RequestMapping(value = "{id}/lustration", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    RestMessageDTO addLustration(@RequestParam("file") MultipartFile file,
+                               @PathVariable Long id) throws IOException {
+        log.info("IN CONTROLLER setStaffDoc");
+        return staffDocumentsService.addLustration(file,id);
+    }
+
+    @RequestMapping(value = "{id}/specPerevirka", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    RestMessageDTO setSpecPerevirka(@RequestParam("file") MultipartFile file,
+                               @PathVariable Long id) throws IOException {
+        log.info("IN CONTROLLER setStaffDoc");
+        return staffDocumentsService.addSpecPerevirka(file,id);
+    }
+
+    @RequestMapping(value = "{id}/deklaration", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
+    RestMessageDTO addDeklaration(@RequestParam("file") MultipartFile file,
+                               @PathVariable Long id) throws IOException {
+        log.info("IN CONTROLLER setStaffDoc");
+        return staffDocumentsService.addDeklaration(file,id);
+    }
     @RequestMapping(value = "{id}/staffDoc", method = RequestMethod.GET)
     @ResponseBody
     List<StaffDocumentDTO> getStaffDoc(@PathVariable Long id){
         log.info("IN CONTROLLER getStaffDoc");
         return staffDocumentsService.getDocumentsInfo(id);
+    }
+
+
+    @RequestMapping(value = "{id}/lustration", method = RequestMethod.GET)
+    @ResponseBody
+    List<StaffDocumentDTO> getLustration(@PathVariable Long id){
+        return staffDocumentsService.getLustration(id);
+    }
+
+    @RequestMapping(value = "{id}/specPerevirka", method = RequestMethod.GET)
+    @ResponseBody
+    List<StaffDocumentDTO> getSpecPerevirka(@PathVariable Long id){
+        return staffDocumentsService.getSpecPerevirka(id);
+    }
+
+    @RequestMapping(value = "{id}/deklaration", method = RequestMethod.GET)
+    @ResponseBody
+    List<StaffDocumentDTO> getDeklaration(@PathVariable Long id){
+        return staffDocumentsService.getDeklaration(id);
     }
 
     @Secured(value = Role.ROLE_ADMIN)
