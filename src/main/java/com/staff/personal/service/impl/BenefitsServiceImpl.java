@@ -57,12 +57,12 @@ public class BenefitsServiceImpl implements BenefitsService {
             }
             if(benefitsDTO.getId() != null){
                 benefits.setId(benefitsDTO.getId());
-            }
-            benefits.setOrder(benefitsDTO.getOrder());
-            benefits.setCertification(benefitsDTO.getCertification());
-            benefits.setPrivilege(benefitsDTO.getPrivilege());
-            benefits.setActsAndComments(benefitsDTO.getActsAndComments());
-            benefits.setOtherInfo(benefitsDTO.getOtherInfo());
+            };
+            benefits.setOrderPerson(benefitsDTO.getOrderPerson());
+            benefits.setOrderNumber(benefitsDTO.getOrderNumber());
+            benefits.setBenefitWorksDays(benefitsDTO.getBenefitWorksDays());
+            benefits.setBenefitWorksMonths(benefitsDTO.getBenefitWorksMonths());
+            benefits.setBenefitWorksYears(benefitsDTO.getBenefitWorksYears());
             log.info(benefits.toString());
             list.add(benefits);
             staff.setBenefits(list);
@@ -138,14 +138,14 @@ public class BenefitsServiceImpl implements BenefitsService {
             if (benefits.getToDate() != null) {
                 benefitsDTO.setToDate(simpleDateFormat.format(benefits.getToDate()));
             }
-            benefitsDTO.setOrder(benefits.getOrder());
             if (benefits.getOrderDate() != null) {
                 benefitsDTO.setOrderDate(simpleDateFormat.format(benefits.getOrderDate()));
             }
-            benefitsDTO.setCertification(benefits.getCertification());
-            benefitsDTO.setPrivilege(benefits.getPrivilege());
-            benefitsDTO.setActsAndComments(benefits.getActsAndComments());
-            benefitsDTO.setOtherInfo(benefits.getOtherInfo());
+            benefitsDTO.setOrderPerson(benefits.getOrderPerson());
+            benefitsDTO.setOrderNumber(benefits.getOrderNumber());
+            benefitsDTO.setBenefitWorksDays(benefits.getBenefitWorksDays());
+            benefitsDTO.setBenefitWorksMonths(benefits.getBenefitWorksMonths());
+            benefitsDTO.setBenefitWorksYears(benefits.getBenefitWorksYears());
             benefitsDTOList.add(benefitsDTO);
         }
         return  benefitsDTOList;
@@ -172,11 +172,11 @@ public class BenefitsServiceImpl implements BenefitsService {
                 if (benefitsDTO.getId() != null) {
                     benefits.setId(benefitsDTO.getId());
                 }
-                benefits.setOrder(benefitsDTO.getOrder());
-                benefits.setCertification(benefitsDTO.getCertification());
-                benefits.setPrivilege(benefitsDTO.getPrivilege());
-                benefits.setActsAndComments(benefitsDTO.getActsAndComments());
-                benefits.setOtherInfo(benefitsDTO.getOtherInfo());
+                benefits.setOrderPerson(benefitsDTO.getOrderPerson());
+                benefits.setOrderNumber(benefitsDTO.getOrderNumber());
+                benefits.setBenefitWorksDays(benefitsDTO.getBenefitWorksDays());
+                benefits.setBenefitWorksMonths(benefitsDTO.getBenefitWorksMonths());
+                benefits.setBenefitWorksYears(benefitsDTO.getBenefitWorksYears());
                 log.info(benefits.toString());
                 benefitsList.add(benefits);
             } catch (ParseException e) {

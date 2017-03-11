@@ -31,8 +31,6 @@ public class Benefits {
 	@Column(name = "toDate")
 	private Date toDate;
 
-	@Column(name = "benefitOrder")
-	private String order;
 
 	@Column(name = "orderDate")
 	private Date orderDate;
@@ -49,5 +47,18 @@ public class Benefits {
 
 	@Column(name = "otherInfo")
 	private String otherInfo;
+
+	@Column
+	private String orderPerson;
+
+	@Column
+	private String orderNumber;
+
+	@Column
+	private String benefitWorksYears;
+	@Column
+	private String benefitWorksMonths;
+	@Column
+	private String benefitWorksDays;
 
 }

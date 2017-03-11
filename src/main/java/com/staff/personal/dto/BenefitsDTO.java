@@ -17,7 +17,7 @@ public class BenefitsDTO {
     private String orderNumber;
     private StuffDocuments act;
     private String docNumber;
-    private String benefitWorksYers;
+    private String benefitWorksYears;
     private String benefitWorksMonths;
     private String benefitWorksDays;
 }
