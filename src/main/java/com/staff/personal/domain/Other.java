@@ -54,4 +54,7 @@ public class Other {
 	@Column(name = "children")
 	private String children;
 
+	@Column(name = "comment")
+	private String comment;
+
 }

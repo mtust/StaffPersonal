@@ -35,5 +35,8 @@ public class Hospitals {
 	@Column(name = "description")
 	private String description;
 
+	@Column
+	private String hospitalPlace;
+
 
 }

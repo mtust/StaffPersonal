@@ -54,6 +54,7 @@ public class HospitalsServiceImpl implements HospitalsService {
                 hospitals.setToDate(simpleDateFormatNew.parse(hospitalsDTo.getToDate()));
             }
             hospitals.setDescription(hospitalsDTo.getDescription());
+            hospitals.setDescription(hospitalsDTo.getHospitalPlace());
             log.info(hospitals.toString());
             list.add(hospitals);
             staff.setHospitals(list);
@@ -102,6 +103,7 @@ public class HospitalsServiceImpl implements HospitalsService {
             hospitalsDTO.setId(hospitals.getId().toString());
             hospitalsDTO.setTypeHospital(hospitals.getTypeHospital());
             hospitalsDTO.setDescription(hospitals.getDescription());
+            hospitalsDTO.setHospitalPlace(hospitals.getHospitalPlace());
             if (hospitals.getFromDate() != null) {
                 hospitalsDTO.setFromDate(simpleDateFormat.format(hospitals.getFromDate()));
             }
@@ -132,6 +134,7 @@ public class HospitalsServiceImpl implements HospitalsService {
                     hospitals.setToDate(simpleDateFormatNew.parse(hospitalsDTO.getToDate()));
                 }
                 hospitals.setDescription(hospitalsDTO.getDescription());
+                hospitals.setHospitalPlace(hospitalsDTO.getHospitalPlace());
                 log.info(hospitals.toString());
                 hospitalsList.add(hospitals);
             } catch (ParseException e) {

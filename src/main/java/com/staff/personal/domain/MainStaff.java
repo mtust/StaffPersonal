@@ -25,7 +25,10 @@ public class MainStaff {
 	
 	@Column(name = "specRank")
 	private String specialRank;
-	
+
+	@Column
+	private String structureGroupName;
+
 	@Column(name = "dateOfBirth")
 	private Date dateOfBirth;
 

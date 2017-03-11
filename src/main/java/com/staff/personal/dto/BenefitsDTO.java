@@ -1,5 +1,6 @@
 package com.staff.personal.dto;
 
+import com.staff.personal.domain.StuffDocuments;
 import lombok.Data;
 
 /**
@@ -11,10 +12,12 @@ public class BenefitsDTO {
     private String name;
     private String fromDate;
     private String toDate;
-    private String order;
+    private String orderPerson;
     private String orderDate;
-    private String certification;
-    private String privilege;
-    private String actsAndComments;
-    private String otherInfo;
+    private String orderNumber;
+    private StuffDocuments act;
+    private String docNumber;
+    private String benefitWorksYers;
+    private String benefitWorksMonths;
+    private String benefitWorksDays;
 }

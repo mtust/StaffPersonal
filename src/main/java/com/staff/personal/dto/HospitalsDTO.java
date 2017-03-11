@@ -21,4 +21,6 @@ public class HospitalsDTO {
 
     private String description;
 
+    private String hospitalPlace;
+
 }

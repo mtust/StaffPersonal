@@ -33,4 +33,8 @@ public interface StaffDocumentsService {
 
     List<StaffDocumentDTO> getDeklaration(Long id);
 
+    RestMessageDTO addEducation(MultipartFile multipartFile, Long id) throws IOException;
+
+    List<StaffDocumentDTO> getEducation(Long id);
+
 }

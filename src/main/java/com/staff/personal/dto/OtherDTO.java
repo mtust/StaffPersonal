@@ -33,4 +33,6 @@ public class OtherDTO {
     private String wifeHusband;
 
     private String children;
+
+    private String comment;
 }

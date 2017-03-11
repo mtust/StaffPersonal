@@ -594,6 +594,7 @@ public class StaffServiceImpl implements StaffService {
         mainStaffDTO.setBiography(mainStaff.getBiography());
         mainStaffDTO.setPosition(mainStaff.getPosition());
         mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
+        mainStaffDTO.setStructureGroupName(mainStaff.getStructureGroupName());
 
 
         return mainStaffDTO;
@@ -725,6 +726,7 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setConcludedCertification(mainStaffDTO.getConcludedCertification());
             mainStaff.setPersonnelProvisionForPost(mainStaffDTO.getPersonnelProvisionForPost());
             mainStaff.setBiography(mainStaffDTO.getBiography());
+            mainStaff.setStructureGroupName(mainStaffDTO.getStructureGroupName());
 
 
         } catch (ParseException e) {

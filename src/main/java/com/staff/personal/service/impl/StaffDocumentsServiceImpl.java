@@ -102,46 +102,71 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     @Override
     @Transactional
     public List<StaffDocumentDTO> getLustration(Long id) {
-        Staff staff = staffRepository.findOne(id);
-        if (staff == null || staff.getIsDeleted() == true) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
-        }
-        List<StaffDocumentDTO> documentDTOs = new ArrayList<>();
-        List<StuffDocuments> list = staff.getMainStaff().getDocuments();
-        for (StuffDocuments stuffDocuments : list) {
-            if(stuffDocuments.getType().equalsIgnoreCase("L")) {
-                StaffDocumentDTO documentDTO = new StaffDocumentDTO();
-                documentDTO.setName(stuffDocuments.getName());
-                documentDTO.setId(stuffDocuments.getId().toString());
-                documentDTOs.add(documentDTO);
-            }
-        }
-        return documentDTOs;
+        return getDocumentByType(id, "L");
     }
 
     @Override
     @Transactional
     public List<StaffDocumentDTO> getSpecPerevirka(Long id) {
-        Staff staff = staffRepository.findOne(id);
-        if (staff == null || staff.getIsDeleted() == true) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
-        }
-        List<StaffDocumentDTO> documentDTOs = new ArrayList<>();
-        List<StuffDocuments> list = staff.getMainStaff().getDocuments();
-        for (StuffDocuments stuffDocuments : list) {
-            if(stuffDocuments.getType().equalsIgnoreCase("S")) {
-                StaffDocumentDTO documentDTO = new StaffDocumentDTO();
-                documentDTO.setName(stuffDocuments.getName());
-                documentDTO.setId(stuffDocuments.getId().toString());
-                documentDTOs.add(documentDTO);
-            }
-        }
-        return documentDTOs;
+        return getDocumentByType(id, "S");
     }
 
     @Override
     @Transactional
     public List<StaffDocumentDTO> getDeklaration(Long id) {
+        return getDocumentByType(id, "D");
+    }
+
+    @Override
+    public RestMessageDTO addLustration(MultipartFile multipartFile, Long id) throws IOException {
+        return addDocumentByType(multipartFile, id, "L");
+    }
+
+    @Override
+    public RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id) throws IOException {
+        return addDocumentByType(multipartFile, id, "S");
+    }
+
+    @Override
+    public RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id) throws IOException {
+        return addDocumentByType(multipartFile, id, "D");
+    }
+
+
+    @Override
+    public RestMessageDTO addEducation(MultipartFile multipartFile, Long id) throws IOException {
+        return addDocumentByType(multipartFile, id, "E");
+    }
+
+
+    private RestMessageDTO addDocumentByType(MultipartFile multipartFile, Long id, String docType) throws IOException{
+        Staff staff = staffRepository.findOne(id);
+        if (staff == null || staff.getIsDeleted() == true) {
+            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
+        }
+        StuffDocuments stuffDocuments = new StuffDocuments();
+        stuffDocuments.setFile(multipartFile.getBytes());
+        stuffDocuments.setName(multipartFile.getOriginalFilename());
+        stuffDocuments.setType(docType);
+        MainStaff mainStaff = staff.getMainStaff();
+        List<StuffDocuments> list = mainStaff.getDocuments();
+        list.add(stuffDocuments);
+        mainStaff.setDocuments(list);
+        staff.setMainStaff(mainStaff);
+        staffRepository.save(staff);
+        log.info(staff.toString());
+        return new RestMessageDTO("Success", true);
+    }
+
+
+    @Override
+    @Transactional
+    public List<StaffDocumentDTO> getEducation(Long id){
+        return getDocumentByType(id, "E");
+    }
+
+
+    private List<StaffDocumentDTO> getDocumentByType(Long id, String docType){
         Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
@@ -149,7 +174,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
         List<StaffDocumentDTO> documentDTOs = new ArrayList<>();
         List<StuffDocuments> list = staff.getMainStaff().getDocuments();
         for (StuffDocuments stuffDocuments : list) {
-            if(stuffDocuments.getType().equalsIgnoreCase("D")) {
+            if(stuffDocuments.getType().equalsIgnoreCase(docType)) {
                 StaffDocumentDTO documentDTO = new StaffDocumentDTO();
                 documentDTO.setName(stuffDocuments.getName());
                 documentDTO.setId(stuffDocuments.getId().toString());
@@ -157,65 +182,5 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
             }
         }
         return documentDTOs;
-    }
-
-    @Override
-    public RestMessageDTO addLustration(MultipartFile multipartFile, Long id) throws IOException {
-        Staff staff = staffRepository.findOne(id);
-        if (staff == null || staff.getIsDeleted() == true) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
-        }
-        StuffDocuments stuffDocuments = new StuffDocuments();
-        stuffDocuments.setFile(multipartFile.getBytes());
-        stuffDocuments.setName(multipartFile.getOriginalFilename());
-        stuffDocuments.setType("L");
-        MainStaff mainStaff = staff.getMainStaff();
-        List<StuffDocuments> list = mainStaff.getDocuments();
-        list.add(stuffDocuments);
-        mainStaff.setDocuments(list);
-        staff.setMainStaff(mainStaff);
-        staffRepository.save(staff);
-        log.info(staff.toString());
-        return new RestMessageDTO("Succes", true);
-    }
-
-    @Override
-    public RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id) throws IOException {
-        Staff staff = staffRepository.findOne(id);
-        if (staff == null || staff.getIsDeleted() == true) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
-        }
-        StuffDocuments stuffDocuments = new StuffDocuments();
-        stuffDocuments.setFile(multipartFile.getBytes());
-        stuffDocuments.setName(multipartFile.getOriginalFilename());
-        stuffDocuments.setType("S");
-        MainStaff mainStaff = staff.getMainStaff();
-        List<StuffDocuments> list = mainStaff.getDocuments();
-        list.add(stuffDocuments);
-        mainStaff.setDocuments(list);
-        staff.setMainStaff(mainStaff);
-        staffRepository.save(staff);
-        log.info(staff.toString());
-        return new RestMessageDTO("Succes", true);
-    }
-
-    @Override
-    public RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id) throws IOException {
-        Staff staff = staffRepository.findOne(id);
-        if (staff == null || staff.getIsDeleted() == true) {
-            throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
-        }
-        StuffDocuments stuffDocuments = new StuffDocuments();
-        stuffDocuments.setFile(multipartFile.getBytes());
-        stuffDocuments.setName(multipartFile.getOriginalFilename());
-        stuffDocuments.setType("D");
-        MainStaff mainStaff = staff.getMainStaff();
-        List<StuffDocuments> list = mainStaff.getDocuments();
-        list.add(stuffDocuments);
-        mainStaff.setDocuments(list);
-        staff.setMainStaff(mainStaff);
-        staffRepository.save(staff);
-        log.info(staff.toString());
-        return new RestMessageDTO("Succes", true);
     }
 }

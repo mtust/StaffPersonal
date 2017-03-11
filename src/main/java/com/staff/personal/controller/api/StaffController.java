@@ -454,5 +454,17 @@ public class StaffController {
         return staffDocumentsService.getFile(id,idDoc);
     }
 
+    @RequestMapping(value = "{id}/education/documents", method = RequestMethod.POST)
+    RestMessageDTO addDocument(@RequestParam("file") MultipartFile file,
+                               @PathVariable Long id) throws IOException {
+        return staffDocumentsService.addEducation(file,id);
+    }
+
+    @RequestMapping(value = "{id}/ш", method = RequestMethod.GET)
+    @ResponseBody
+    List<StaffDocumentDTO> getEducationDocuments(@PathVariable Long id){
+        return staffDocumentsService.getEducation(id);
+    }
+
 
 }

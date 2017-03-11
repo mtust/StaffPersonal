@@ -137,6 +137,7 @@ public class FiredServiceImpl implements FiredService {
             firedDTO.setConclusion(fired.getConclusion());
             firedDTO.setSeniority(fired.getSeniority());
             firedDTO.setPersonalFileForwarded(fired.getPersonalFileForwarded());
+            firedDTO.setConclusion(fired.getConclusion());
             return firedDTO;
         }
     }
@@ -176,6 +177,7 @@ public class FiredServiceImpl implements FiredService {
             fired.setConclusion(firedDTO.getConclusion());
             fired.setSeniority(firedDTO.getSeniority());
             fired.setPersonalFileForwarded(firedDTO.getPersonalFileForwarded());
+            fired.setConclusion(firedDTO.getConclusion());
             log.info("fired after save \n" + fired.toString());
         } catch (ParseException e) {
             log.warn(e.getMessage());

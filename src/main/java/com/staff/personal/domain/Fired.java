@@ -79,6 +79,9 @@ public class Fired {
 	*/
 	@Column(name = "personalFileForwarded")
 	private String personalFileForwarded;
+
+	@Column
+	private String conclusions;
 	
 
 }

@@ -31,4 +31,5 @@ public class MainStaffDTO {
     String concludedCertification = "";
     String personnelProvisionForPost = "";
     String biography = "";
+    String structureGroupName = "";
 }
