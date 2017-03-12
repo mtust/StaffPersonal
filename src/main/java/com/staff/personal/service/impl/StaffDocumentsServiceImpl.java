@@ -33,14 +33,14 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
 
     @Override
     @Transactional
-    public RestMessageDTO addDocument(MultipartFile multipartFile, Long id) throws IOException {
+    public RestMessageDTO addDocument(MultipartFile multipartFile, Long id, String name) throws IOException {
         Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         StuffDocuments stuffDocuments = new StuffDocuments();
         stuffDocuments.setFile(multipartFile.getBytes());
-        stuffDocuments.setName(multipartFile.getOriginalFilename());
+        stuffDocuments.setName(name);
         MainStaff mainStaff = staff.getMainStaff();
         List<StuffDocuments> list = mainStaff.getDocuments();
         list.add(stuffDocuments);
@@ -48,7 +48,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
         staff.setMainStaff(mainStaff);
         staffRepository.save(staff);
         log.info(staff.toString());
-        return new RestMessageDTO("Succes", true);
+        return new RestMessageDTO("Success", true);
     }
 
     @Override
@@ -118,35 +118,38 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     }
 
     @Override
-    public RestMessageDTO addLustration(MultipartFile multipartFile, Long id) throws IOException {
-        return addDocumentByType(multipartFile, id, "L");
+    public RestMessageDTO addLustration(MultipartFile multipartFile, Long id, String name) throws IOException {
+        return addDocumentByType(multipartFile, id, "L", name);
     }
 
     @Override
-    public RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id) throws IOException {
-        return addDocumentByType(multipartFile, id, "S");
+    public RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id, String name) throws IOException {
+        return addDocumentByType(multipartFile, id, "S", name);
     }
 
     @Override
-    public RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id) throws IOException {
-        return addDocumentByType(multipartFile, id, "D");
+    public RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id, String name) throws IOException {
+        return addDocumentByType(multipartFile, id, "D", name);
     }
 
 
     @Override
-    public RestMessageDTO addEducation(MultipartFile multipartFile, Long id) throws IOException {
-        return addDocumentByType(multipartFile, id, "E");
+    public RestMessageDTO addEducation(MultipartFile multipartFile, Long id, String name) throws IOException {
+        return addDocumentByType(multipartFile, id, "E", name);
     }
 
 
-    private RestMessageDTO addDocumentByType(MultipartFile multipartFile, Long id, String docType) throws IOException{
+    private RestMessageDTO addDocumentByType(MultipartFile multipartFile, Long id, String docType, String name) throws IOException{
         Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
             throw new ObjectDoNotExistException("staff object with id = " + id + " dosen't exist or is deleted");
         }
         StuffDocuments stuffDocuments = new StuffDocuments();
-        stuffDocuments.setFile(multipartFile.getBytes());
-        stuffDocuments.setName(multipartFile.getOriginalFilename());
+        if(name != null && name != "") {
+            stuffDocuments.setName(name);
+        } else {
+            stuffDocuments.setName(multipartFile.getOriginalFilename());
+        }
         stuffDocuments.setType(docType);
         MainStaff mainStaff = staff.getMainStaff();
         List<StuffDocuments> list = mainStaff.getDocuments();

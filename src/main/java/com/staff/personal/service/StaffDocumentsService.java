@@ -13,13 +13,13 @@ import java.util.List;
  */
 public interface StaffDocumentsService {
 
-    RestMessageDTO addDocument(MultipartFile multipartFile, Long id) throws IOException;
+    RestMessageDTO addDocument(MultipartFile multipartFile, Long id, String name) throws IOException;
 
-    RestMessageDTO addLustration(MultipartFile multipartFile, Long id) throws IOException;
+    RestMessageDTO addLustration(MultipartFile multipartFile, Long id, String name) throws IOException;
 
-    RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id) throws IOException;
+    RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id, String name) throws IOException;
 
-    RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id) throws IOException;
+    RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id, String name) throws IOException;
 
     List<StaffDocumentDTO> getDocumentsInfo(Long id);
 
@@ -33,7 +33,7 @@ public interface StaffDocumentsService {
 
     List<StaffDocumentDTO> getDeklaration(Long id);
 
-    RestMessageDTO addEducation(MultipartFile multipartFile, Long id) throws IOException;
+    RestMessageDTO addEducation(MultipartFile multipartFile, Long id, String name) throws IOException;
 
     List<StaffDocumentDTO> getEducation(Long id);
 

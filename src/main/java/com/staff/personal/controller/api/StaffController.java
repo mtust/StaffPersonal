@@ -390,31 +390,31 @@ public class StaffController {
 
    //STAFFDOCUMENTS
    @RequestMapping(value = "{id}/staffDoc", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
-   RestMessageDTO setStaffDoc(@RequestParam("file") MultipartFile file,
+   RestMessageDTO setStaffDoc(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
                               @PathVariable Long id) throws IOException {
        log.info("IN CONTROLLER setStaffDoc");
-       return staffDocumentsService.addDocument(file,id);
+       return staffDocumentsService.addDocument(file,id, name);
    }
 
     @RequestMapping(value = "{id}/lustration", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
-    RestMessageDTO addLustration(@RequestParam("file") MultipartFile file,
+    RestMessageDTO addLustration(@RequestParam("file") MultipartFile file,  @RequestParam("name") String name,
                                @PathVariable Long id) throws IOException {
         log.info("IN CONTROLLER setStaffDoc");
-        return staffDocumentsService.addLustration(file,id);
+        return staffDocumentsService.addLustration(file,id, name);
     }
 
     @RequestMapping(value = "{id}/specPerevirka", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
-    RestMessageDTO setSpecPerevirka(@RequestParam("file") MultipartFile file,
+    RestMessageDTO setSpecPerevirka(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
                                @PathVariable Long id) throws IOException {
         log.info("IN CONTROLLER setStaffDoc");
-        return staffDocumentsService.addSpecPerevirka(file,id);
+        return staffDocumentsService.addSpecPerevirka(file,id, name);
     }
 
     @RequestMapping(value = "{id}/deklaration", headers = "content-type=multipart/form-data", method = RequestMethod.PUT)
-    RestMessageDTO addDeklaration(@RequestParam("file") MultipartFile file,
+    RestMessageDTO addDeklaration(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
                                @PathVariable Long id) throws IOException {
         log.info("IN CONTROLLER setStaffDoc");
-        return staffDocumentsService.addDeklaration(file,id);
+        return staffDocumentsService.addDeklaration(file,id, name);
     }
     @RequestMapping(value = "{id}/staffDoc", method = RequestMethod.GET)
     @ResponseBody
@@ -455,12 +455,12 @@ public class StaffController {
     }
 
     @RequestMapping(value = "{id}/education/documents", method = RequestMethod.POST)
-    RestMessageDTO addDocument(@RequestParam("file") MultipartFile file,
+    RestMessageDTO addDocument(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
                                @PathVariable Long id) throws IOException {
-        return staffDocumentsService.addEducation(file,id);
+        return staffDocumentsService.addEducation(file,id, name);
     }
 
-    @RequestMapping(value = "{id}/ш", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/education/documents", method = RequestMethod.GET)
     @ResponseBody
     List<StaffDocumentDTO> getEducationDocuments(@PathVariable Long id){
         return staffDocumentsService.getEducation(id);
