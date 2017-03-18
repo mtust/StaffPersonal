@@ -38,4 +38,5 @@ public class Holiday {
 	@Column(name = "description")
 	private String description;
 
+
 }
