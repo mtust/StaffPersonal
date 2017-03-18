@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by mtustanovskyy on 1/24/17.
- */
 @Service
 public class PositionServiceImpl implements PositionService{
 
