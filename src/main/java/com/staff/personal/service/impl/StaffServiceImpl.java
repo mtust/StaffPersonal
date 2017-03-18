@@ -600,6 +600,7 @@ public class StaffServiceImpl implements StaffService {
         mainStaffDTO.setStructureGroupName(mainStaff.getStructureGroupName());
         mainStaffDTO.setStudy(mainStaff.getStudy());
         mainStaffDTO.setContractNumber(mainStaff.getContractNumber());
+        mainStaffDTO.setNumberPurpose(mainStaff.getNumberPurpose());
 
 
         return mainStaffDTO;
@@ -741,6 +742,7 @@ public class StaffServiceImpl implements StaffService {
 
             mainStaff.setContractNumber(mainStaffDTO.getContractNumber());
             mainStaff.setStudy(mainStaffDTO.getStudy());
+            mainStaff.setNumberPurpose(mainStaffDTO.getNumberPurpose());
 
         } catch (ParseException e) {
             log.warn(e.getMessage());

@@ -52,6 +52,9 @@ public class MainStaff {
 	 */
 	@Column(name = "dateNumberPurpose")
 	private Date dateNumberPurpose;
+
+	@Column(name = "numberPurpose")
+	private String numberPurpose;
 	
 	@Column(name = "phoneNumber")
 	private String phoneNumber;

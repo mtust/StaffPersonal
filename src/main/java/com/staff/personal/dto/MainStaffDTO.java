@@ -35,4 +35,5 @@ public class MainStaffDTO {
     String structureGroupName;
     String study;
     String contractNumber;
+    String numberPurpose;
 }
