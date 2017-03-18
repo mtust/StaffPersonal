@@ -558,7 +558,7 @@ public class StaffServiceImpl implements StaffService {
         if (mainStaff.getDateOfBirth() != null) {
             mainStaffDTO.setDateOfBirth(simpleDateFormat.format(mainStaff.getDateOfBirth()));
         }
-        if (mainStaff.getDateOfBirth() != null) {
+        if (mainStaff.getDateConferringSpecRanks() != null) {
             mainStaffDTO.setDateConferringSpecRanks(simpleDateFormat.format(mainStaff.getDateConferringSpecRanks()));
         }
         if (mainStaff.getDateNumberPurpose() != null) {
