@@ -177,11 +177,13 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
         List<StaffDocumentDTO> documentDTOs = new ArrayList<>();
         List<StuffDocuments> list = staff.getMainStaff().getDocuments();
         for (StuffDocuments stuffDocuments : list) {
-            if(stuffDocuments.getType().equalsIgnoreCase(docType)) {
-                StaffDocumentDTO documentDTO = new StaffDocumentDTO();
-                documentDTO.setName(stuffDocuments.getName());
-                documentDTO.setId(stuffDocuments.getId().toString());
-                documentDTOs.add(documentDTO);
+            if(stuffDocuments.getType() != null) {
+                if (stuffDocuments.getType().equalsIgnoreCase(docType)) {
+                    StaffDocumentDTO documentDTO = new StaffDocumentDTO();
+                    documentDTO.setName(stuffDocuments.getName());
+                    documentDTO.setId(stuffDocuments.getId().toString());
+                    documentDTOs.add(documentDTO);
+                }
             }
         }
         return documentDTOs;

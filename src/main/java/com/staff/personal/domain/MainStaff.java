@@ -66,7 +66,10 @@ public class MainStaff {
 	 */
 	@Column(name = "contractToDate")
 	private Date contractToDate;
-	
+
+	@Column(name = "contractNumber")
+	private String contractNumber;
+
 	/*
 	 *Звільнення зі служби цивільного захисту, дата та номер наказу
 	 */
@@ -81,8 +84,11 @@ public class MainStaff {
 	/**
 	 *У розпорядженні відовідального керівника, дата та номер наказу
 	 */
-	@Column(name = "inCommand")
-	private String inCommand;
+	@Column(name = "inCommandDate")
+	private Date inCommandDate;
+
+	@Column(name = "inCommandNumber")
+	private String inCommandNumber;
 	/**
 	 *Дата прийняття присяги державного службовця
 	 */
@@ -133,6 +139,10 @@ public class MainStaff {
 	@Column(name = "documents")
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<StuffDocuments> documents;
+
+
+	@Column(name = "study")
+	private String study;
 
 
 

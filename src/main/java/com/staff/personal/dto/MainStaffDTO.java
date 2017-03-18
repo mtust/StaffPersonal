@@ -21,7 +21,8 @@ public class MainStaffDTO {
     String contractToDate;
     String exemptionDate;
     String exemptionNumOrder;
-    String inCommand;
+    String inCommandNumber;
+    String inCommandDate;
     String dateSwear;
     String rankCivilServant;
     String categoriesCivilServants;
@@ -32,4 +33,6 @@ public class MainStaffDTO {
     String personnelProvisionForPost;
     String biography;
     String structureGroupName;
+    String study;
+    String contractNumber;
 }

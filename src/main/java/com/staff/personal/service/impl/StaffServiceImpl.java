@@ -581,6 +581,9 @@ public class StaffServiceImpl implements StaffService {
         if (mainStaff.getDateSwear() != null) {
             mainStaffDTO.setDateSwear(simpleDateFormat.format(mainStaff.getDateSwear()));
         }
+        if(mainStaff.getInCommandDate() != null){
+            mainStaffDTO.setInCommandDate(simpleDateFormat.format(mainStaff.getInCommandDate()));
+        }
         mainStaffDTO.setRankCivilServant(mainStaff.getRankCivilServant());
         mainStaffDTO.setCategoriesCivilServants(mainStaff.getCategoriesCivilServants());
         mainStaffDTO.setGroupRemuneration(mainStaff.getGroupRemuneration());
@@ -588,13 +591,15 @@ public class StaffServiceImpl implements StaffService {
 
         mainStaffDTO.setPhoneNumber(mainStaff.getPhoneNumber());
         mainStaffDTO.setExemptionNumOrder(mainStaff.getExemptionNumOrder());
-        mainStaffDTO.setInCommand(mainStaff.getInCommand());
+        mainStaffDTO.setInCommandNumber(mainStaff.getInCommandNumber());
         mainStaffDTO.setConcludedCertification(mainStaff.getConcludedCertification());
         mainStaffDTO.setPersonnelProvisionForPost(mainStaff.getPersonnelProvisionForPost());
         mainStaffDTO.setBiography(mainStaff.getBiography());
         mainStaffDTO.setPosition(mainStaff.getPosition());
         mainStaffDTO.setNumberConferringSpeclRanks(mainStaff.getNumberConferringSpeclRanks());
         mainStaffDTO.setStructureGroupName(mainStaff.getStructureGroupName());
+        mainStaffDTO.setStudy(mainStaff.getStudy());
+        mainStaffDTO.setContractNumber(mainStaff.getContractNumber());
 
 
         return mainStaffDTO;
@@ -685,6 +690,9 @@ public class StaffServiceImpl implements StaffService {
                 if (mainStaffDTO.getDateSwear() != null) {
                     mainStaff.setDateSwear(simpleDateFormat.parse(mainStaffDTO.getDateSwear()));
                 }
+                if (mainStaffDTO.getInCommandDate() != null) {
+                    mainStaff.setInCommandDate(simpleDateFormat.parse(mainStaffDTO.getInCommandDate()));
+                }
             } catch (ParseException e) {
                 if (mainStaffDTO.getDateOfBirth() != null) {
                     mainStaff.setDateOfBirth(simpleDateFormatNew.parse(mainStaffDTO.getDateOfBirth()));
@@ -712,10 +720,13 @@ public class StaffServiceImpl implements StaffService {
                 if (mainStaffDTO.getDateSwear() != null) {
                     mainStaff.setDateSwear(simpleDateFormatNew.parse(mainStaffDTO.getDateSwear()));
                 }
+                if (mainStaffDTO.getInCommandDate() != null) {
+                    mainStaff.setInCommandDate(simpleDateFormatNew.parse(mainStaffDTO.getInCommandDate()));
+                }
             }
             mainStaff.setPhoneNumber(mainStaffDTO.getPhoneNumber());
             mainStaff.setExemptionNumOrder(mainStaffDTO.getExemptionNumOrder());
-            mainStaff.setInCommand(mainStaffDTO.getInCommand());
+            mainStaff.setInCommandNumber(mainStaffDTO.getInCommandNumber());
 
             mainStaff.setRankCivilServant(mainStaffDTO.getRankCivilServant());
             mainStaff.setCategoriesCivilServants(mainStaffDTO.getCategoriesCivilServants());
@@ -728,6 +739,8 @@ public class StaffServiceImpl implements StaffService {
             mainStaff.setBiography(mainStaffDTO.getBiography());
             mainStaff.setStructureGroupName(mainStaffDTO.getStructureGroupName());
 
+            mainStaff.setContractNumber(mainStaffDTO.getContractNumber());
+            mainStaff.setStudy(mainStaffDTO.getStudy());
 
         } catch (ParseException e) {
             log.warn(e.getMessage());

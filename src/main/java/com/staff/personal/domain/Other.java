@@ -55,4 +55,5 @@ public class Other {
 	@Column(name = "comment")
 	private String comment;
 
+
 }
