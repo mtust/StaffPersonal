@@ -35,4 +35,7 @@ public class PremiumFine {
 	@Column(name = "serialNumber")
 	private String serialNumber; // !!!!!!!!!!!!!!!! STRING?
 
+	@Column(name = "type")
+	private String type;
+
 }

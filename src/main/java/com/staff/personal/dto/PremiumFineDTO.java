@@ -18,5 +18,7 @@ public class PremiumFineDTO {
 
     private String orderDate;
 
+    private String type;
+
     private String serialNumber; // !!!!!!!!!!!!
 }

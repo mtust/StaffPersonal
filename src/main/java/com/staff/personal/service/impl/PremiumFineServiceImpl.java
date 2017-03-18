@@ -45,6 +45,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
         try {
             premiumFine.setName(premiumFineDTO.getName());
             premiumFine.setOrder(premiumFineDTO.getOrder());
+            premiumFine.setType(premiumFineDTO.getType());
             try {
                 premiumFine.setOrderDate(simpleDateFormat.parse(premiumFineDTO.getOrderDate()));
             } catch (ParseException e) {
@@ -102,6 +103,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
             premiumFineDTO.setName(premiumFine.getName());
             premiumFineDTO.setOrder(premiumFine.getOrder());
             premiumFineDTO.setSerialNumber(premiumFine.getSerialNumber());
+            premiumFineDTO.setType(premiumFine.getType());
             if (premiumFine.getOrderDate() != null) {
                 premiumFineDTO.setOrderDate(simpleDateFormat.format(premiumFine.getOrderDate()));
             }
@@ -127,6 +129,7 @@ public class PremiumFineServiceImpl implements PremiumFineService {
                     premiumFine.setOrderDate(simpleDateFormatNew.parse(premiumFineDTO.getOrderDate()));
                 }
                 premiumFine.setSerialNumber(premiumFineDTO.getSerialNumber());
+                premiumFine.setType(premiumFineDTO.getType());
                 premiumFines.add(premiumFine);
                 log.info("add premiumFine \n" + premiumFine.toString());
             } catch (ParseException e) {
