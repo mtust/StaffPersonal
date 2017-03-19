@@ -37,4 +37,5 @@ public interface StaffDocumentsService {
 
     List<StaffDocumentDTO> getEducation(Long id);
 
+    RestMessageDTO changeName(String name, Long id);
 }

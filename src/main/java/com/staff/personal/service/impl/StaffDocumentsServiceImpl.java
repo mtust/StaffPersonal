@@ -151,6 +151,8 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
             stuffDocuments.setName(multipartFile.getOriginalFilename());
         }
         stuffDocuments.setType(docType);
+        stuffDocuments.setFile(multipartFile.getBytes());
+        stuffDocuments.setName(name);
         MainStaff mainStaff = staff.getMainStaff();
         List<StuffDocuments> list = mainStaff.getDocuments();
         list.add(stuffDocuments);
@@ -187,5 +189,13 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
             }
         }
         return documentDTOs;
+    }
+
+    @Override
+    public RestMessageDTO changeName(String name, Long id) {
+        StuffDocuments stuffDocuments = stuffDocumentsRepository.getOne(id);
+        stuffDocuments.setName(name);
+        stuffDocumentsRepository.save(stuffDocuments);
+        return new RestMessageDTO("Success", true);
     }
 }
