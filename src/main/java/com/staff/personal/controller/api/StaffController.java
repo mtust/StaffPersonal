@@ -466,7 +466,7 @@ public class StaffController {
         return staffDocumentsService.getEducation(id);
     }
 
-    @RequestMapping(value = "{document/edit/name/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "document/edit/name/{id}", method = RequestMethod.PUT)
     @ResponseBody
     RestMessageDTO changeDocumentName(@RequestParam("name") String name, @PathVariable("id") Long id){
         return staffDocumentsService.changeName(name, id);
