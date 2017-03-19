@@ -118,22 +118,26 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     }
 
     @Override
+    @Transactional
     public RestMessageDTO addLustration(MultipartFile multipartFile, Long id, String name) throws IOException {
         return addDocumentByType(multipartFile, id, "L", name);
     }
 
     @Override
+    @Transactional
     public RestMessageDTO addSpecPerevirka(MultipartFile multipartFile, Long id, String name) throws IOException {
         return addDocumentByType(multipartFile, id, "S", name);
     }
 
     @Override
+    @Transactional
     public RestMessageDTO addDeklaration(MultipartFile multipartFile, Long id, String name) throws IOException {
         return addDocumentByType(multipartFile, id, "D", name);
     }
 
 
     @Override
+    @Transactional
     public RestMessageDTO addEducation(MultipartFile multipartFile, Long id, String name) throws IOException {
         return addDocumentByType(multipartFile, id, "E", name);
     }

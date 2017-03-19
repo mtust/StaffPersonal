@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by nazar on 24.11.16.
- */
 public interface StaffDocumentsService {
 
     RestMessageDTO addDocument(MultipartFile multipartFile, Long id, String name) throws IOException;
