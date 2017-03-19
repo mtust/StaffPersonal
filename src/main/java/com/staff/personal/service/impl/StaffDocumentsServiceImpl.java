@@ -139,6 +139,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     }
 
 
+    @Transactional
     private RestMessageDTO addDocumentByType(MultipartFile multipartFile, Long id, String docType, String name) throws IOException{
         Staff staff = staffRepository.findOne(id);
         if (staff == null || staff.getIsDeleted() == true) {
