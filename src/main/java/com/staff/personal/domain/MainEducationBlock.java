@@ -42,4 +42,5 @@ public class MainEducationBlock implements Serializable{
     private String seriesAndNumberOfDiploma;
 
 
+
 }

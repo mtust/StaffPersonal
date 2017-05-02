@@ -197,6 +197,7 @@ public class StaffDocumentsServiceImpl implements StaffDocumentsService {
     }
 
     @Override
+    @Transactional
     public RestMessageDTO changeName(String name, Long id) {
         StuffDocuments stuffDocuments = stuffDocumentsRepository.getOne(id);
         stuffDocuments.setName(name);
