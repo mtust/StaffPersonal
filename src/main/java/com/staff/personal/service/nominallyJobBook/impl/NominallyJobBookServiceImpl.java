@@ -216,5 +216,14 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         nominallyJobBookParentRepository.save(nominallyJobBookParent);
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public RestMessageDTO addPosition(Long id, List<Long> positionIds) {
+        NominallyJobBook nominallyJobBook = nominallyJobBookRepository.findOne(id);
+        List<Position> positions = nominallyJobBook.getPositions();
+        positions.addAll(positionRepository.findAll(positionIds));
+        nominallyJobBookRepository.save(nominallyJobBook);
+        return new RestMessageDTO("Success", true);
+    }
 }
 

@@ -112,4 +112,9 @@ public class NominalJobBookResources {
         return nominallyJobBookService.createNominalJobBook(nominallyJobBook,parentId );
     }
 
+    @RequestMapping(value = "{id}/addPosition", method = RequestMethod.POST)
+    public RestMessageDTO addPosition(@PathVariable("id") Long id, @RequestBody List<Long> positionIds){
+        return nominallyJobBookService.addPosition(id, positionIds);
+    }
+
 }
