@@ -44,4 +44,5 @@ public interface NominallyJobBookService {
     List<Staff> getStaffByNominallyJobBook(Long nominallyJobBookId);
 
     RestMessageDTO updateParent(Long parentId, ParentNominallyJobBookDTO name);
+
 }

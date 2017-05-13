@@ -103,8 +103,8 @@ public class NominalJobBookResources {
     }
 
     @RequestMapping(value = "parent/{id}", method = RequestMethod.PUT)
-    public RestMessageDTO updateParent(@PathVariable(value = "id") Long parentId, @RequestBody ParentNominallyJobBookDTO name){
-        return nominallyJobBookService.updateParent(parentId, name);
+    public RestMessageDTO updateParent(@PathVariable(value = "id") Long parentId, @RequestBody ParentNominallyJobBookDTO parentNominallyJobBook){
+        return nominallyJobBookService.updateParent(parentId, parentNominallyJobBook);
     }
 
 }

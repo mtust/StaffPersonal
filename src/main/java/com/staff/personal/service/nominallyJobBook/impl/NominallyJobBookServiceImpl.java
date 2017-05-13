@@ -171,11 +171,26 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
 
 
     @Override
-    public RestMessageDTO updateParent(Long parentId, ParentNominallyJobBookDTO name) {
+    public RestMessageDTO updateParent(Long parentId, ParentNominallyJobBookDTO parentNominallyJobBookDTO) {
         NominallyJobBookParent oldNominallyJobBookParent = nominallyJobBookParentRepository.findOne(parentId);
-        oldNominallyJobBookParent.setName(name.getName());
+        if(parentNominallyJobBookDTO.getName() != null && parentNominallyJobBookDTO.getName() != ""){
+            oldNominallyJobBookParent.setName(parentNominallyJobBookDTO.getName());
+        }
+        if(parentNominallyJobBookDTO.getAddress() != null && parentNominallyJobBookDTO.getAddress() != ""){
+            oldNominallyJobBookParent.setAddress(parentNominallyJobBookDTO.getAddress());
+        }
+        if(parentNominallyJobBookDTO.getLocation() != null && parentNominallyJobBookDTO.getLocation() != ""){
+            oldNominallyJobBookParent.setLocation(parentNominallyJobBookDTO.getLocation());
+        }
+        if(parentNominallyJobBookDTO.getStartAction() != null && parentNominallyJobBookDTO.getStartAction() != ""){
+            oldNominallyJobBookParent.setStartAction(parentNominallyJobBookDTO.getStartAction());
+        }
+        if(parentNominallyJobBookDTO.getStateNumber() != null && parentNominallyJobBookDTO.getStateNumber() != ""){
+            oldNominallyJobBookParent.setStateNumber(parentNominallyJobBookDTO.getStateNumber());
+        }
         nominallyJobBookParentRepository.save(oldNominallyJobBookParent);
         return new RestMessageDTO("Success", true);
     }
+
 }
 

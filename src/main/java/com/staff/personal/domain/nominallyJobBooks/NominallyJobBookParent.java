@@ -20,6 +20,18 @@ public class NominallyJobBookParent {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "stateNumber")
+    private String stateNumber;
+
+    @Column(name = "startAction")
+    private String startAction;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "location")
+    private String location;
+
     @OneToMany
     private List<NominallyJobBook> nominallyJobBooks;
 
