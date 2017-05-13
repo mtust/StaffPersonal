@@ -9,6 +9,7 @@ import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import com.staff.personal.repository.NominallyJobBook.NominallyJobBookParentRepository;
 import com.staff.personal.repository.NominallyJobBook.NominallyJobBookRepository;
+import com.staff.personal.repository.PositionRepository;
 import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.nominallyJobBook.NominallyJobBookService;
@@ -38,6 +39,9 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
 
     @Autowired
     private StaffRepository staffRepository;
+
+    @Autowired
+    private PositionRepository positionRepository;
 
     @Override
     public PoorNominallyJobBookDTO getPoorNominallyJobBook(Long id) {
@@ -192,5 +196,25 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         return new RestMessageDTO("Success", true);
     }
 
+    @Override
+    public RestMessageDTO createNominalJobBook(NominallyJobBook nominallyJobBook, Long parentId) {
+        log.info("nominallyJobBook: " + nominallyJobBook);
+        log.info("parentId: " + parentId);
+        List<Position> positions = new ArrayList<>();
+        for(Position position: nominallyJobBook.getPositions()) {
+            positions.add(positionRepository.findOne(position.getId()));
+        }
+        nominallyJobBook.setPositions(positions);
+        nominallyJobBook = nominallyJobBookRepository.save(nominallyJobBook);
+        NominallyJobBookParent nominallyJobBookParent  = nominallyJobBookParentRepository.getOne(parentId);
+        if(nominallyJobBookParent == null){
+            throw new RuntimeException("Категорії для створення посадової книги не знайдено");
+        }
+        List<NominallyJobBook> nominallyJobBookList = nominallyJobBookParent.getNominallyJobBooks();
+        nominallyJobBookList.add(nominallyJobBook);
+        nominallyJobBookParent.setNominallyJobBooks(nominallyJobBookList);
+        nominallyJobBookParentRepository.save(nominallyJobBookParent);
+        return new RestMessageDTO("Success", true);
+    }
 }
 

@@ -31,6 +31,8 @@ public interface NominallyJobBookService {
 
     RestMessageDTO createNominalJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO, Long parentId);
 
+    RestMessageDTO createNominalJobBook(NominallyJobBook nominallyJobBook, Long parentId);
+
     RestMessageDTO editNominalJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO);
 
     RestMessageDTO deleteNominalJobBook(Long id);
