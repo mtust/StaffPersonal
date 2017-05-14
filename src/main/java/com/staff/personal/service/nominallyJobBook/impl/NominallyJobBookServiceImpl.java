@@ -1,5 +1,6 @@
 package com.staff.personal.service.nominallyJobBook.impl;
 
+import com.staff.personal.domain.Region;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
@@ -13,9 +14,11 @@ import com.staff.personal.repository.PositionRepository;
 import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.nominallyJobBook.NominallyJobBookService;
+import javafx.geometry.Pos;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -209,31 +212,38 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
     }
 
     @Override
-    public RestMessageDTO createNominalJobBook(NominallyJobBook nominallyJobBook, Long parentId) {
+    @Transactional
+    public NominallyJobBook createNominalJobBook(NominallyJobBook nominallyJobBook, Long parentId) {
         log.info("nominallyJobBook: " + nominallyJobBook);
         log.info("parentId: " + parentId);
-        List<Position> positions = new ArrayList<>();
-        for(Position position: nominallyJobBook.getPositions()) {
-            positions.add(positionRepository.findOne(position.getId()));
-        }
-        nominallyJobBook.setPositions(positions);
+        Region region = regionRepository.findOne(nominallyJobBook.getRegion().getId());
+        nominallyJobBook.setRegion(region);
+        nominallyJobBook.setPositions(new ArrayList<Position>());
+        log.info(nominallyJobBook.toString());
         nominallyJobBook = nominallyJobBookRepository.save(nominallyJobBook);
         NominallyJobBookParent nominallyJobBookParent  = nominallyJobBookParentRepository.getOne(parentId);
         if(nominallyJobBookParent == null){
             throw new RuntimeException("Категорії для створення посадової книги не знайдено");
         }
         List<NominallyJobBook> nominallyJobBookList = nominallyJobBookParent.getNominallyJobBooks();
+        log.info(nominallyJobBookList.toString());
         nominallyJobBookList.add(nominallyJobBook);
         nominallyJobBookParent.setNominallyJobBooks(nominallyJobBookList);
         nominallyJobBookParentRepository.save(nominallyJobBookParent);
-        return new RestMessageDTO("Success", true);
+
+        return nominallyJobBook;
     }
 
     @Override
+    @Transactional
     public RestMessageDTO addPosition(Long id, List<Long> positionIds) {
         NominallyJobBook nominallyJobBook = nominallyJobBookRepository.findOne(id);
         List<Position> positions = nominallyJobBook.getPositions();
+        log.info(nominallyJobBook.toString());
+        log.info(positionRepository.findAll(positionIds).toString());
+        log.info(positionIds.toString());
         positions.addAll(positionRepository.findAll(positionIds));
+        nominallyJobBook.setPositions(positions);
         nominallyJobBookRepository.save(nominallyJobBook);
         return new RestMessageDTO("Success", true);
     }

@@ -4,6 +4,7 @@ import com.staff.personal.domain.Role;
 import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
+import com.staff.personal.domain.nominallyJobBooks.Position;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -114,7 +116,12 @@ public class NominalJobBookResources {
 
     @RequestMapping(method = RequestMethod.POST)
     public RestMessageDTO createNominalJobBookWithPosition(@RequestBody NominallyJobBook nominallyJobBook, @RequestParam Long parentId){
-        return nominallyJobBookService.createNominalJobBook(nominallyJobBook,parentId );
+        List<Long> positionsId = new ArrayList<>();
+        for(Position position : nominallyJobBook.getPositions()){
+            positionsId.add(position.getId());
+        }
+        nominallyJobBook = nominallyJobBookService.createNominalJobBook(nominallyJobBook,parentId );
+        return nominallyJobBookService.addPosition(nominallyJobBook.getId(), positionsId);
     }
 
     @RequestMapping(value = "{id}/addPosition", method = RequestMethod.POST)
