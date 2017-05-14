@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -124,6 +126,8 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
     public RestMessageDTO updateNominalJobBook(NominallyJobBook nominallyJobBook, Long id) {
         log.info("nominallyJobBook: " + nominallyJobBook);
         nominallyJobBook.setId(id);
+        Region region =  regionRepository.findOne(nominallyJobBook.getRegion().getId());
+        nominallyJobBook.setRegion(region);
         List<Position> positions = new ArrayList<>();
         for(Position position: nominallyJobBook.getPositions()) {
             positions.add(positionRepository.findOne(position.getId()));
@@ -297,6 +301,21 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         this.deleteChildFromParent(nominallyJobBookList);
         nominallyJobBookParentRepository.delete(id);
         return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    public Map<NominallyJobBook, List<GetStaffDTO>> getStaffByParentNominallyJobBook(Long parentId) {
+        NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOne(parentId);
+        List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
+        Map<NominallyJobBook, List<GetStaffDTO>> nominallyJobBookListMap = new HashMap<>();
+        for(NominallyJobBook nominallyJobBook: nominallyJobBooks) {
+            List<GetStaffDTO> staffs = new ArrayList<>();
+            for (Position position : nominallyJobBook.getPositions()) {
+                staffs.addAll(staffService.getStaffByPositionCode(position.getCode()));
+            }
+            nominallyJobBookListMap.put(nominallyJobBook, staffs);
+        }
+        return nominallyJobBookListMap;
     }
 }
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mtustanovskyy on 1/15/17.
@@ -48,6 +49,11 @@ public class NominalJobBookResources {
     @RequestMapping(value = "staff", method = RequestMethod.GET)
     public List<GetStaffDTO> getStaffByPositionCode(@RequestParam(value = "code") String code){
         return staffService.getStaffByPositionCode(code);
+    }
+
+    @RequestMapping(value = "parent/{id}/staff", method = RequestMethod.GET)
+    public Map<NominallyJobBook, List<GetStaffDTO>> getStaffDTOSByPosition(@PathVariable(value = "id") Long parentId){
+        return nominallyJobBookService.getStaffByParentNominallyJobBook(parentId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
