@@ -1,7 +1,9 @@
 package com.staff.personal.service.impl;
 
+import com.staff.personal.controller.api.nominallJobBook.NominalJobBookResources;
 import com.staff.personal.domain.Region;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.repository.NominallyJobBook.NominallyJobBookRepository;
 import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by mtustanovskyy on 11/26/16.
- */
 @Service
 public class RegionServiceImpl implements RegionService {
+
 
     @Autowired
     private RegionRepository regionRepository;

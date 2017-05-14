@@ -33,7 +33,7 @@ public class NominallyJobBook {
     private String code;
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Position> positions;
 
 

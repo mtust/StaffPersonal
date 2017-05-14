@@ -130,11 +130,6 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         return new RestMessageDTO("Success", true);
     }
 
-    @Override
-    public RestMessageDTO deleteNominalJobBook(Long id) {
-        nominallyJobBookRepository.delete(id);
-        return new RestMessageDTO("Success", true);
-    }
 
     private PoorNominallyJobBookDTO createPoorNominallyJobBookDTO(NominallyJobBook nominallyJobBook){
         PoorNominallyJobBookDTO poorNominallyJobBookDTO = new PoorNominallyJobBookDTO();
@@ -144,6 +139,32 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         poorNominallyJobBookDTO.setName(nominallyJobBook.getName());
         log.info("poor book: " + poorNominallyJobBookDTO);
         return poorNominallyJobBookDTO;
+    }
+
+    @Override
+    public RestMessageDTO deleteNominalJobBook(Long id) {
+
+        this.setPositionNull(id);
+        this.delete(id);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Transactional
+    private void setPositionNull(Long id){
+        NominallyJobBook nominallyJobBook = nominallyJobBookRepository.findOne(id);
+        nominallyJobBook.setPositions(new ArrayList<>());
+        nominallyJobBookRepository.save(nominallyJobBook);
+        NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOneByNominallyJobBooksContains(nominallyJobBook);
+        log.info(nominallyJobBookParent.toString());
+        List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
+        nominallyJobBooks.remove(nominallyJobBook);
+        nominallyJobBookParent.setNominallyJobBooks(nominallyJobBooks);
+        nominallyJobBookParentRepository.save(nominallyJobBookParent);
+    }
+
+    @Transactional
+    private void delete(Long id){
+        nominallyJobBookRepository.delete(id);
     }
 
     private NominallyJobBook createNominallyJobBook(PoorNominallyJobBookDTO poorNominallyJobBookDTO){
