@@ -6,6 +6,7 @@ import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.domain.nominallyJobBooks.Position;
 import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.NominallyJobBookParentStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.NominallyJobBookStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
@@ -305,22 +306,27 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
     }
 
     @Override
-    public List<NominallyJobBookStaffDTO> getStaffByParentNominallyJobBook(Long parentId) {
+    public NominallyJobBookParentStaffDTO getStaffByParentNominallyJobBook(Long parentId) {
         List<NominallyJobBookStaffDTO> nominallyJobBookStaffDTOS = new ArrayList<>();
         NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOne(parentId);
         List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
         Map<NominallyJobBook, List<GetStaffDTO>> nominallyJobBookListMap = new HashMap<>();
         for(NominallyJobBook nominallyJobBook: nominallyJobBooks) {
-            List<GetStaffDTO> staffs = new ArrayList<>();
-            for (Position position : nominallyJobBook.getPositions()) {
-                staffs.addAll(staffService.getStaffByPositionCode(position.getCode()));
+            if (!nominallyJobBook.getPositions().isEmpty()) {
+                List<GetStaffDTO> staffs = new ArrayList<>();
+                for (Position position : nominallyJobBook.getPositions()) {
+                    staffs.addAll(staffService.getStaffByPositionCode(position.getCode()));
+                }
+                NominallyJobBookStaffDTO nominallyJobBookStaffDTO = new NominallyJobBookStaffDTO();
+                nominallyJobBookStaffDTO.setGetStaffDTOS(staffs);
+                nominallyJobBookStaffDTO.setNominallyJobBook(nominallyJobBook);
+                nominallyJobBookStaffDTOS.add(nominallyJobBookStaffDTO);
             }
-            NominallyJobBookStaffDTO nominallyJobBookStaffDTO = new NominallyJobBookStaffDTO();
-            nominallyJobBookStaffDTO.setGetStaffDTOS(staffs);
-            nominallyJobBookStaffDTO.setNominallyJobBook(nominallyJobBook);
-            nominallyJobBookStaffDTOS.add(nominallyJobBookStaffDTO);
         }
-        return nominallyJobBookStaffDTOS;
+        NominallyJobBookParentStaffDTO nominallyJobBookParentStaffDTO =  new NominallyJobBookParentStaffDTO();
+        nominallyJobBookParentStaffDTO.setNominallyJobBookStaffDTO(nominallyJobBookStaffDTOS);
+        nominallyJobBookParentStaffDTO.setNominallyJobBookParent(nominallyJobBookParent);
+        return nominallyJobBookParentStaffDTO;
     }
 }
 

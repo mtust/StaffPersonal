@@ -4,6 +4,7 @@ import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.NominallyJobBookParentStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.NominallyJobBookStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
@@ -54,5 +55,5 @@ public interface NominallyJobBookService {
 
     RestMessageDTO deleteParent(Long id);
 
-    List<NominallyJobBookStaffDTO> getStaffByParentNominallyJobBook(Long parentId);
+    NominallyJobBookParentStaffDTO getStaffByParentNominallyJobBook(Long parentId);
 }

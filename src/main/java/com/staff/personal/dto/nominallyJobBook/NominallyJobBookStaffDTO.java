@@ -12,4 +12,5 @@ public class NominallyJobBookStaffDTO {
     List<GetStaffDTO> getStaffDTOS;
     NominallyJobBook nominallyJobBook;
 
+
 }
