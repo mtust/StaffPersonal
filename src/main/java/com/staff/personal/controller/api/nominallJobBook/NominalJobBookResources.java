@@ -74,10 +74,15 @@ public class NominalJobBookResources {
     }
 
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "withoutPostition/{id}", method = RequestMethod.PUT)
     public RestMessageDTO editNominalJobBook(@RequestBody PoorNominallyJobBookDTO poorNominallyJobBookDTO, @PathVariable Long id){
         poorNominallyJobBookDTO.setId(id);
         return nominallyJobBookService.editNominalJobBook(poorNominallyJobBookDTO);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public RestMessageDTO updateNominalJobBook(@RequestBody NominallyJobBook nominallyJobBook, @PathVariable Long id){
+        return nominallyJobBookService.updateNominalJobBook(nominallyJobBook, id);
     }
 
 
@@ -116,5 +121,6 @@ public class NominalJobBookResources {
     public RestMessageDTO addPosition(@PathVariable("id") Long id, @RequestBody List<Long> positionIds){
         return nominallyJobBookService.addPosition(id, positionIds);
     }
+
 
 }

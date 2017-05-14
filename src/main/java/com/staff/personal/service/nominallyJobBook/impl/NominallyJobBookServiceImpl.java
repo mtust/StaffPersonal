@@ -114,6 +114,18 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         return new RestMessageDTO("Success", true);
     }
 
+    @Override
+    public RestMessageDTO updateNominalJobBook(NominallyJobBook nominallyJobBook, Long id) {
+        log.info("nominallyJobBook: " + nominallyJobBook);
+        nominallyJobBook.setId(id);
+        List<Position> positions = new ArrayList<>();
+        for(Position position: nominallyJobBook.getPositions()) {
+            positions.add(positionRepository.findOne(position.getId()));
+        }
+        nominallyJobBook.setPositions(positions);
+        nominallyJobBook = nominallyJobBookRepository.save(nominallyJobBook);
+        return new RestMessageDTO("Success", true);
+    }
 
     @Override
     public RestMessageDTO deleteNominalJobBook(Long id) {

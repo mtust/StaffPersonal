@@ -48,4 +48,6 @@ public interface NominallyJobBookService {
     RestMessageDTO updateParent(Long parentId, ParentNominallyJobBookDTO name);
 
     RestMessageDTO addPosition(Long id, List<Long> positionIds);
+
+    RestMessageDTO updateNominalJobBook(NominallyJobBook nominallyJobBook, Long id);
 }
