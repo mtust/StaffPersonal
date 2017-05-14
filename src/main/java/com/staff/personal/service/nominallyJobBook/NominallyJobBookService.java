@@ -50,4 +50,6 @@ public interface NominallyJobBookService {
     RestMessageDTO addPosition(Long id, List<Long> positionIds);
 
     RestMessageDTO updateNominalJobBook(NominallyJobBook nominallyJobBook, Long id);
+
+    RestMessageDTO deleteParent(Long id);
 }

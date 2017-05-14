@@ -143,17 +143,33 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
 
     @Override
     public RestMessageDTO deleteNominalJobBook(Long id) {
-
-        this.setPositionNull(id);
+        this.removeFromParentList(this.setPositionNull(id));
         this.delete(id);
         return new RestMessageDTO("Success", true);
     }
 
+
+    private void  deleteChildFromParent(List<NominallyJobBook> nominallyJobBooks){
+        for (NominallyJobBook njb: nominallyJobBooks) {
+            this.setPositionNull(njb.getId());
+        }
+        for(int i = 0; i < nominallyJobBooks.size(); i++){
+            this.delete(nominallyJobBooks.get(i).getId());
+        }
+
+    }
+
+
     @Transactional
-    private void setPositionNull(Long id){
+    private NominallyJobBook setPositionNull(Long id){
         NominallyJobBook nominallyJobBook = nominallyJobBookRepository.findOne(id);
         nominallyJobBook.setPositions(new ArrayList<>());
-        nominallyJobBookRepository.save(nominallyJobBook);
+        return nominallyJobBookRepository.save(nominallyJobBook);
+
+    }
+
+    @Transactional
+    private void removeFromParentList(NominallyJobBook nominallyJobBook){
         NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOneByNominallyJobBooksContains(nominallyJobBook);
         log.info(nominallyJobBookParent.toString());
         List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
@@ -266,6 +282,17 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         positions.addAll(positionRepository.findAll(positionIds));
         nominallyJobBook.setPositions(positions);
         nominallyJobBookRepository.save(nominallyJobBook);
+        return new RestMessageDTO("Success", true);
+    }
+
+    @Override
+    @Transactional
+    public RestMessageDTO deleteParent(Long id) {
+        NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOne(id);
+        List<NominallyJobBook> nominallyJobBookList = nominallyJobBookParent.getNominallyJobBooks();
+        log.info(nominallyJobBookList.toString());
+        this.deleteChildFromParent(nominallyJobBookList);
+        nominallyJobBookParentRepository.delete(id);
         return new RestMessageDTO("Success", true);
     }
 }

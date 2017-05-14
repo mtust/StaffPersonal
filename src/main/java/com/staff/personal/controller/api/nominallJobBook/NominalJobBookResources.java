@@ -129,5 +129,12 @@ public class NominalJobBookResources {
         return nominallyJobBookService.addPosition(id, positionIds);
     }
 
+    @RequestMapping(value = "parent/{id}", method = RequestMethod.DELETE)
+    public RestMessageDTO deleteParentNominalJobBook(@PathVariable("id") Long id){
+        return nominallyJobBookService.deleteParent(id);
+    }
+
+
+
 
 }
