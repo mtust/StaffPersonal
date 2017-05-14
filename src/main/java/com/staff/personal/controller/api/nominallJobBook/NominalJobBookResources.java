@@ -44,8 +44,8 @@ public class NominalJobBookResources {
     public List<Staff> getStaffByNominallyJobBook(@PathVariable(value = "id") Long nominallyJobBookId){
         return nominallyJobBookService.getStaffByNominallyJobBook(nominallyJobBookId);
     }
-    @RequestMapping(value = "{code}/staff", method = RequestMethod.GET)
-    public List<Staff> getStaffByPositionCode(@PathVariable(value = "code") String code){
+    @RequestMapping(value = "staff", method = RequestMethod.GET)
+    public List<Staff> getStaffByPositionCode(@RequestParam(value = "code") String code){
         return staffService.getStaffByPositionCode(code);
     }
 
