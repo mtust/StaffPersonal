@@ -6,6 +6,7 @@ import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.domain.nominallyJobBooks.Position;
 import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.NominallyJobBookStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import com.staff.personal.repository.NominallyJobBook.NominallyJobBookParentRepository;
@@ -304,7 +305,8 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
     }
 
     @Override
-    public Map<NominallyJobBook, List<GetStaffDTO>> getStaffByParentNominallyJobBook(Long parentId) {
+    public List<NominallyJobBookStaffDTO> getStaffByParentNominallyJobBook(Long parentId) {
+        List<NominallyJobBookStaffDTO> nominallyJobBookStaffDTOS = new ArrayList<>();
         NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOne(parentId);
         List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
         Map<NominallyJobBook, List<GetStaffDTO>> nominallyJobBookListMap = new HashMap<>();
@@ -313,9 +315,12 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
             for (Position position : nominallyJobBook.getPositions()) {
                 staffs.addAll(staffService.getStaffByPositionCode(position.getCode()));
             }
-            nominallyJobBookListMap.put(nominallyJobBook, staffs);
+            NominallyJobBookStaffDTO nominallyJobBookStaffDTO = new NominallyJobBookStaffDTO();
+            nominallyJobBookStaffDTO.setGetStaffDTOS(staffs);
+            nominallyJobBookStaffDTO.setNominallyJobBook(nominallyJobBook);
+            nominallyJobBookStaffDTOS.add(nominallyJobBookStaffDTO);
         }
-        return nominallyJobBookListMap;
+        return nominallyJobBookStaffDTOS;
     }
 }
 

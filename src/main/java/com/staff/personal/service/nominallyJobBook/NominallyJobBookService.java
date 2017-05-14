@@ -4,12 +4,12 @@ import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.NominallyJobBookStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mtustanovskyy on 1/15/17.
@@ -54,5 +54,5 @@ public interface NominallyJobBookService {
 
     RestMessageDTO deleteParent(Long id);
 
-    Map<NominallyJobBook, List<GetStaffDTO>> getStaffByParentNominallyJobBook(Long parentId);
+    List<NominallyJobBookStaffDTO> getStaffByParentNominallyJobBook(Long parentId);
 }

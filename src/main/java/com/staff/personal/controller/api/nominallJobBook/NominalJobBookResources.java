@@ -7,6 +7,7 @@ import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.domain.nominallyJobBooks.Position;
 import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
+import com.staff.personal.dto.nominallyJobBook.NominallyJobBookStaffDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import com.staff.personal.security.Secured;
@@ -52,7 +53,7 @@ public class NominalJobBookResources {
     }
 
     @RequestMapping(value = "parent/{id}/staff", method = RequestMethod.GET)
-    public Map<NominallyJobBook, List<GetStaffDTO>> getStaffDTOSByPosition(@PathVariable(value = "id") Long parentId){
+    public List<NominallyJobBookStaffDTO> getStaffDTOSByPosition(@PathVariable(value = "id") Long parentId){
         return nominallyJobBookService.getStaffByParentNominallyJobBook(parentId);
     }
 
