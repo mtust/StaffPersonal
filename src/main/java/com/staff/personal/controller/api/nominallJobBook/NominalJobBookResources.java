@@ -5,6 +5,7 @@ import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.domain.nominallyJobBooks.Position;
+import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
@@ -41,11 +42,11 @@ public class NominalJobBookResources {
     }
 
     @RequestMapping(value = "{id}/staff", method = RequestMethod.GET)
-    public List<Staff> getStaffByNominallyJobBook(@PathVariable(value = "id") Long nominallyJobBookId){
+    public List<GetStaffDTO> getStaffByNominallyJobBook(@PathVariable(value = "id") Long nominallyJobBookId){
         return nominallyJobBookService.getStaffByNominallyJobBook(nominallyJobBookId);
     }
     @RequestMapping(value = "staff", method = RequestMethod.GET)
-    public List<Staff> getStaffByPositionCode(@RequestParam(value = "code") String code){
+    public List<GetStaffDTO> getStaffByPositionCode(@RequestParam(value = "code") String code){
         return staffService.getStaffByPositionCode(code);
     }
 

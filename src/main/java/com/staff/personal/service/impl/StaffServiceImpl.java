@@ -198,6 +198,7 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+
     @Override
     @Transactional
     public GetAllStaffDTO getWholeStaff(Long id) {
@@ -752,7 +753,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> getStaffByPositionCode(String code) {
-        return staffRepository.findByMainStaffPosition(code);
+    public List<GetStaffDTO> getStaffByPositionCode(String code) {
+        List<Staff> staffList = staffRepository.findByMainStaffPosition(code);
+        List<GetStaffDTO> listDTO = new ArrayList<>();
+        for (Staff staff : staffList) {
+            GetStaffDTO getStaffDTO = this.createGetStuffDTO(staff);
+            listDTO.add(getStaffDTO);
+        }
+        return listDTO;
     }
 }

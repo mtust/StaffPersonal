@@ -1,10 +1,10 @@
 package com.staff.personal.service.nominallyJobBook.impl;
 
 import com.staff.personal.domain.Region;
-import com.staff.personal.domain.Staff;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBook;
 import com.staff.personal.domain.nominallyJobBooks.NominallyJobBookParent;
 import com.staff.personal.domain.nominallyJobBooks.Position;
+import com.staff.personal.dto.GetStaffDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
@@ -13,8 +13,8 @@ import com.staff.personal.repository.NominallyJobBook.NominallyJobBookRepository
 import com.staff.personal.repository.PositionRepository;
 import com.staff.personal.repository.RegionRepository;
 import com.staff.personal.repository.StaffRepository;
+import com.staff.personal.service.StaffService;
 import com.staff.personal.service.nominallyJobBook.NominallyJobBookService;
-import javafx.geometry.Pos;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,9 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
 
     @Autowired
     private PositionRepository positionRepository;
+
+    @Autowired
+    private StaffService staffService;
 
     @Override
     public PoorNominallyJobBookDTO getPoorNominallyJobBook(Long id) {
@@ -216,11 +219,11 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
     }
 
     @Override
-    public List<Staff> getStaffByNominallyJobBook(Long nominallyJobBookId) {
+    public List<GetStaffDTO> getStaffByNominallyJobBook(Long nominallyJobBookId) {
         NominallyJobBook nominallyJobBook = nominallyJobBookRepository.getOne(nominallyJobBookId);
-        List<Staff> staffs = new ArrayList<>();
+        List<GetStaffDTO> staffs = new ArrayList<>();
         for(Position position: nominallyJobBook.getPositions()){
-            staffs.addAll(staffRepository.findByMainStaffPosition(position.getCode()));
+            staffs.addAll(staffService.getStaffByPositionCode(position.getCode()));
         }
         return staffs;
     }
