@@ -17,7 +17,7 @@ public class StatisticResources {
 
     @RequestMapping(value = "{parentId}", method = RequestMethod.GET)
     public Statistic getStatistic(@PathVariable("parentId") Long parentId){
-
+        return statisticService.getStatisticForParent(parentId);
     }
 
 }

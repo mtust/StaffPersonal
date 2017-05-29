@@ -12,13 +12,15 @@ import com.staff.personal.repository.PositionRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.nominallyJobBook.NominallyJobBookService;
 import com.staff.personal.service.nominallyJobBook.StatisticService;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Service
 public class StatisticServiceImpl implements StatisticService {
 
     @Autowired
@@ -41,6 +43,9 @@ public class StatisticServiceImpl implements StatisticService {
         Statistic parentStatistic = new Statistic();
         List<Statistic> childStatistics = new ArrayList<>();
         NominallyJobBookParent nominallyJobBookParent = nominallyJobBookParentRepository.findOne(parentId);
+        if(nominallyJobBookParent == null){
+            throw new RuntimeException("не знайдено Штатно посадової книги з даним id");
+        }
         List<NominallyJobBook> nominallyJobBooks = nominallyJobBookParent.getNominallyJobBooks();
         for (NominallyJobBook nominallyJobBook:
              nominallyJobBooks) {
