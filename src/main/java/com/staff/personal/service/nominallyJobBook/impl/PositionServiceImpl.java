@@ -43,4 +43,14 @@ public class PositionServiceImpl implements PositionService{
         positionRepository.delete(id);
         return new RestMessageDTO("Success", true);
     }
+
+    @Override
+    public Position getPositionByCode(String code) {
+        return positionRepository.findByCode(code);
+    }
+
+    @Override
+    public List<Position> getFindPositionByCode(String code) {
+        return positionRepository.findByCodeContains(code);
+    }
 }

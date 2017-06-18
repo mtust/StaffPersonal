@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Entity
 @Table(name = "holiday")
-public class Holiday {
+public class Holiday implements Comparable<Holiday>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +30,19 @@ public class Holiday {
 	@Column(name = "holidayPlace")
 	private String holidayPlace;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "fromDate")
 	private Date fromDate;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "toDate")
 	private Date toDate;
 
 	@Column(name = "description")
 	private String description;
 
-
+	@Override
+	public int compareTo(Holiday o) {
+		return getFromDate().compareTo(o.getFromDate());
+	}
 }

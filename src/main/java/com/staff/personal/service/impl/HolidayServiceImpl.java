@@ -2,6 +2,7 @@ package com.staff.personal.service.impl;
 
 import com.staff.personal.domain.Holiday;
 import com.staff.personal.domain.Staff;
+import com.staff.personal.dto.GroupedHolidayDTO;
 import com.staff.personal.dto.HolidayDTO;
 import com.staff.personal.dto.RestMessageDTO;
 import com.staff.personal.exception.BadRequestParametersException;
@@ -9,6 +10,7 @@ import com.staff.personal.exception.ObjectDoNotExistException;
 import com.staff.personal.repository.HolidayRepository;
 import com.staff.personal.repository.StaffRepository;
 import com.staff.personal.service.HolidayService;
+import com.staff.personal.util.MyDateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by nazar on 17.11.16.
@@ -146,5 +147,45 @@ public class HolidayServiceImpl implements HolidayService {
             }
         }
         return holidayRepository.save(holidayList);
+    }
+
+    @Override
+    public Map<Long, GroupedHolidayDTO> getGroupedHolidaysByStaffId(Long id) {
+        List<Holiday> holidays = this.getHolidays(id);
+        Collections.sort(holidays);
+        Map<Long, GroupedHolidayDTO> groupedHolidayDTOMap = new HashMap<>();
+        List<Holiday> holidaysFromPreviouseYear = new ArrayList<>();
+        long currentYear = 0;
+        GroupedHolidayDTO currentYearHoliday = new GroupedHolidayDTO();
+        for(Holiday holiday: holidaysFromPreviouseYear){
+            currentYear = holiday.getToDate().getYear();
+            currentYearHoliday = new GroupedHolidayDTO();
+            currentYearHoliday.addHoliday(holiday);
+            Calendar cal = Calendar.getInstance();
+            cal.set(holiday.getToDate().getYear(),0,1 );
+            currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), holiday.getToDate()));
+            currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
+            groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
+        }
+        for (Holiday holiday: holidays) {
+            if(holiday.getFromDate().getYear() > currentYear) {
+                if(currentYear != 0) {
+                    groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
+                }
+                currentYear = holiday.getFromDate().getYear();
+                currentYearHoliday = new GroupedHolidayDTO();
+            }
+            currentYearHoliday.addHoliday(holiday);
+            if(holiday.getFromDate().getYear() == (holiday.getToDate().getYear())){
+                currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(holiday.getFromDate(), holiday.getToDate()));
+            } else {
+                Calendar cal = Calendar.getInstance();
+                cal.set(holiday.getFromDate().getYear(), 11, 31);
+                currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(holiday.getFromDate(), cal.getTime()));
+                holidaysFromPreviouseYear.add(holiday);
+            }
+            currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
+        }
+        return groupedHolidayDTOMap;
     }
 }

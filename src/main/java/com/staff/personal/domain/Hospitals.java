@@ -1,5 +1,6 @@
 package com.staff.personal.domain;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Entity
 @Table(name = "hospitals")
-public class Hospitals {
+public class Hospitals implements Comparable<Hospitals> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +27,12 @@ public class Hospitals {
 	
 	@Column(name = "typeHospital")
     private String typeHospital;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "fromDate")
 	private Date fromDate;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "toDate")
 	private Date toDate;
 
@@ -38,5 +42,8 @@ public class Hospitals {
 	@Column
 	private String hospitalPlace;
 
-
+	@Override
+	public int compareTo(Hospitals o) {
+		return getFromDate().compareTo(o.getFromDate());
+	}
 }

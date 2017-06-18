@@ -1,10 +1,12 @@
 package com.staff.personal.service;
 
 import com.staff.personal.domain.Holiday;
+import com.staff.personal.dto.GroupedHolidayDTO;
 import com.staff.personal.dto.HolidayDTO;
 import com.staff.personal.dto.RestMessageDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nazar on 17.11.16.
@@ -22,4 +24,6 @@ public interface HolidayService {
 
 
     List<Holiday> updateHolidays(List<HolidayDTO> holidays);
+
+    Map<Long, GroupedHolidayDTO> getGroupedHolidaysByStaffId(Long id);
 }

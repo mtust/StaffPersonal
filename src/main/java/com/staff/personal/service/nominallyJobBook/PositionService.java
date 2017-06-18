@@ -17,4 +17,8 @@ public interface PositionService {
     Position getPosition(Long id);
 
     RestMessageDTO deletePosition(Long id);
+
+    Position getPositionByCode(String code);
+
+    List<Position> getFindPositionByCode(String code);
 }
