@@ -50,8 +50,8 @@ public class PositionResources {
         return positionService.updatePosition(id, position);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Position getPositionByCode(@RequestParam("code") String code){
+    @RequestMapping(value = "code", method = RequestMethod.GET)
+    public Position getPositionByCode(@PathVariable("code") String code){
         return positionService.getPositionByCode(code);
     }
 

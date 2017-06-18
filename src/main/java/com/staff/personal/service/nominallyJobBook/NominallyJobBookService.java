@@ -10,6 +10,7 @@ import com.staff.personal.dto.nominallyJobBook.ParentNominallyJobBookDTO;
 import com.staff.personal.dto.nominallyJobBook.PoorNominallyJobBookDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,4 +57,8 @@ public interface NominallyJobBookService {
     RestMessageDTO deleteParent(Long id);
 
     NominallyJobBookParentStaffDTO getStaffByParentNominallyJobBook(Long parentId);
+
+    List<NominallyJobBook> getNominallyJobBookByCode(String code);
+
+    Collection<NominallyJobBookParent> getParentNominallyJobBookByCode(String code);
 }

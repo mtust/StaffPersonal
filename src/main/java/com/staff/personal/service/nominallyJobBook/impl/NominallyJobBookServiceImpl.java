@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -327,6 +324,18 @@ public class NominallyJobBookServiceImpl implements NominallyJobBookService {
         nominallyJobBookParentStaffDTO.setNominallyJobBookStaffDTO(nominallyJobBookStaffDTOS);
         nominallyJobBookParentStaffDTO.setNominallyJobBookParent(nominallyJobBookParent);
         return nominallyJobBookParentStaffDTO;
+    }
+
+    @Override
+    public List<NominallyJobBook> getNominallyJobBookByCode(String code) {
+        return nominallyJobBookRepository.findByCode(code);
+    }
+
+    @Override
+    public Collection<NominallyJobBookParent> getParentNominallyJobBookByCode(String code) {
+        List<NominallyJobBook> nominallyJobBooks = this.getNominallyJobBookByCode(code);
+        List<NominallyJobBookParent> nominallyJobBookParents = new ArrayList<>();
+        return nominallyJobBookParentRepository.findOneByNominallyJobBooksIn(nominallyJobBooks);
     }
 }
 

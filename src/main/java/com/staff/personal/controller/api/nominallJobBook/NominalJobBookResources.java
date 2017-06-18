@@ -19,12 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by mtustanovskyy on 1/15/17.
- */
 @RestController
 @Slf4j
 @RequestMapping("/api/nominalJobBook")
@@ -51,6 +49,16 @@ public class NominalJobBookResources {
     @RequestMapping(value = "staff", method = RequestMethod.GET)
     public List<GetStaffDTO> getStaffByPositionCode(@RequestParam(value = "code") String code){
         return staffService.getStaffByPositionCode(code);
+    }
+
+    @RequestMapping(value = "code/{code}", method = RequestMethod.GET)
+    public List<NominallyJobBook> getNominallyJobBookByCode(@PathVariable(value = "code") String code){
+        return nominallyJobBookService.getNominallyJobBookByCode(code);
+    }
+
+    @RequestMapping(value = "/parent/code/{code}", method = RequestMethod.GET)
+    public Collection<NominallyJobBookParent> getParentNominallyJobBookByCode(@PathVariable(value = "code") String code){
+        return nominallyJobBookService.getParentNominallyJobBookByCode(code);
     }
 
     @RequestMapping(value = "parent/{id}/staff", method = RequestMethod.GET)
@@ -142,6 +150,8 @@ public class NominalJobBookResources {
     public RestMessageDTO deleteParentNominalJobBook(@PathVariable("id") Long id){
         return nominallyJobBookService.deleteParent(id);
     }
+
+
 
 
 

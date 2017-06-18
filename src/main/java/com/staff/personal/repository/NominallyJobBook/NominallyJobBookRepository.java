@@ -17,4 +17,6 @@ public interface NominallyJobBookRepository extends JpaRepository<NominallyJobBo
     List<NominallyJobBook> findOneByRegionIn(Collection<Region> regions);
 
     List<NominallyJobBook> findByRegionId(Long regionId);
+
+    List<NominallyJobBook> findByCode(String code);
 }

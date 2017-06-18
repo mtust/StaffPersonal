@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface NominallyJobBookParentRepository extends JpaRepository<NominallyJobBookParent, Long>{
 
-    NominallyJobBookParent findOneByNominallyJobBooksIn(Collection<NominallyJobBook> nominallyJobBooks);
+    Collection<NominallyJobBookParent> findOneByNominallyJobBooksIn(Collection<NominallyJobBook> nominallyJobBooks);
 
     NominallyJobBookParent findOneByNominallyJobBooksContains(NominallyJobBook nominallyJobBook);
 
