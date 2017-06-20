@@ -15,7 +15,7 @@ public class GroupedHospitalsDTO {
     private Long year;
     private List<Hospitals> hospitals;
     private Long totalDays;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private List<Date> dates;
 
     public void addHospital(Hospitals hospital){
@@ -33,9 +33,9 @@ public class GroupedHospitalsDTO {
     }
 
     public void addDate(List<Date> dates){
-        if(dates == null){
-            dates = new ArrayList<>();
+        if(this.dates == null){
+            this.dates = new ArrayList<>();
         }
-        dates.addAll(dates);
+        this.dates.addAll(dates);
     }
 }

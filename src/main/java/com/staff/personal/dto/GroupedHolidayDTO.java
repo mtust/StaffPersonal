@@ -14,7 +14,7 @@ public class GroupedHolidayDTO {
     private Long year;
     private List<Holiday> holidays;
     private Long totalDays;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private List<Date> dates;
 
     public void addHoliday(Holiday holiday){
@@ -32,9 +32,9 @@ public class GroupedHolidayDTO {
     }
 
     public void addDate(List<Date> dates){
-        if(dates == null){
-            dates = new ArrayList<>();
+        if(this.dates == null){
+            this.dates = new ArrayList<>();
         }
-        dates.addAll(dates);
+        this.dates.addAll(dates);
     }
 }

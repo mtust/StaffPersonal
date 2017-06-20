@@ -157,34 +157,56 @@ public class HolidayServiceImpl implements HolidayService {
         List<Holiday> holidaysFromPreviouseYear = new ArrayList<>();
         long currentYear = 0;
         GroupedHolidayDTO currentYearHoliday = new GroupedHolidayDTO();
-        for(Holiday holiday: holidaysFromPreviouseYear){
-            currentYear = holiday.getToDate().getYear();
-            currentYearHoliday = new GroupedHolidayDTO();
-            currentYearHoliday.addHoliday(holiday);
-            Calendar cal = Calendar.getInstance();
-            cal.set(holiday.getToDate().getYear(),0,1 );
-            currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), holiday.getToDate()));
-            currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
-            groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
-        }
         for (Holiday holiday: holidays) {
-            if(holiday.getFromDate().getYear() > currentYear) {
+            log.info("holiday: " + holiday);
+            if(MyDateUtil.getYearFromDate(holiday.getFromDate()) > currentYear) {
                 if(currentYear != 0) {
+                    currentYearHoliday.setYear(currentYear);
                     groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
                 }
-                currentYear = holiday.getFromDate().getYear();
-                currentYearHoliday = new GroupedHolidayDTO();
+                if(holidaysFromPreviouseYear.isEmpty()) {
+                    currentYear = MyDateUtil.getYearFromDate(holiday.getFromDate());
+                    currentYearHoliday = new GroupedHolidayDTO();
+                } else {
+                    for (Holiday holidayFromPreviouseYear : holidaysFromPreviouseYear) {
+                        currentYear = MyDateUtil.getYearFromDate(holidayFromPreviouseYear.getToDate());
+                        currentYearHoliday = new GroupedHolidayDTO();
+                        currentYearHoliday.addHoliday(holidayFromPreviouseYear);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(MyDateUtil.getYearFromDate(holidayFromPreviouseYear.getToDate()), Calendar.JANUARY, 2);
+
+                        currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), holidayFromPreviouseYear.getToDate()));
+                        currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
+                        currentYearHoliday.setYear(currentYear);
+                        groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
+                    }
+                    holidaysFromPreviouseYear = new ArrayList<>();
+                }
             }
             currentYearHoliday.addHoliday(holiday);
-            if(holiday.getFromDate().getYear() == (holiday.getToDate().getYear())){
+            if(MyDateUtil.getYearFromDate(holiday.getFromDate()) == MyDateUtil.getYearFromDate(holiday.getToDate())){
                 currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(holiday.getFromDate(), holiday.getToDate()));
             } else {
                 Calendar cal = Calendar.getInstance();
-                cal.set(holiday.getFromDate().getYear(), 11, 31);
+                cal.set(MyDateUtil.getYearFromDate(holiday.getFromDate()), Calendar.DECEMBER, 32);
                 currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(holiday.getFromDate(), cal.getTime()));
                 holidaysFromPreviouseYear.add(holiday);
             }
             currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
+        }
+        if(!holidaysFromPreviouseYear.isEmpty()){
+            for (Holiday holidayFromPreviouseYear : holidaysFromPreviouseYear) {
+                currentYear = MyDateUtil.getYearFromDate(holidayFromPreviouseYear.getToDate());
+                currentYearHoliday = new GroupedHolidayDTO();
+                currentYearHoliday.addHoliday(holidayFromPreviouseYear);
+                Calendar cal = Calendar.getInstance();
+                cal.set(MyDateUtil.getYearFromDate(holidayFromPreviouseYear.getToDate()), Calendar.JANUARY, 2);
+
+                currentYearHoliday.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), holidayFromPreviouseYear.getToDate()));
+                currentYearHoliday.setTotalDays((long) currentYearHoliday.getDates().size());
+                currentYearHoliday.setYear(currentYear);
+                groupedHolidayDTOMap.put(currentYear, currentYearHoliday);
+            }
         }
         return groupedHolidayDTOMap;
     }

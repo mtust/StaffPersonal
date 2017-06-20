@@ -149,41 +149,63 @@ public class HospitalsServiceImpl implements HospitalsService {
 
     @Override
     public Map<Long, GroupedHospitalsDTO> getGroupedHospitalsByStaffId(Long id) {
-        List<Hospitals> hospitals  = this.getHospitals(id);
+        List<Hospitals> hospitals = this.getHospitals(id);
         Collections.sort(hospitals);
-        Map<Long, GroupedHospitalsDTO> groupedHospitalsDTOMap = new HashMap<>();
+        Map<Long, GroupedHospitalsDTO> groupedHospitalDTOMap = new HashMap<>();
         List<Hospitals> hospitalsFromPreviouseYear = new ArrayList<>();
         long currentYear = 0;
-        GroupedHospitalsDTO currentYearHospitals = new GroupedHospitalsDTO();
-        for(Hospitals hospital: hospitalsFromPreviouseYear){
-            currentYear = hospital.getToDate().getYear();
-            currentYearHospitals = new GroupedHospitalsDTO();
-            currentYearHospitals.addHospital(hospital);
-            Calendar cal = Calendar.getInstance();
-            cal.set(hospital.getToDate().getYear(),0,1 );
-            currentYearHospitals.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), hospital.getToDate()));
-            currentYearHospitals.setTotalDays((long) currentYearHospitals.getDates().size());
-            groupedHospitalsDTOMap.put(currentYear, currentYearHospitals);
-        }
+        GroupedHospitalsDTO currentYearHospital = new GroupedHospitalsDTO();
         for (Hospitals hospital: hospitals) {
-            if(hospital.getFromDate().getYear() > currentYear) {
+            log.info("Hospital: " + hospital);
+            if(MyDateUtil.getYearFromDate(hospital.getFromDate()) > currentYear) {
                 if(currentYear != 0) {
-                    groupedHospitalsDTOMap.put(currentYear, currentYearHospitals);
+                    currentYearHospital.setYear(currentYear);
+                    groupedHospitalDTOMap.put(currentYear, currentYearHospital);
                 }
-                currentYear = hospital.getFromDate().getYear();
-                currentYearHospitals = new GroupedHospitalsDTO();
+                if(hospitalsFromPreviouseYear.isEmpty()) {
+                    currentYear = MyDateUtil.getYearFromDate(hospital.getFromDate());
+                    currentYearHospital = new GroupedHospitalsDTO();
+                } else {
+                    for (Hospitals hospitalFromPreviouseYear : hospitalsFromPreviouseYear) {
+                        currentYear = MyDateUtil.getYearFromDate(hospitalFromPreviouseYear.getToDate());
+                        currentYearHospital = new GroupedHospitalsDTO();
+                        currentYearHospital.addHospital(hospitalFromPreviouseYear);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(MyDateUtil.getYearFromDate(hospitalFromPreviouseYear.getToDate()), Calendar.JANUARY, 2);
+
+                        currentYearHospital.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), hospitalFromPreviouseYear.getToDate()));
+                        currentYearHospital.setTotalDays((long) currentYearHospital.getDates().size());
+                        currentYearHospital.setYear(currentYear);
+                        groupedHospitalDTOMap.put(currentYear, currentYearHospital);
+                    }
+                    hospitalsFromPreviouseYear = new ArrayList<>();
+                }
             }
-            currentYearHospitals.addHospital(hospital);
-            if(hospital.getFromDate().getYear() == (hospital.getToDate().getYear())){
-                currentYearHospitals.addDate(MyDateUtil.getDaysBetweenDates(hospital.getFromDate(), hospital.getToDate()));
+            currentYearHospital.addHospital(hospital);
+            if(MyDateUtil.getYearFromDate(hospital.getFromDate()) == MyDateUtil.getYearFromDate(hospital.getToDate())){
+                currentYearHospital.addDate(MyDateUtil.getDaysBetweenDates(hospital.getFromDate(), hospital.getToDate()));
             } else {
                 Calendar cal = Calendar.getInstance();
-                cal.set(hospital.getFromDate().getYear(), 11, 31);
-                currentYearHospitals.addDate(MyDateUtil.getDaysBetweenDates(hospital.getFromDate(), cal.getTime()));
+                cal.set(MyDateUtil.getYearFromDate(hospital.getFromDate()), Calendar.DECEMBER, 32);
+                currentYearHospital.addDate(MyDateUtil.getDaysBetweenDates(hospital.getFromDate(), cal.getTime()));
                 hospitalsFromPreviouseYear.add(hospital);
             }
-            currentYearHospitals.setTotalDays((long) currentYearHospitals.getDates().size());
+            currentYearHospital.setTotalDays((long) currentYearHospital.getDates().size());
         }
-        return groupedHospitalsDTOMap;
+        if(!hospitalsFromPreviouseYear.isEmpty()){
+            for (Hospitals hospitalFromPreviouseYear : hospitalsFromPreviouseYear) {
+                currentYear = MyDateUtil.getYearFromDate(hospitalFromPreviouseYear.getToDate());
+                currentYearHospital = new GroupedHospitalsDTO();
+                currentYearHospital.addHospital(hospitalFromPreviouseYear);
+                Calendar cal = Calendar.getInstance();
+                cal.set(MyDateUtil.getYearFromDate(hospitalFromPreviouseYear.getToDate()), Calendar.JANUARY, 2);
+
+                currentYearHospital.addDate(MyDateUtil.getDaysBetweenDates(cal.getTime(), hospitalFromPreviouseYear.getToDate()));
+                currentYearHospital.setTotalDays((long) currentYearHospital.getDates().size());
+                currentYearHospital.setYear(currentYear);
+                groupedHospitalDTOMap.put(currentYear, currentYearHospital);
+            }
+        }
+        return groupedHospitalDTOMap;
     }
 }

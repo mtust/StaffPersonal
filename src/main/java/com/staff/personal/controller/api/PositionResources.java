@@ -32,7 +32,7 @@ public class PositionResources {
         return positionService.createPosition(position);
     }
 
-    @Secured(value = Role.ROLE_ADMIN)
+//    @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public Position getPosition(@PathVariable(value = "id") Long id){
         return positionService.getPosition(id);
@@ -50,7 +50,7 @@ public class PositionResources {
         return positionService.updatePosition(id, position);
     }
 
-    @RequestMapping(value = "code", method = RequestMethod.GET)
+    @RequestMapping(value = "code/{code}", method = RequestMethod.GET)
     public Position getPositionByCode(@PathVariable("code") String code){
         return positionService.getPositionByCode(code);
     }
